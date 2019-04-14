@@ -40,9 +40,9 @@ public class NewProjectDialog extends Stage implements Initializable {
             this.browse_button = (Button) dialogScene.lookup("#button_browse");
             this.create_button = (Button) dialogScene.lookup("#button_create");
             this.cancel_button = (Button) dialogScene.lookup("#button_cancel");
-            browse_button.setOnAction(handler -> { openFileBrowser(this, field_projectLocation);    });
-            create_button.setOnAction(handler -> { createProject();                                 });
-            cancel_button.setOnAction(handler -> { close();                                         });
+            browse_button.setOnAction(handler -> openFileBrowser(this, field_projectLocation));
+            create_button.setOnAction(handler -> createProject());
+            cancel_button.setOnAction(handler -> close());
 
             this.field_projectLocation = (TextField) dialogScene.lookup("#field_projectName");
             this.field_windowTitle = (TextField) dialogScene.lookup("#field_windowTitle");
