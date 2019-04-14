@@ -1,11 +1,3 @@
-#head_close_program, #head_minimize_program, #head_maximize_program:hover {
-    -fx-cursor: hand;
-}
-
-#window_header {
-    -fx-background-color: #e4e4e4;
-}
-
 #window {
     /*-fx-background-size: 1280 720;*/
     -fx-background-radius: 3 3 3 3;
