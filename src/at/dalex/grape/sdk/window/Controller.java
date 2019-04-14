@@ -1,4 +1,4 @@
-package at.dalex.grape.sdk;
+package at.dalex.grape.sdk.window;
 
 import javafx.event.Event;
 import javafx.scene.Node;
