@@ -7,6 +7,7 @@ import javafx.application.Application;
 public class Main {
 
     private static Main instance;
+    public static final double VERSION = 1.2D;
 
     public Main(String[] args) {
         instance = this;

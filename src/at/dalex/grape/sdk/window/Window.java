@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.window;
 
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
+import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,6 +30,7 @@ public class Window extends Application {
         /* *** MenuBar *** */
         MenuBar menuBar = (MenuBar) mainScene.lookup("#menu_bar");
         menuBar.setUseSystemMenuBar(true);
+        MenuBarHelper.inflateMenuBar(menuBar);
 
         mainScene.setFill(Color.TRANSPARENT);
         primaryStage.setTitle("GrapeEngine Software Development Kit");
