@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane fx:id="window" prefHeight="480" prefWidth="720" stylesheets="@style/window_head.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.dalex.grape.sdk.Controller">
+   <top>
+      <HBox fx:id="window_header" alignment="BASELINE_RIGHT" onMouseDragged="#onMouseDragged" onMousePressed="#onMouseClicked" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <Circle fx:id="head_maximize_program" fill="#70b25c" layoutX="712.0" layoutY="28.0" onMouseClicked="#maximizeWindow" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateY="4.0">
+            <HBox.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </HBox.margin></Circle>
+         <Circle fx:id="head_minimize_program" fill="#ffcf4c" layoutX="688.0" layoutY="28.0" onMouseClicked="#minimizeWindow" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateY="4.0">
+            <HBox.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </HBox.margin></Circle>
+          <Circle fx:id="head_close_program" fill="#b24f4f" onMouseClicked="#closeWindow" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateY="4.0">
+            <HBox.margin>
+               <Insets bottom="10.0" left="10.0" right="15.0" top="10.0" />
+            </HBox.margin></Circle>
+      </HBox>
+   </top>
+   <center>
+      <SplitPane fx:id="centerSplitPane" dividerPositions="0.25" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <TreeView id="file_browse" fx:id="GENERATED_BY_CODE" prefHeight="200.0" prefWidth="200.0" stylesheets="@style/window_head.css" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>
