@@ -10,22 +10,22 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 
-public class FileBrowserItem extends TreeItem<BrowserFile> {
+public class FileBrowserItem extends TreeItem<File> {
 
     private boolean isLeaf;
     private boolean isFirstTimeChildren = true;
     private boolean isFirstTimeLeaf = true;
 
     public FileBrowserItem(File file, Node graphic) {
-        super(new BrowserFile(file.getPath()), graphic);
+        super(new File(file.getPath()), graphic);
     }
 
     public FileBrowserItem(File file) {
-        super(new BrowserFile(file.getPath()));
+        super(new File(file.getPath()));
     }
 
     @Override
-    public ObservableList<TreeItem<BrowserFile>> getChildren() {
+    public ObservableList<TreeItem<File>> getChildren() {
         if (isFirstTimeChildren) {
             isFirstTimeChildren = false;
             super.getChildren().setAll(buildChildren(this));
@@ -33,14 +33,14 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
         return super.getChildren();
     }
 
-    private ObservableList<TreeItem<BrowserFile>> buildChildren(TreeItem<BrowserFile> TreeItem) {
-        BrowserFile file = TreeItem.getValue();
+    private ObservableList<TreeItem<File>> buildChildren(TreeItem<File> TreeItem) {
+        File file = TreeItem.getValue();
         if (file == null || file.isFile())
             return FXCollections.emptyObservableList();
 
         File[] files = file.listFiles();
         if (files != null) {
-            ObservableList<TreeItem<BrowserFile>> children = FXCollections.observableArrayList();
+            ObservableList<TreeItem<File>> children = FXCollections.observableArrayList();
             for (File childFile : files) {
                 Image folderIcon = ResouceLoader.get("image.folder.black16", Image.class);
                 children.add(new FileBrowserItem(childFile, new ImageView(folderIcon)));
