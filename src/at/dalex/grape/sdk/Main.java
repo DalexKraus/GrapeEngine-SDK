@@ -1,8 +1,11 @@
 package at.dalex.grape.sdk;
 
+import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.resource.DefaultResources;
 import at.dalex.grape.sdk.window.Window;
 import javafx.application.Application;
+
+import java.io.File;
 
 public class Main {
 
@@ -12,7 +15,15 @@ public class Main {
     public Main(String[] args) {
         instance = this;
 
+        //Load resources
         DefaultResources.loadDefaultResources();
+
+        //Create default project directory
+        File projectsDirecotry = ProjectUtil.getDefaultProjectDirectory();
+        if (!projectsDirecotry.exists())
+            projectsDirecotry.mkdirs();
+
+        //Launch main frame
         Application.launch(Window.class, args);
     }
 

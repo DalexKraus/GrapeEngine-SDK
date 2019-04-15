@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.window;
 
 import at.dalex.grape.sdk.project.ProjectUtil;
+import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.grape.sdk.window.helper.NumberTextFieldFilter;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -44,7 +44,8 @@ public class NewProjectDialog extends Stage implements Initializable {
             create_button.setOnAction(handler -> createProject());
             cancel_button.setOnAction(handler -> close());
 
-            this.field_projectLocation = (TextField) dialogScene.lookup("#field_projectName");
+
+            this.field_projectName = (TextField) dialogScene.lookup("#field_projectName");
             this.field_windowTitle = (TextField) dialogScene.lookup("#field_windowTitle");
             this.field_windowWidth = (TextField) dialogScene.lookup("#field_windowWidth");
             this.field_windowHeight = (TextField) dialogScene.lookup("#field_windowHeight");
@@ -56,23 +57,15 @@ public class NewProjectDialog extends Stage implements Initializable {
             field_windowTitle.setText("Another Game");
             field_windowWidth.setText("1280");
             field_windowHeight.setText("720");
-            field_windowWidth.setDisable(true);
-            field_windowHeight.setDisable(true);
             field_projectLocation.setDisable(true);
             field_projectLocation.setText(ProjectUtil.getDefaultProjectDirectory().getPath());
+
+            field_windowWidth.textProperty().addListener(new NumberTextFieldFilter(field_windowWidth));
+            field_windowHeight.textProperty().addListener(new NumberTextFieldFilter(field_windowHeight));
 
             checkBox_resizeable.setSelected(true);
             checkBox_defaultLocation.setSelected(true);
             browse_button.setDisable(true);
-
-            checkBox_resizeable.setOnAction(handler ->
-            {
-                boolean selected = checkBox_resizeable.isSelected();
-                field_windowWidth.setDisable(selected);
-                field_windowHeight.setDisable(selected);
-                field_windowWidth.textProperty().addListener(new NumberTextFieldFilter(field_windowWidth));
-                field_windowHeight.textProperty().addListener(new NumberTextFieldFilter(field_windowHeight));
-            });
 
             checkBox_defaultLocation.setOnAction(handler ->
             {
@@ -95,8 +88,46 @@ public class NewProjectDialog extends Stage implements Initializable {
 
     }
 
-    private void createProject() {
+    private boolean containsText(TextField textField) {
+        return textField != null && textField.getText().trim().length() > 0;
+    }
 
+    private PathStatus getGameLocationStatus() {
+        if (!checkBox_defaultLocation.isSelected()) {
+            if (containsText(field_projectLocation)) {
+                if (!new File(field_projectLocation.getText()).isDirectory())
+                    return PathStatus.INVALID_DIR;
+            }
+            else return PathStatus.EMPTY_GAME_LOC;
+        }
+        return PathStatus.PATH_VALID;
+    }
+
+    private boolean validateFields() {
+        return      containsText(field_projectName)
+                &&  containsText(field_windowTitle)
+                &&  containsText(field_windowWidth)
+                &&  containsText(field_windowHeight);
+    }
+
+    private void createProject() {
+        if (!validateFields()) {
+            DialogHelper.showErrorDialog("Error", "Fields Empty", "Some fields are still empty,\nplease fill them.");
+            return;
+        }
+
+        PathStatus gamePathStatus = getGameLocationStatus();
+        if (gamePathStatus != PathStatus.PATH_VALID) {
+            if (gamePathStatus == PathStatus.EMPTY_GAME_LOC)
+                DialogHelper.showErrorDialog("Error", "Game Location Empty",
+                        "A path has to be specified for the project!");
+            else if (gamePathStatus == PathStatus.INVALID_DIR)
+                DialogHelper.showErrorDialog("Error", "Game Location invalid",
+                        "The entered path for the project does not seem to be a valid directory!");
+        }
+        else {
+            System.out.println("correct");
+        }
     }
 
     private void openFileBrowser(Stage anchor, TextField pathField) {
@@ -106,4 +137,6 @@ public class NewProjectDialog extends Stage implements Initializable {
             pathField.setText(selectedFolder.getPath());
         }
     }
+
+    private enum PathStatus { PATH_VALID, INVALID_DIR, EMPTY_GAME_LOC }
 }
