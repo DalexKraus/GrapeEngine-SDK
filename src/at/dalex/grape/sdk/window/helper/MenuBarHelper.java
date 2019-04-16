@@ -5,6 +5,9 @@ import at.dalex.grape.sdk.window.listener.NewProjectListener;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 
 public class MenuBarHelper {
 
@@ -17,7 +20,9 @@ public class MenuBarHelper {
         /* File */
         Menu file_new = new Menu("New");
         MenuItem file_new_project = new MenuItem("Project...");
+        file_new_project.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN));
         file_new_project.setOnAction(new NewProjectListener());
+
         file_new.getItems().add(file_new_project);
         fileMenu.getItems().add(file_new);
 
