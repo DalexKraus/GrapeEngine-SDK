@@ -4,6 +4,7 @@ import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.grape.sdk.window.helper.NumberTextFieldFilter;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -74,6 +75,9 @@ public class NewProjectDialog extends Stage implements Initializable {
                 field_projectLocation.setDisable(disable);
                 browse_button.setDisable(disable);
             });
+
+            //Cursor jump to first field
+            Platform.runLater(() -> field_projectName.requestFocus());
 
             setScene(dialogScene);
         } catch (IOException e) {
