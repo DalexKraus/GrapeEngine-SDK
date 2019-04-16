@@ -133,6 +133,12 @@ public class NewProjectDialog extends Stage implements Initializable {
                     + field_projectName.getText().replaceAll(" ", "_") + "/")
                     : new File(field_projectLocation.getText());
 
+            if (projectDirectory.exists()) {
+                DialogHelper.showErrorDialog("Error", null, "A project with the same name already exists " +
+                        "at the given location!");
+                return;
+            }
+
             //Create project
             Project newProject = new Project(
                     field_projectName.getText(),
