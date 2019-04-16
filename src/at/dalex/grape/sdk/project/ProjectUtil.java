@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public class ProjectUtil {
 
+    private static final String[] DEFAULT_SUB_DIRS = {
+            "maps", "resource", "scripts", "shaders", "sounds", "textures"
+    };
+
     private static Project currentProject;
 
     public static boolean openProject(Project project) {
@@ -24,8 +28,21 @@ public class ProjectUtil {
             if (result.get() == cancelButton)
                 return false;
         }
+
+        //Create project's sub directories if non existent
+        createDefaultSubDirectories(project);
+
         currentProject = project;
         return true;
+    }
+
+    private static void  createDefaultSubDirectories(Project project) {
+        String absProjectPath = project.getProjectDirectory().getAbsolutePath();
+        for (String dirName : DEFAULT_SUB_DIRS) {
+            File folderDirectory = new File(absProjectPath + "/" + dirName);
+            if (!folderDirectory.exists())
+                folderDirectory.mkdirs();
+        }
     }
 
     public static File getDefaultProjectDirectory() {
