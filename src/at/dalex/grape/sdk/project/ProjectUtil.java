@@ -1,8 +1,12 @@
 package at.dalex.grape.sdk.project;
 
+import at.dalex.grape.sdk.window.Window;
+import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TreeView;
 
 import java.io.File;
 import java.util.Optional;
@@ -31,8 +35,12 @@ public class ProjectUtil {
 
         //Create project's sub directories if non existent
         createDefaultSubDirectories(project);
-
         currentProject = project;
+
+        //Update file browser
+        SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
+        centerSplitPane.getItems().set(0, new TreeView<>(new FileBrowserItem(project.getProjectDirectory())));
+
         return true;
     }
 

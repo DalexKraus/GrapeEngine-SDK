@@ -16,11 +16,13 @@ import java.io.File;
 
 public class Window extends Application {
 
+    private static Scene mainScene;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         Parent root = FXMLLoader.load(getClass().getResource("/at/dalex/grape/sdk/window/mainwindow.fxml"));
-        Scene mainScene = new Scene(root, 1280, 720);
+        mainScene = new Scene(root, 1280, 720);
 
         /* *** Center Split-Pane *** */
         SplitPane centerSplitPane = (SplitPane) mainScene.lookup("#centerSplitPane");
@@ -37,5 +39,9 @@ public class Window extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.setResizable(true);
         primaryStage.show();
+    }
+
+    public static Scene getMainScene() {
+        return mainScene;
     }
 }
