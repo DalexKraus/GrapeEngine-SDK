@@ -5,6 +5,11 @@
     -fx-background-color: #FFFFFF;
 }
 
+#no_project_label {
+    -fx-pref-width: 90000px;
+    -fx-max-width: 90000px;
+}
+
 /*
  * ScrollBar
  */
