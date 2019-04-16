@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.window;
 
+import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.grape.sdk.window.helper.NumberTextFieldFilter;
@@ -126,7 +127,23 @@ public class NewProjectDialog extends Stage implements Initializable {
                         "The entered path for the project does not seem to be a valid directory!");
         }
         else {
-            System.out.println("correct");
+            //Get project's path
+            File projectDirectory = checkBox_defaultLocation.isSelected()
+                    ? new File(ProjectUtil.getDefaultProjectDirectory().getPath() + "/"
+                    + field_projectName.getText().replaceAll(" ", "_") + "/")
+                    : new File(field_projectLocation.getText());
+
+            //Create project
+            Project newProject = new Project(
+                    field_projectName.getText(),
+                    projectDirectory,
+                    field_windowTitle.getText(),
+                    Integer.parseInt(field_windowWidth.getText()),
+                    Integer.parseInt(field_windowHeight.getText()),
+                    checkBox_resizeable.isSelected());
+
+            ProjectUtil.openProject(newProject);
+            close();
         }
     }
 
