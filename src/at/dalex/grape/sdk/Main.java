@@ -21,7 +21,7 @@ public class Main {
         //Create default project directory
         File projectsDirectory = ProjectUtil.getDefaultProjectDirectory();
         if (!projectsDirectory.exists())
-            projectsDirectory.mkdirs();
+             projectsDirectory.mkdirs();
 
         //Launch main frame
         Application.launch(Window.class, args);
