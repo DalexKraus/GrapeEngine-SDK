@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.window;
 
+import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import javafx.application.Application;
@@ -23,11 +24,6 @@ public class Window extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/at/dalex/grape/sdk/window/mainwindow.fxml"));
         mainScene = new Scene(root, 1280, 720);
-
-        /* *** Center Split-Pane *** */
-        SplitPane centerSplitPane = (SplitPane) mainScene.lookup("#centerSplitPane");
-        centerSplitPane.getItems().set(0, new TreeView<>(new FileBrowserItem(new File("/Users"))));
-        centerSplitPane.setDividerPosition(0, 0.25);
 
         /* *** MenuBar *** */
         MenuBar menuBar = (MenuBar) mainScene.lookup("#menu_bar");

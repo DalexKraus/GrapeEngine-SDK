@@ -10,22 +10,22 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 
-public class FileBrowserItem extends TreeItem<File> {
+public class FileBrowserItem extends TreeItem<BrowserFile> {
 
     private boolean isLeaf;
     private boolean isFirstTimeChildren = true;
     private boolean isFirstTimeLeaf = true;
 
-    public FileBrowserItem(File file, Node graphic) {
-        super(new File(file.getPath()), graphic);
+    public FileBrowserItem(BrowserFile file, Node graphic) {
+        super(new BrowserFile(file.getPath()), graphic);
     }
 
-    public FileBrowserItem(File file) {
-        super(new File(file.getPath()));
+    public FileBrowserItem(BrowserFile file) {
+        super(new BrowserFile(file.getPath()));
     }
 
     @Override
-    public ObservableList<TreeItem<File>> getChildren() {
+    public ObservableList<TreeItem<BrowserFile>> getChildren() {
         if (isFirstTimeChildren) {
             isFirstTimeChildren = false;
             super.getChildren().setAll(buildChildren(this));
@@ -33,17 +33,17 @@ public class FileBrowserItem extends TreeItem<File> {
         return super.getChildren();
     }
 
-    private ObservableList<TreeItem<File>> buildChildren(TreeItem<File> TreeItem) {
-        File file = TreeItem.getValue();
+    private ObservableList<TreeItem<BrowserFile>> buildChildren(TreeItem<BrowserFile> TreeItem) {
+        BrowserFile file = TreeItem.getValue();
         if (file == null || file.isFile())
             return FXCollections.emptyObservableList();
 
         File[] files = file.listFiles();
         if (files != null) {
-            ObservableList<TreeItem<File>> children = FXCollections.observableArrayList();
+            ObservableList<TreeItem<BrowserFile>> children = FXCollections.observableArrayList();
             for (File childFile : files) {
                 Image folderIcon = ResouceLoader.get("image.folder.black16", Image.class);
-                children.add(new FileBrowserItem(childFile, new ImageView(folderIcon)));
+                children.add(new FileBrowserItem(new BrowserFile(childFile.getPath()), new ImageView(folderIcon)));
             }
             return children;
         }
