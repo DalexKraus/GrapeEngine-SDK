@@ -13,7 +13,9 @@ public class HelpAboutListener implements EventHandler<ActionEvent> {
         aboutDialogue.setTitle("About");
         aboutDialogue.setHeaderText("GrapeEngine Software Development Kit\n" +
                                     "v" + Main.VERSION + " (Apr. 2019)");
-        aboutDialogue.setContentText("Main developer: David Kraus");
+        aboutDialogue.setContentText("Main developer: David Kraus\n" +
+                                    "\n" +
+                                    "© 2019 David Kraus. All rights reserved.");
         aboutDialogue.showAndWait();
     }
 }

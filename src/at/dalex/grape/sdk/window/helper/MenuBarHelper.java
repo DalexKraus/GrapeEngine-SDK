@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.window.helper;
 
+import at.dalex.grape.sdk.window.listener.CloseProjectListener;
 import at.dalex.grape.sdk.window.listener.HelpAboutListener;
 import at.dalex.grape.sdk.window.listener.NewProjectListener;
 import javafx.scene.control.Menu;
@@ -22,9 +23,12 @@ public class MenuBarHelper {
         MenuItem file_new_project = new MenuItem("Project...");
         file_new_project.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN));
         file_new_project.setOnAction(new NewProjectListener());
-
         file_new.getItems().add(file_new_project);
+
+        MenuItem file_close = new MenuItem("Close Project");
+        file_close.setOnAction(new CloseProjectListener());
         fileMenu.getItems().add(file_new);
+        fileMenu.getItems().add(file_close);
 
         /* About */
         MenuItem help_about = new MenuItem("About");

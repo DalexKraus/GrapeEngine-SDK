@@ -39,23 +39,6 @@
    </top>
    <center>
       <SplitPane fx:id="centerSplitPane" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <items>
-            <Label fx:id="no_project_label" alignment="BASELINE_CENTER" text="No project is currently open" textAlignment="CENTER">
-               <effect>
-                  <Lighting>
-                     <bumpInput>
-                        <Shadow />
-                     </bumpInput>
-                     <light>
-                        <Light.Distant azimuth="332.14" color="#d00707" />
-                     </light>
-                  </Lighting>
-               </effect>
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </Label>
-        </items>
       </SplitPane>
    </center>
 </BorderPane>

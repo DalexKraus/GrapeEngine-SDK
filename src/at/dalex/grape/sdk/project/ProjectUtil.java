@@ -4,12 +4,11 @@ import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TreeView;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-
+import javafx.scene.text.Font;
 import java.io.File;
 import java.util.Optional;
 
@@ -48,6 +47,22 @@ public class ProjectUtil {
         return true;
     }
 
+    public static void closeProject() {
+        currentProject = null;
+        SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
+        centerSplitPane.getItems().clear();
+        /* Create Label */
+        Label noProjectLabel = new Label("No project is currently opened");
+        //--- Ultra mega extreme cheat to change font size, wtf?!
+        Font labelFont = noProjectLabel.getFont();
+        noProjectLabel.setFont(new Font(labelFont.getName(), 25));
+        //--- End of cheating session
+        noProjectLabel.setAlignment(Pos.CENTER);
+        noProjectLabel.setMaxWidth(Double.MAX_VALUE);
+        /* Add to SplitPane */
+        centerSplitPane.getItems().add(noProjectLabel);
+    }
+
     private static void  createDefaultSubDirectories(Project project) {
         String absProjectPath = project.getProjectDirectory().getAbsolutePath();
         for (String dirName : DEFAULT_SUB_DIRS) {
@@ -55,6 +70,14 @@ public class ProjectUtil {
             if (!folderDirectory.exists())
                 folderDirectory.mkdirs();
         }
+    }
+
+    public static Project getCurrentProject() {
+        return currentProject;
+    }
+
+    public static boolean isAnyProjectOpened() {
+        return getCurrentProject() != null;
     }
 
     public static File getDefaultProjectDirectory() {
