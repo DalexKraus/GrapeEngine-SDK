@@ -19,9 +19,9 @@ public class Main {
         DefaultResources.loadDefaultResources();
 
         //Create default project directory
-        File projectsDirecotry = ProjectUtil.getDefaultProjectDirectory();
-        if (!projectsDirecotry.exists())
-            projectsDirecotry.mkdirs();
+        File projectsDirectory = ProjectUtil.getDefaultProjectDirectory();
+        if (!projectsDirectory.exists())
+            projectsDirectory.mkdirs();
 
         //Launch main frame
         Application.launch(Window.class, args);
