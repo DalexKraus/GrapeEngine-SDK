@@ -12,14 +12,15 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class Window extends Application {
 
     private static Scene mainScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        Parent root = FXMLLoader.load(getClass().getResource("/at/dalex/grape/sdk/window/mainwindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/resources/javafx/mainwindow.fxml"));
         mainScene = new Scene(root, 1280, 720);
 
         /* *** MenuBar *** */

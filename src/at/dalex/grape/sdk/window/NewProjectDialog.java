@@ -34,7 +34,7 @@ public class NewProjectDialog extends Stage implements Initializable {
     private CheckBox checkBox_defaultLocation;
 
     public NewProjectDialog() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/at/dalex/grape/sdk/window/dialog_new_project.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/javafx/dialog_new_project.fxml"));
         fxmlLoader.setController(this);
 
         try {

@@ -17,18 +17,19 @@ public class DefaultResources {
 
     public static void loadDefaultResources() {
         try {
-            editor_executable_directory = new File(FileBrowserItem.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            editor_executable_directory = new File(FileBrowserItem.class.getProtectionDomain()
+                    .getCodeSource().getLocation().toURI());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
         //Images
-        ResouceLoader.store(loadImage("images/folder_black32x32.png"), "image.folder.black32");
-        ResouceLoader.store(loadImage("images/folder_black16x16.png"), "image.folder.black16");
+        ResouceLoader.store(loadImage("resources/images/folder_black32x32.png"), "image.folder.black32");
+        ResouceLoader.store(loadImage("resources/images/folder_black16x16.png"), "image.folder.black16");
     }
 
     private static Image loadImage(String resourcePath) {
-        return readImage(new File(editor_executable_directory.getPath() + "/" + resourcePath));
+        return readImage(new File(editor_executable_directory.getAbsolutePath() + "/" + resourcePath));
     }
 
     private static Image readImage(File file) {

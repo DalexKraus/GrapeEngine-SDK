@@ -1,15 +1,21 @@
 package at.dalex.grape.sdk.project;
 
+import at.dalex.grape.sdk.Main;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
+import at.dalex.util.JSONUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
+import org.json.simple.JsonObject;
+
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Optional;
 
 public class ProjectUtil {
@@ -36,6 +42,11 @@ public class ProjectUtil {
 
         //Create project's sub directories if non existent
         createDefaultSubDirectories(project);
+
+        //Create project file if not present
+        if (!new File(project.getProjectDirectory() + "/.project.json").exists())
+            createProjectFile(project);
+
         currentProject = project;
 
         //Update file browser
@@ -63,12 +74,27 @@ public class ProjectUtil {
         centerSplitPane.getItems().add(noProjectLabel);
     }
 
-    private static void  createDefaultSubDirectories(Project project) {
+    private static void createDefaultSubDirectories(Project project) {
         String absProjectPath = project.getProjectDirectory().getAbsolutePath();
         for (String dirName : DEFAULT_SUB_DIRS) {
             File folderDirectory = new File(absProjectPath + "/" + dirName);
             if (!folderDirectory.exists())
                 folderDirectory.mkdirs();
+        }
+    }
+
+    private static void createProjectFile(Project project) {
+        JsonObject root = new JsonObject();
+        root.put("projectName", project.getProjectName());
+        root.put("projectSDKVersion", Main.VERSION);
+
+        try (FileWriter file = new FileWriter(project.getProjectDirectory().getAbsolutePath() + "/.project.json")) {
+
+            file.write(JSONUtil.prettyPrintJSON(root.toJson()));
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
