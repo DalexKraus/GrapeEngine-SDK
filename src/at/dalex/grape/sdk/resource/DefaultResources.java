@@ -3,7 +3,6 @@ package at.dalex.grape.sdk.resource;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
