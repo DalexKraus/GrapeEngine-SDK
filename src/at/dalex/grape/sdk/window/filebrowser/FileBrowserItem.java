@@ -42,8 +42,28 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
         if (files != null) {
             ObservableList<TreeItem<BrowserFile>> children = FXCollections.observableArrayList();
             for (File childFile : files) {
-                Image folderIcon = ResouceLoader.get("image.folder.black16", Image.class);
-                children.add(new FileBrowserItem(new BrowserFile(childFile.getPath()), new ImageView(folderIcon)));
+                BrowserFile childBrowserFile = null;
+                Image itemIcon = ResouceLoader.get("image.folder.black16", Image.class);
+
+                //Check filter before adding next item
+                FilterRule filterRule = FileBrowserFilter.getRuleFor(childFile);
+                FileBrowserFilter.FilterStatus filterStatus = FileBrowserFilter.filter(filterRule);
+
+                //Skip child if it should be hidden
+                if (filterStatus == FileBrowserFilter.FilterStatus.APPLY_HIDE)
+                    continue;
+
+                if (filterStatus == FileBrowserFilter.FilterStatus.NO_MATCH) {
+                    childBrowserFile = new BrowserFile(childFile.getPath());
+                }
+                else if (filterStatus == FileBrowserFilter.FilterStatus.APPLY_CUSTOMS) {
+                    childBrowserFile = new BrowserFile(
+                            (filterRule.getCustomName() != null) ? filterRule.getCustomName() : childFile.getName());
+                    if (filterRule.getCustomIcon() != null)
+                        itemIcon = filterRule.getCustomIcon();
+                }
+
+                children.add(new FileBrowserItem(childBrowserFile, new ImageView(itemIcon)));
             }
             return children;
         }

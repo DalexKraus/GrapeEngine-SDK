@@ -44,8 +44,9 @@ public class ProjectUtil {
         createDefaultSubDirectories(project);
 
         //Create project file if not present
-        if (!new File(project.getProjectDirectory() + "/.project.json").exists())
-            createProjectFile(project);
+        File projectFile = new File(project.getProjectDirectory() + "/.sdk/project.json");
+        if (!projectFile.exists())
+            createProjectFile(project, projectFile);
 
         currentProject = project;
 
@@ -83,12 +84,14 @@ public class ProjectUtil {
         }
     }
 
-    private static void createProjectFile(Project project) {
+    private static void createProjectFile(Project project, File projectFile) {
         JsonObject root = new JsonObject();
         root.put("projectName", project.getProjectName());
         root.put("projectSDKVersion", Main.VERSION);
 
-        try (FileWriter file = new FileWriter(project.getProjectDirectory().getAbsolutePath() + "/.project.json")) {
+        projectFile.getParentFile().mkdirs();
+
+        try (FileWriter file = new FileWriter(projectFile)) {
 
             file.write(JSONUtil.prettyPrintJSON(root.toJson()));
             file.flush();
