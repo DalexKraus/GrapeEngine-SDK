@@ -43,7 +43,8 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
             ObservableList<TreeItem<BrowserFile>> children = FXCollections.observableArrayList();
             for (File childFile : files) {
                 BrowserFile childBrowserFile = null;
-                Image itemIcon = ResouceLoader.get("image.folder.black16", Image.class);
+                Image itemIcon = ResouceLoader.get(
+                        childFile.isDirectory() ? "image.folder.black16" : "image.file.generic.black16", Image.class);
 
                 //Check filter before adding next item
                 FilterRule filterRule = FileBrowserFilter.getRuleFor(childFile);

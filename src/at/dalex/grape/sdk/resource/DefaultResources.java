@@ -23,8 +23,12 @@ public class DefaultResources {
         }
 
         //Images
+        /* Folders */
         ResouceLoader.store(loadImage("resources/images/folder_black32x32.png"), "image.folder.black32");
         ResouceLoader.store(loadImage("resources/images/folder_black16x16.png"), "image.folder.black16");
+
+        /* Files */
+        ResouceLoader.store(loadImage("resources/images/file_black16x16.png"), "image.file.generic.black16");
     }
 
     private static Image loadImage(String resourcePath) {
