@@ -3,7 +3,9 @@ package at.dalex.grape.sdk.project;
 import at.dalex.grape.sdk.Main;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
+import at.dalex.grape.sdk.window.filebrowser.FileBrowserFilter;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
+import at.dalex.grape.sdk.window.filebrowser.FilterRule;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.util.JSONUtil;
 import javafx.geometry.Pos;
@@ -49,6 +51,9 @@ public class ProjectUtil {
             createProjectFile(project, projectFile);
 
         currentProject = project;
+
+        //Update fileBrowser filter rule for sdk folder
+        FileBrowserFilter.setFileRule(projectFile.getParentFile(), new FilterRule(FilterRule.Visibility.HIDDEN));
 
         //Update file browser
         SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
