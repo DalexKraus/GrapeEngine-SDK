@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.window.listener;
 
+import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import javafx.event.ActionEvent;
@@ -30,6 +31,8 @@ public class OpenProjectListener implements EventHandler<ActionEvent> {
             DialogHelper.showErrorDialog("Error", null, "The selected folder does not seem to contain " +
                                                         "a valid project!");
 
-
+        Project toOpen = ProjectUtil.readProjectFile(selectedFolder, projectFile);
+        ProjectUtil.closeProject();
+        ProjectUtil.openProject(toOpen);
     }
 }

@@ -10,15 +10,15 @@ public class Project {
     private String windowTitle;
     private int windowWidth;
     private int windowHeight;
-    private boolean isResizeable;
+    private boolean isResizable;
 
-    public Project(String projectName, File projectDirectory, String windowTitle, int windowWidth, int windowHeight, boolean isResizeable) {
+    public Project(String projectName, File projectDirectory, String windowTitle, int windowWidth, int windowHeight, boolean isResizable) {
         this.projectName = projectName;
         this.projectDirectory = projectDirectory;
         this.windowTitle = windowTitle;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
-        this.isResizeable = isResizeable;
+        this.isResizable = isResizable;
     }
 
     public String getProjectName() {
@@ -41,7 +41,7 @@ public class Project {
         return windowHeight;
     }
 
-    public boolean isResizeable() {
-        return isResizeable;
+    public boolean isResizable() {
+        return isResizable;
     }
 }

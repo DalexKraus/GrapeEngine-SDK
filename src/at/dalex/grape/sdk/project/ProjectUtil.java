@@ -16,11 +16,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
-import org.json.simple.JsonObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Optional;
 
 public class ProjectUtil {
@@ -95,22 +95,22 @@ public class ProjectUtil {
     }
 
     private static void writeProjectFile(Project project, File projectFile) {
-        JsonObject root = new JsonObject();
+        JSONObject root = new JSONObject();
         root.put("projectName", project.getProjectName());
         root.put("projectSDKVersion", Main.VERSION);
 
-        JsonObject gameConfig = new JsonObject();
+        JSONObject gameConfig = new JSONObject();
         gameConfig.put("windowTitle", project.getWindowTitle());
         gameConfig.put("windowWidth", project.getWindowWidth());
         gameConfig.put("windowHeight", project.getWindowHeight());
-        gameConfig.put("isResizeable", project.isResizeable());
+        gameConfig.put("isResizable", project.isResizable());
         root.put("gameConfig", gameConfig);
 
         projectFile.getParentFile().mkdirs();
 
         try (FileWriter file = new FileWriter(projectFile)) {
 
-            file.write(JSONUtil.prettyPrintJSON(root.toJson()));
+            file.write(JSONUtil.prettyPrintJSON(root.toJSONString()));
             file.flush();
 
         } catch (IOException e) {
@@ -118,8 +118,25 @@ public class ProjectUtil {
         }
     }
 
-    public static Project readProjectFile(File projectFile) {
-        //JsonObject rootObject = JsonObject.
+    public static Project readProjectFile(File projectDirectory, File projectFile) {
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject root = (JSONObject) parser.parse(new FileReader(projectFile));
+            String projectName = (String) root.get("projectName");
+            double projectSDKVersion = (double) root.get("projectSDKVersion");
+            //TODO: Warn user when opening a project, which is a different version!
+
+            JSONObject gameConfig = (JSONObject) root.get("gameConfig");
+            String windowTitle = (String) gameConfig.get("windowTitle");
+            int windowWidth = (int) ((long) gameConfig.get("windowWidth"));
+            int windowHeight = (int) ((long) gameConfig.get("windowHeight"));
+            boolean isResizable = (boolean) gameConfig.get("isResizable");
+
+            return new Project(projectName, projectDirectory, windowTitle, windowWidth, windowHeight, isResizable);
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

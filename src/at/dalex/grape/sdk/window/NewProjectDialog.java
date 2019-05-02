@@ -30,7 +30,7 @@ public class NewProjectDialog extends Stage implements Initializable {
     private TextField field_windowWidth;
     private TextField field_windowHeight;
     private TextField field_projectLocation;
-    private CheckBox checkBox_resizeable;
+    private CheckBox checkBox_resizable;
     private CheckBox checkBox_defaultLocation;
 
     public NewProjectDialog() {
@@ -52,7 +52,7 @@ public class NewProjectDialog extends Stage implements Initializable {
             this.field_windowHeight = (TextField) dialogScene.lookup("#field_windowHeight");
             this.field_projectLocation = (TextField) dialogScene.lookup("#field_projectLocation");
 
-            this.checkBox_resizeable = (CheckBox) dialogScene.lookup("#checkbox_isResizeable");
+            this.checkBox_resizable = (CheckBox) dialogScene.lookup("#checkbox_isResizable");
             this.checkBox_defaultLocation = (CheckBox) dialogScene.lookup("#checkbox_defaultLocation");
 
             field_windowTitle.setText("Another Game");
@@ -64,7 +64,7 @@ public class NewProjectDialog extends Stage implements Initializable {
             field_windowWidth.textProperty().addListener(new NumberTextFieldFilter(field_windowWidth));
             field_windowHeight.textProperty().addListener(new NumberTextFieldFilter(field_windowHeight));
 
-            checkBox_resizeable.setSelected(true);
+            checkBox_resizable.setSelected(true);
             checkBox_defaultLocation.setSelected(true);
             browse_button.setDisable(true);
 
@@ -149,7 +149,7 @@ public class NewProjectDialog extends Stage implements Initializable {
                     field_windowTitle.getText(),
                     Integer.parseInt(field_windowWidth.getText()),
                     Integer.parseInt(field_windowHeight.getText()),
-                    checkBox_resizeable.isSelected());
+                    checkBox_resizable.isSelected());
 
             ProjectUtil.openProject(newProject);
             close();
