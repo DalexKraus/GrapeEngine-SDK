@@ -26,6 +26,7 @@ public class DefaultResources {
         /* Folders */
         ResouceLoader.store(loadImage("resources/images/folder_black32x32.png"), "image.folder.black32");
         ResouceLoader.store(loadImage("resources/images/folder_black16x16.png"), "image.folder.black16");
+        ResouceLoader.store(loadImage("resources/images/project_icon.png"), "image.folder.project");
 
         /* Files */
         ResouceLoader.store(loadImage("resources/images/file_black16x16.png"), "image.file.generic.black16");

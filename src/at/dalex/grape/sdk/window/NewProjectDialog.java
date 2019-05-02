@@ -46,7 +46,6 @@ public class NewProjectDialog extends Stage implements Initializable {
             create_button.setOnAction(handler -> createProject());
             cancel_button.setOnAction(handler -> close());
 
-
             this.field_projectName = (TextField) dialogScene.lookup("#field_projectName");
             this.field_windowTitle = (TextField) dialogScene.lookup("#field_windowTitle");
             this.field_windowWidth = (TextField) dialogScene.lookup("#field_windowWidth");

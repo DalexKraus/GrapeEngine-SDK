@@ -17,11 +17,15 @@ import java.io.File;
 public class Window extends Application {
 
     private static Scene mainScene;
+    private static Stage stage;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/javafx/mainwindow.fxml"));
         mainScene = new Scene(root, 1280, 720);
+
+        stage = primaryStage;
 
         /* *** MenuBar *** */
         MenuBar menuBar = (MenuBar) mainScene.lookup("#menu_bar");
@@ -40,5 +44,9 @@ public class Window extends Application {
 
     public static Scene getMainScene() {
         return mainScene;
+    }
+
+    public static Stage getPrimaryStage() {
+        return stage;
     }
 }

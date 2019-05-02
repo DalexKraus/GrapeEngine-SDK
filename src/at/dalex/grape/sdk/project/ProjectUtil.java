@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.project;
 
 import at.dalex.grape.sdk.Main;
+import at.dalex.grape.sdk.resource.ResouceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserFilter;
@@ -11,6 +12,8 @@ import at.dalex.util.JSONUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import org.json.simple.JsonObject;
@@ -48,7 +51,7 @@ public class ProjectUtil {
         //Create project file if not present
         File projectFile = new File(project.getProjectDirectory() + "/.sdk/project.json");
         if (!projectFile.exists())
-            createProjectFile(project, projectFile);
+            writeProjectFile(project, projectFile);
 
         currentProject = project;
 
@@ -57,7 +60,9 @@ public class ProjectUtil {
 
         //Update file browser
         SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
-        centerSplitPane.getItems().set(0, new TreeView<>(new FileBrowserItem(new BrowserFile(project.getProjectDirectory().getPath()))));
+        ImageView rootImage = new ImageView(ResouceLoader.get("image.folder.project", Image.class));
+        FileBrowserItem rootItem = new FileBrowserItem(new BrowserFile(project.getProjectDirectory().getPath()), rootImage);
+        centerSplitPane.getItems().set(0, new TreeView<>(rootItem));
         centerSplitPane.getItems().add(new BorderPane());
         centerSplitPane.setDividerPosition(0, 0.25f);
 
@@ -89,10 +94,17 @@ public class ProjectUtil {
         }
     }
 
-    private static void createProjectFile(Project project, File projectFile) {
+    private static void writeProjectFile(Project project, File projectFile) {
         JsonObject root = new JsonObject();
         root.put("projectName", project.getProjectName());
         root.put("projectSDKVersion", Main.VERSION);
+
+        JsonObject gameConfig = new JsonObject();
+        gameConfig.put("windowTitle", project.getWindowTitle());
+        gameConfig.put("windowWidth", project.getWindowWidth());
+        gameConfig.put("windowHeight", project.getWindowHeight());
+        gameConfig.put("isResizeable", project.isResizeable());
+        root.put("gameConfig", gameConfig);
 
         projectFile.getParentFile().mkdirs();
 
@@ -104,6 +116,11 @@ public class ProjectUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Project readProjectFile(File projectFile) {
+        //JsonObject rootObject = JsonObject.
+        return null;
     }
 
     public static Project getCurrentProject() {
