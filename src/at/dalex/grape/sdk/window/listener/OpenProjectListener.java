@@ -33,6 +33,7 @@ public class OpenProjectListener implements EventHandler<ActionEvent> {
 
         Project toOpen = ProjectUtil.readProjectFile(selectedFolder, projectFile);
         ProjectUtil.closeProject();
+        System.out.println("PROJECT: " + toOpen);
         ProjectUtil.openProject(toOpen);
     }
 }

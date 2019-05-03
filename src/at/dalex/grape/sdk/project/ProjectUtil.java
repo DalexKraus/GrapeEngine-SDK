@@ -32,12 +32,15 @@ public class ProjectUtil {
     private static Project currentProject;
 
     public static boolean openProject(Project project) {
+        if (project == null)
+            return false;
+
         if (currentProject != null) {
             Alert openAlert = DialogHelper.createDialog(Alert.AlertType.WARNING, "Warning", null, "Any unsaved changes"
                     + " will be lost when opening a different project!");
 
             ButtonType cancelButton = new ButtonType("Cancel");
-            ButtonType continueButton = new ButtonType("Continue");
+            ButtonType continueButton = new ButtonType("Open Project");
             openAlert.getButtonTypes().setAll(continueButton, cancelButton);
 
             Optional<ButtonType> result = openAlert.showAndWait();
@@ -125,7 +128,21 @@ public class ProjectUtil {
             JSONObject root = (JSONObject) parser.parse(new FileReader(projectFile));
             String projectName = (String) root.get("projectName");
             double projectSDKVersion = (double) root.get("projectSDKVersion");
-            //TODO: Warn user when opening a project, which is a different version!
+
+            //Check if SDK versions match
+            if (projectSDKVersion != Main.VERSION) {
+                Alert openAlert = DialogHelper.createDialog(Alert.AlertType.WARNING, "Warning", null, "The project's" +
+                        " version differs from the SDK's version,\n" +
+                        "opening may result in irreversible damage!");
+
+                ButtonType cancelButton = new ButtonType("Cancel");
+                ButtonType continueButton = new ButtonType("Continue");
+                openAlert.getButtonTypes().setAll(continueButton, cancelButton);
+
+                Optional<ButtonType> result = openAlert.showAndWait();
+                if (result.get() == cancelButton)
+                    return null;
+            }
 
             JSONObject gameConfig = (JSONObject) root.get("gameConfig");
             String windowTitle = (String) gameConfig.get("windowTitle");
