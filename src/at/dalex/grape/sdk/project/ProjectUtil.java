@@ -65,7 +65,8 @@ public class ProjectUtil {
         SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
         ImageView rootImage = new ImageView(ResouceLoader.get("image.folder.project", Image.class));
         FileBrowserItem rootItem = new FileBrowserItem(new BrowserFile(project.getProjectDirectory().getPath()), rootImage);
-        centerSplitPane.getItems().set(0, new TreeView<>(rootItem));
+        centerSplitPane.getItems().clear();
+        centerSplitPane.getItems().add(new TreeView<>(rootItem));
         centerSplitPane.getItems().add(new BorderPane());
         centerSplitPane.setDividerPosition(0, 0.25f);
 
@@ -123,7 +124,6 @@ public class ProjectUtil {
 
     public static Project readProjectFile(File projectDirectory, File projectFile) {
         JSONParser parser = new JSONParser();
-
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(projectFile));
             String projectName = (String) root.get("projectName");

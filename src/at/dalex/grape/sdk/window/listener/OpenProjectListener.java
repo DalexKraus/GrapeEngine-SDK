@@ -32,8 +32,6 @@ public class OpenProjectListener implements EventHandler<ActionEvent> {
                                                         "a valid project!");
 
         Project toOpen = ProjectUtil.readProjectFile(selectedFolder, projectFile);
-        ProjectUtil.closeProject();
-        System.out.println("PROJECT: " + toOpen);
         ProjectUtil.openProject(toOpen);
     }
 }
