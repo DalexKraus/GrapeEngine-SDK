@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro8.JMetro;
 
 import java.io.File;
 
@@ -23,6 +24,8 @@ public class Window extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/javafx/mainwindow.fxml"));
+        new JMetro(JMetro.Style.LIGHT).applyTheme(root);
+
         mainScene = new Scene(root, 1280, 720);
 
         stage = primaryStage;
