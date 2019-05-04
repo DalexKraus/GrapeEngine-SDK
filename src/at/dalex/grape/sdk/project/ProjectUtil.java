@@ -66,10 +66,11 @@ public class ProjectUtil {
         ImageView rootImage = new ImageView(ResouceLoader.get("image.folder.project", Image.class));
         FileBrowserItem rootItem = new FileBrowserItem(new BrowserFile(project.getProjectDirectory().getPath()), rootImage);
         centerSplitPane.getItems().clear();
-        centerSplitPane.getItems().add(new TreeView<>(rootItem));
+        TitledPane projectPane = new TitledPane("Project", new TreeView<>(rootItem));
+        projectPane.setPrefHeight(Double.MAX_VALUE);
+        centerSplitPane.getItems().add(projectPane);
         centerSplitPane.getItems().add(new BorderPane());
         centerSplitPane.setDividerPosition(0, 0.25f);
-
         return true;
     }
 

@@ -1,8 +1,6 @@
 package at.dalex.grape.sdk.window;
 
 import at.dalex.grape.sdk.project.ProjectUtil;
-import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
-import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
