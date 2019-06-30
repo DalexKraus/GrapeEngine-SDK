@@ -2,23 +2,19 @@ package at.dalex.grape.sdk.project;
 
 import java.io.File;
 
+/**
+ * This class contains information about a project, which can be loaded into the editor.
+ */
 public class Project {
 
     private String projectName;
     private File projectDirectory;
+    private WindowSettings windowSettings;
 
-    private String windowTitle;
-    private int windowWidth;
-    private int windowHeight;
-    private boolean isResizable;
-
-    public Project(String projectName, File projectDirectory, String windowTitle, int windowWidth, int windowHeight, boolean isResizable) {
+    public Project(String projectName, File projectDirectory, WindowSettings windowSettings) {
         this.projectName = projectName;
         this.projectDirectory = projectDirectory;
-        this.windowTitle = windowTitle;
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
-        this.isResizable = isResizable;
+        this.windowSettings = windowSettings;
     }
 
     public String getProjectName() {
@@ -29,19 +25,7 @@ public class Project {
         return projectDirectory;
     }
 
-    public String getWindowTitle() {
-        return windowTitle;
-    }
-
-    public int getWindowWidth() {
-        return windowWidth;
-    }
-
-    public int getWindowHeight() {
-        return windowHeight;
-    }
-
-    public boolean isResizable() {
-        return isResizable;
+    public WindowSettings getWindowSettings() {
+        return windowSettings;
     }
 }

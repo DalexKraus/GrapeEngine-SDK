@@ -134,12 +134,13 @@ public class ProjectUtil {
         root.put("projectName", project.getProjectName());
         root.put("projectSDKVersion", Main.VERSION);
 
-        JSONObject gameConfig = new JSONObject();
-        gameConfig.put("windowTitle", project.getWindowTitle());
-        gameConfig.put("windowWidth", project.getWindowWidth());
-        gameConfig.put("windowHeight", project.getWindowHeight());
-        gameConfig.put("isResizable", project.isResizable());
-        root.put("gameConfig", gameConfig);
+        JSONObject windowSettings = new JSONObject();
+        WindowSettings settings = project.getWindowSettings();
+        windowSettings.put("windowTitle",   settings.getWindowTitle());
+        windowSettings.put("windowWidth",   settings.getWindowWidth());
+        windowSettings.put("windowHeight",  settings.getWindowHeight());
+        windowSettings.put("isResizable",   settings.isResizable());
+        root.put("windowSettings", windowSettings);
 
         projectFile.getParentFile().mkdirs();
 
@@ -185,13 +186,15 @@ public class ProjectUtil {
                     return null;
             }
 
-            JSONObject gameConfig = (JSONObject) root.get("gameConfig");
-            String windowTitle = (String) gameConfig.get("windowTitle");
-            int windowWidth = (int) ((long) gameConfig.get("windowWidth"));
-            int windowHeight = (int) ((long) gameConfig.get("windowHeight"));
-            boolean isResizable = (boolean) gameConfig.get("isResizable");
+            //Parse and apply window settings
+            JSONObject windowSettings =  (JSONObject) root.get("windowSettings");
+            String windowTitle  = (String)  windowSettings.get("windowTitle");
+            int windowWidth     = (int)     windowSettings.get("windowWidth");
+            int windowHeight    = (int)     windowSettings.get("windowHeight");
+            boolean isResizable = (boolean) windowSettings.get("isResizable");
+            WindowSettings settings = new WindowSettings(windowTitle, windowWidth, windowHeight, isResizable);
 
-            return new Project(projectName, projectDirectory, windowTitle, windowWidth, windowHeight, isResizable);
+            return new Project(projectName, projectDirectory, settings);
         } catch (IOException e) {
             DialogHelper.showErrorDialog("Error", "Read Error", "Unable to read the project file.\n" +
                     "Target destination: " + projectFile.getAbsolutePath() + "\n\n" +
