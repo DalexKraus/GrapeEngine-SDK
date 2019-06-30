@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.resource;
 
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
+import at.dalex.grape.sdk.window.helper.DialogHelper;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
@@ -10,6 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+/**
+ * This class loads the default resources which
+ * the editor needs to function correctly.
+ */
 public class DefaultResources {
 
     private static File editor_executable_directory;
@@ -32,16 +37,19 @@ public class DefaultResources {
         ResouceLoader.store(loadImage("resources/images/file_black16x16.png"), "image.file.generic.black16");
     }
 
+    /**
+     * Loads an image from the resource folder of the editor
+     * @param resourcePath The path of the image resource
+     * @return The loaded image if successful.
+     */
     private static Image loadImage(String resourcePath) {
-        return readImage(new File(editor_executable_directory.getAbsolutePath() + "/" + resourcePath));
-    }
-
-    private static Image readImage(File file) {
         try {
-            BufferedImage bufferedImage = ImageIO.read(file);
+            File resourceFile = new File(editor_executable_directory.getAbsolutePath() + "/" + resourcePath);
+            BufferedImage bufferedImage = ImageIO.read(resourceFile);
             return SwingFXUtils.toFXImage(bufferedImage, null);
         }
         catch (IOException e) {
+            DialogHelper.showErrorDialog("Error", "Resource Error", "Unable to read resource '" + resourcePath + "'!");
             e.printStackTrace();
         }
         return null;
