@@ -16,6 +16,7 @@ public class ResouceLoader {
      * @param key The key with which you can later retrieve the object
      */
     public static void store(Object object, String key) {
+        if (object == null) return;
         storage.put(key, object);
         System.out.println("Stored object with key '" + key + "'");
     }
