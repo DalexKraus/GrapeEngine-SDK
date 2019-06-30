@@ -5,6 +5,8 @@ import at.dalex.grape.sdk.resource.ResouceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.*;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
+import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
+import at.dalex.grape.sdk.window.viewport.ViewportManager;
 import at.dalex.util.JSONUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -77,8 +79,10 @@ public class ProjectUtil {
         TitledPane projectPane = new TitledPane("Project", new TreeView<>(rootItem));
         projectPane.setPrefHeight(Double.MAX_VALUE);
         centerSplitPane.getItems().add(projectPane);
-        centerSplitPane.getItems().add(new BorderPane());
         centerSplitPane.setDividerPosition(0, 0.25f);
+
+        //Create viewport
+        centerSplitPane.getItems().add(ViewportManager.getViewportCanvas());
 
         //Project opening process succeeded.
         return true;
@@ -188,10 +192,10 @@ public class ProjectUtil {
 
             //Parse and apply window settings
             JSONObject windowSettings =  (JSONObject) root.get("windowSettings");
-            String windowTitle  = (String)  windowSettings.get("windowTitle");
-            int windowWidth     = (int)     windowSettings.get("windowWidth");
-            int windowHeight    = (int)     windowSettings.get("windowHeight");
-            boolean isResizable = (boolean) windowSettings.get("isResizable");
+            String windowTitle  = (String)          windowSettings.get("windowTitle");
+            int windowWidth     = (int)  ((long)    windowSettings.get("windowWidth"));
+            int windowHeight    = (int)  ((long)    windowSettings.get("windowHeight"));
+            boolean isResizable = (boolean)         windowSettings.get("isResizable");
             WindowSettings settings = new WindowSettings(windowTitle, windowWidth, windowHeight, isResizable);
 
             return new Project(projectName, projectDirectory, settings);
