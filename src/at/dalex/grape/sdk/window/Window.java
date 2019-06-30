@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import jfxtras.styles.jmetro8.JMetro;
 
 public class Window extends Application {
 
