@@ -1,6 +1,5 @@
 package at.dalex.grape.sdk.window.helper;
 
-import at.dalex.grape.sdk.Main;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.listener.CloseProjectListener;
 import at.dalex.grape.sdk.window.listener.HelpAboutListener;
@@ -13,8 +12,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 
+/**
+ * This class is used to create the menu bar for the main window.
+ */
 public class MenuBarHelper {
 
+    /**
+     * Inflates the given menubar.
+     * @param menuBar The menubar which should be inflated
+     */
     public static void inflateMenuBar(MenuBar menuBar) {
         menuBar.getMenus().clear();
         Menu fileMenu = new Menu("File");
@@ -45,7 +51,8 @@ public class MenuBarHelper {
 
         //Add menus
         menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu);
-        //Apply application name
+
+        //Apply application name (for macOS devices)
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "GrapeEngine SDK");
     }
 }
