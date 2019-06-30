@@ -7,6 +7,8 @@ import at.dalex.grape.sdk.window.helper.NumberTextFieldFilter;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -14,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro8.JMetro;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +41,8 @@ public class NewProjectDialog extends Stage implements Initializable {
         fxmlLoader.setController(this);
 
         try {
-            Scene dialogScene = new Scene(fxmlLoader.load(), 450, 445);
+            Parent root = fxmlLoader.load();
+            Scene dialogScene = new Scene(root, 450, 445);
             this.browse_button = (Button) dialogScene.lookup("#button_browse");
             this.create_button = (Button) dialogScene.lookup("#button_create");
             this.cancel_button = (Button) dialogScene.lookup("#button_cancel");
