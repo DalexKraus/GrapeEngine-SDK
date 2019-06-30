@@ -49,7 +49,7 @@ public class DefaultResources {
             return SwingFXUtils.toFXImage(bufferedImage, null);
         }
         catch (IOException e) {
-            DialogHelper.showErrorDialog("Error", "Resource Error", "Unable to read resource '" + resourcePath + "'!");
+            System.err.println("Unable to read resource '" + resourcePath + "'!");
             e.printStackTrace();
         }
         return null;
