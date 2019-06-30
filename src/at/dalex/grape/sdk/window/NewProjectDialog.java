@@ -2,6 +2,7 @@ package at.dalex.grape.sdk.window;
 
 import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
+import at.dalex.grape.sdk.project.WindowSettings;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.grape.sdk.window.helper.NumberTextFieldFilter;
 import javafx.application.Platform;
@@ -16,13 +17,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jfxtras.styles.jmetro8.JMetro;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class represents the new project dialog.
+ */
 public class NewProjectDialog extends Stage implements Initializable {
 
     private Button browse_button;
@@ -47,7 +50,7 @@ public class NewProjectDialog extends Stage implements Initializable {
             this.create_button = (Button) dialogScene.lookup("#button_create");
             this.cancel_button = (Button) dialogScene.lookup("#button_cancel");
             browse_button.setOnAction(handler -> openFileBrowser(this, field_projectLocation));
-            create_button.setOnAction(handler -> createProject());
+            create_button.setOnAction(handler -> tryCreateProject());
             cancel_button.setOnAction(handler -> close());
 
             this.field_projectName = (TextField) dialogScene.lookup("#field_projectName");
@@ -91,15 +94,19 @@ public class NewProjectDialog extends Stage implements Initializable {
         initModality(Modality.APPLICATION_MODAL);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
+    /**
+     * Check if a textfield contains text
+     * @param textField The TextField to check on
+     * @return Whether or not the text field contains text
+     */
     private boolean containsText(TextField textField) {
         return textField != null && textField.getText().trim().length() > 0;
     }
 
+    /**
+     * Checks if a project can be created at the given location (which the user has entered).
+     * @return The status of the given location
+     */
     private PathStatus getGameLocationStatus() {
         if (!checkBox_defaultLocation.isSelected()) {
             if (containsText(field_projectLocation)) {
@@ -111,6 +118,9 @@ public class NewProjectDialog extends Stage implements Initializable {
         return PathStatus.PATH_VALID;
     }
 
+    /**
+     * @return Checks if every field is filled, otherwise the user shall not pass.
+     */
     private boolean validateFields() {
         return      containsText(field_projectName)
                 &&  containsText(field_windowTitle)
@@ -118,7 +128,10 @@ public class NewProjectDialog extends Stage implements Initializable {
                 &&  containsText(field_windowHeight);
     }
 
-    private void createProject() {
+    /**
+     * Try to create the project with the given information the user has entered.
+     */
+    private void tryCreateProject() {
         if (!validateFields()) {
             DialogHelper.showErrorDialog("Error", "Fields Empty", "Some fields are still empty,\nplease fill them.");
             return;
@@ -146,20 +159,21 @@ public class NewProjectDialog extends Stage implements Initializable {
                 return;
             }
 
-            //Create project
-            Project newProject = new Project(
-                    field_projectName.getText(),
-                    projectDirectory,
-                    field_windowTitle.getText(),
+            //Create WindowSettings and project instance
+            WindowSettings windowSettings = new WindowSettings(field_windowTitle.getText(),
                     Integer.parseInt(field_windowWidth.getText()),
                     Integer.parseInt(field_windowHeight.getText()),
                     checkBox_resizable.isSelected());
 
+            Project newProject = new Project(field_projectName.getText(), projectDirectory, windowSettings);
             ProjectUtil.openProject(newProject);
             close();
         }
     }
 
+    /**
+     * Opens a filebrowser and applys the selected path to the textfield
+     */
     private void openFileBrowser(Stage anchor, TextField pathField) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedFolder = directoryChooser.showDialog(anchor);
@@ -168,5 +182,11 @@ public class NewProjectDialog extends Stage implements Initializable {
         }
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) { }
+
+    /**
+     * This is used to determine the status of the project directory at creation time.
+     */
     private enum PathStatus { PATH_VALID, INVALID_DIR, EMPTY_GAME_LOC }
 }

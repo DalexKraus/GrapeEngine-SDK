@@ -3,36 +3,52 @@ package at.dalex.grape.sdk.window.filebrowser;
 import java.io.File;
 import java.util.HashMap;
 
+/**
+ * This class is used to modify which items should be displayed
+ * in the filebrowser.
+ */
 public class FileBrowserFilter {
-
 
     private static HashMap<File, FilterRule> fileRules = new HashMap<>();
     private static HashMap<String, FilterRule> extensionRules = new HashMap<>();
 
     /* Apply default rules here */
+    //TODO: Maybe load from a fixed json file in the editor's resource folder?
     static {
-
+        //Wow, such empty.
     }
 
-    public static void setFolderRule(File folder, FilterRule rule) {
-        if (folder.isDirectory()) {
-            setFileRule(folder, rule);
-        }
-    }
-
+    /**
+     * Applies a new rule for a file.
+     * @param file The file to apply the rule on
+     * @param rule The rule for the file
+     */
     public static void setFileRule(File file, FilterRule rule) {
         fileRules.put(file, rule);
     }
 
+    /**
+     * Removes a rule for a specific file
+     * @param folder The Folder on which any rules were applied
+     */
     public static void removeFileRule(File folder) {
         fileRules.remove(folder);
     }
 
+    /**
+     * Applies a rule only to a specific file extension.
+     * This is pretty useful to change the icon for a filetype.
+     * @param extension The file extension to getFilterStatus
+     * @param rule The rule for those file(s)
+     */
     public static void setExtensionRule(String extension, FilterRule rule) {
         extensionRules.put(extension, rule);
     }
 
-    public static FilterStatus filter(FilterRule rule) {
+    /**
+     * @return the {@link FilterStatus} for a specific rule.
+     */
+    public static FilterStatus getFilterStatus(FilterRule rule) {
         if (rule != null) {
             if (rule.getVisibility() == FilterRule.Visibility.HIDDEN)
                 return FilterStatus.APPLY_HIDE;
@@ -41,6 +57,9 @@ public class FileBrowserFilter {
         return FilterStatus.NO_MATCH;
     }
 
+    /**
+     * @return the {@link FilterStatus} for the given file
+     */
     public static FilterRule getRuleFor(File toFilter) {
         //Check file rules first
         for (File file : fileRules.keySet()) {
@@ -57,5 +76,8 @@ public class FileBrowserFilter {
         return null;
     }
 
+    /**
+     * What should be done with the file or folder?
+     */
     enum FilterStatus { NO_MATCH, APPLY_HIDE, APPLY_CUSTOMS }
 }

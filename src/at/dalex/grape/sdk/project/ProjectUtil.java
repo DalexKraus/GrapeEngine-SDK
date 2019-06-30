@@ -65,7 +65,7 @@ public class ProjectUtil {
         //Change the current project
         currentProject = project;
 
-        //Update fileBrowser filter rule for sdk folder
+        //Update fileBrowser getFilterStatus rule for sdk folder
         FileBrowserFilter.setFileRule(projectFile.getParentFile(), new FilterRule(FilterRule.Visibility.HIDDEN));
 
         //Update file browser

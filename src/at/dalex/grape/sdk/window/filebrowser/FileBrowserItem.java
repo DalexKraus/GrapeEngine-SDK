@@ -1,6 +1,5 @@
 package at.dalex.grape.sdk.window.filebrowser;
 
-import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.resource.ResouceLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,10 +16,19 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
     private boolean isFirstTimeChildren = true;
     private boolean isFirstTimeLeaf = true;
 
+    /**
+     * Creates a new {@link FileBrowserItem} with an icon
+     * @param file The file that represents this item
+     * @param graphic The icon which should be displayed.
+     */
     public FileBrowserItem(BrowserFile file, Node graphic) {
         super(new BrowserFile(file.getPath()), graphic);
     }
 
+    /**
+     * Creates a new {@link FileBrowserItem}.
+     * @param file The file that represents this item
+     */
     public FileBrowserItem(BrowserFile file) {
         super(new BrowserFile(file.getPath()));
     }
@@ -47,9 +55,9 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
                 Image itemIcon = ResouceLoader.get(
                         childFile.isDirectory() ? "image.folder.black16" : "image.file.generic.black16", Image.class);
 
-                //Check filter before adding next item
+                //Check getFilterStatus before adding next item
                 FilterRule filterRule = FileBrowserFilter.getRuleFor(childFile);
-                FileBrowserFilter.FilterStatus filterStatus = FileBrowserFilter.filter(filterRule);
+                FileBrowserFilter.FilterStatus filterStatus = FileBrowserFilter.getFilterStatus(filterRule);
 
                 //Skip child if it should be hidden
                 if (filterStatus == FileBrowserFilter.FilterStatus.APPLY_HIDE)

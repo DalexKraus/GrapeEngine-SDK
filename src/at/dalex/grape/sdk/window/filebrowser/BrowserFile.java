@@ -3,6 +3,10 @@ package at.dalex.grape.sdk.window.filebrowser;
 import java.io.File;
 import java.net.URI;
 
+/**
+ * This class contains information for the
+ * {@link FileBrowserItem} about the path
+ */
 public class BrowserFile extends File {
 
     private String rootName;
