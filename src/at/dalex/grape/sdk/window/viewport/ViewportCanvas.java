@@ -16,24 +16,28 @@ public class ViewportCanvas extends Canvas implements Runnable {
         new Thread(this, "Viewport Update/Draw").start();
     }
 
-    private void update() { }
-
+    private double x = 0;
     private void draw() {
-        double width = getWidth();
-        double height = getHeight();
-
         GraphicsContext g = getGraphicsContext2D();
-        g.setFill(Color.BLACK);
-        g.fillRect(0, 0, width, height);
+        g.clearRect(0, 0, getWidth(), getHeight());
 
-        g.fillText("Canvas Render Test",  128, 64);
+        g.setFill(Color.RED);
+        g.fillRect(0, 0, x, getHeight());
+
+        g.setFill(Color.BLACK);
+        g.fillText("Canvas Render Test", 64, 64);
     }
 
     @Override
     public void run() {
         while (true) {
-            update();
             draw();
+            x += 8D;
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -54,12 +58,12 @@ public class ViewportCanvas extends Canvas implements Runnable {
 
     @Override
     public double minWidth(double height) {
-        return 64;
+        return getWidth();
     }
 
     @Override
     public double minHeight(double width) {
-        return 64;
+        return getHeight();
     }
 
     @Override

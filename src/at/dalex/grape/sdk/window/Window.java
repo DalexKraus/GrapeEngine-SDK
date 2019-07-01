@@ -38,6 +38,11 @@ public class Window extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.setResizable(true);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(handler -> {
+            System.out.println("Exiting ...");
+            System.exit(0);
+        });
     }
 
     public static Scene getMainScene() {
