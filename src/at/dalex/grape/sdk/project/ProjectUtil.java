@@ -71,17 +71,18 @@ public class ProjectUtil {
         FileBrowserFilter.setFileRule(projectFile.getParentFile(), new FilterRule(FilterRule.Visibility.HIDDEN));
 
         //Update file browser
-        //TODO: Make this cleaner
         SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
+        centerSplitPane.getItems().clear();
+
+        /* File Browser*/
         ImageView rootImage = new ImageView(ResouceLoader.get("image.folder.project", Image.class));
         FileBrowserItem rootItem = new FileBrowserItem(new BrowserFile(project.getProjectDirectory().getPath()), rootImage);
-        centerSplitPane.getItems().clear();
         TitledPane projectPane = new TitledPane("Project", new TreeView<>(rootItem));
         projectPane.setPrefHeight(Double.MAX_VALUE);
         centerSplitPane.getItems().add(projectPane);
         centerSplitPane.setDividerPosition(0, 0.25f);
 
-        //Create viewport
+        /* Viewport */
         centerSplitPane.getItems().add(ViewportManager.getViewportCanvas());
 
         //Project opening process succeeded.

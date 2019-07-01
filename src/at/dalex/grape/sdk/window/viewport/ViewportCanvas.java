@@ -16,9 +16,7 @@ public class ViewportCanvas extends Canvas implements Runnable {
         new Thread(this, "Viewport Update/Draw").start();
     }
 
-    private void update() {
-
-    }
+    private void update() { }
 
     private void draw() {
         double width = getWidth();
