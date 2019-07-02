@@ -56,7 +56,7 @@ public class ProjectUtil {
                 return false;
         }
 
-        //Create project's sub directories if non existent
+        //Create project's sub directories if not present
         createDefaultSubDirectories(project);
 
         //Create project file if not present
