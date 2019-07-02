@@ -9,6 +9,10 @@ public class ViewportManager {
 
     public static void init() {
         viewportCanvas = new ViewportCanvas();
+        viewportCanvas.setFocusTraversable(true);
+        viewportCanvas.setOnKeyPressed(listener -> {
+            System.out.println("hey");
+        });
         viewportCanvas.registerTickCallback(new GridRenderer());
     }
 
