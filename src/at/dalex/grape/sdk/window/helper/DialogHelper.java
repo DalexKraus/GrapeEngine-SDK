@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.window.helper;
 
+import at.dalex.grape.sdk.Main;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -9,6 +10,18 @@ import java.util.Optional;
  * This class is used to create dialogs. Fast.
  */
 public class DialogHelper {
+
+    /**
+     * Shows a new information dialog.
+     *
+     * @param title The window title
+     * @param header The title of the information
+     * @param message The main text
+     * @return Pressed button type
+     */
+    public static Optional<ButtonType> showInformationDialog(String title, String header, String message) {
+        return createDialog(Alert.AlertType.INFORMATION, title, header, message).showAndWait();
+    }
 
     /**
      * Shows a new error dialog.
@@ -49,6 +62,11 @@ public class DialogHelper {
         alertDialog.setTitle(title);
         alertDialog.setHeaderText(header);
         alertDialog.setContentText(message);
+
+        //Apply dark theme
+        if (Main.useDarkTheme())
+            alertDialog.getDialogPane().getStylesheets().add("/resources/javafx/theme_dark.css");
+
         return alertDialog;
     }
 }
