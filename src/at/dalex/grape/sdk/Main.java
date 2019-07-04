@@ -10,7 +10,8 @@ import java.io.File;
 public class Main {
 
     private static Main instance;
-    public static final double VERSION = 1.3D;
+    private static boolean useDarkTheme = true;
+    public  static final double VERSION = 1.3D;
 
     public Main(String[] args) {
         instance = this;
@@ -25,6 +26,10 @@ public class Main {
 
         //Launch main frame
         Application.launch(Window.class, args);
+    }
+
+    public static boolean useDarkTheme() {
+        return useDarkTheme;
     }
 
     public static Main getInstance() {
