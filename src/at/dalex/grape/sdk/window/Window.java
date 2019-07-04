@@ -19,6 +19,8 @@ public class Window extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/javafx/mainwindow.fxml"));
+        root.getStylesheets().add("/resources/javafx/theme_dark.css");
+
         mainScene = new Scene(root, 1280, 720);
         stage = primaryStage;
 

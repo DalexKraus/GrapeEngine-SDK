@@ -2,19 +2,11 @@
     /*-fx-background-size: 1280 720;*/
     -fx-background-radius: 3 3 3 3;
     -fx-border-radius: 3 3 3 3;
-    -fx-background-color: #FFFFFF;
 }
 
 #no_project_label {
     -fx-pref-width: 90000px;
     -fx-max-width: 90000px;
-}
-
-/*
- * ScrollBar
- */
-.scroll-bar, .tree-view {
-    -fx-border-color:derive(gray, 80%);
 }
 
 .scroll-bar:horizontal,
@@ -25,13 +17,12 @@
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
     -fx-background-color: transparent;
-    -fx-border-color:derive(gray, 80%);
     -fx-background-radius: 0em;
 }
 
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
-    -fx-background-color:derive(black,90%);
+    -fx-background-color: -fx-base;
     -fx-background-insets: 0, 0, 0;
     -fx-background-radius: 0em;
 }
