@@ -21,7 +21,7 @@ public class Window extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/javafx/mainwindow.fxml"));
 
-        //Apply dark theme
+        //Apply dark theme for this window
         if (Main.useDarkTheme())
             root.getStylesheets().add("/resources/javafx/theme_dark.css");
 
