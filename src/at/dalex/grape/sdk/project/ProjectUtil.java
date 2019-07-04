@@ -5,15 +5,14 @@ import at.dalex.grape.sdk.resource.ResouceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.*;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
-import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.grape.sdk.window.viewport.ViewportManager;
+import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.JSONUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -83,7 +82,9 @@ public class ProjectUtil {
         centerSplitPane.setDividerPosition(0, 0.25f);
 
         /* Viewport */
-        centerSplitPane.getItems().add(ViewportManager.getViewportCanvas());
+        TitledPane viewportPanel = new ViewportPanel();
+        viewportPanel.setPrefHeight(Double.MAX_VALUE);
+        centerSplitPane.getItems().add(viewportPanel);
 
         //Project opening process succeeded.
         return true;
