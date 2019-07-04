@@ -6,6 +6,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.awt.*;
+
 public class GridRenderer implements ITickCallback {
 
     private int viewportWidth;
@@ -28,13 +30,14 @@ public class GridRenderer implements ITickCallback {
         g.setStroke(LINE_COLOR);
 
         float scale = ViewportManager.getViewportScale();
+        Point origin = ViewportManager.getViewportOrigin();
 
         //Horizontal lines
         for (int y = 0; y <= viewportHeight / (tileSize * scale); y++)
-            g.strokeLine(0, y * tileSize * scale + 0.5f , viewportWidth, y * tileSize * scale + 0.5f);
+            g.strokeLine(0, origin.y + y * tileSize * scale + 0.5f , viewportWidth, origin.y + y * tileSize * scale + 0.5f);
 
         //Vertical lines
         for (int x = 0; x <= viewportWidth / (tileSize * scale); x++)
-            g.strokeLine(x * tileSize * scale + 0.5f, 0, x * tileSize * scale + 0.5f, viewportHeight);
+            g.strokeLine(origin.x + x * tileSize * scale + 0.5f, 0, origin.x + x * tileSize * scale + 0.5f, viewportHeight);
     }
 }

@@ -1,11 +1,13 @@
 package at.dalex.grape.sdk.window.viewport;
 
 import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
+import java.awt.Point;
 
 public class ViewportManager {
 
     private static ViewportCanvas viewportCanvas;
     private static float viewportScale = 0.25f;
+    private static Point viewportOrigin = new Point(0, 0);
 
     public static final float MIN_SCALE = 0.05f;
     public static final float MAX_SCALE = 12.0f;
@@ -17,6 +19,14 @@ public class ViewportManager {
 
     public static ViewportCanvas getViewportCanvas() {
         return viewportCanvas;
+    }
+
+    public static Point getViewportOrigin() {
+        return viewportOrigin;
+    }
+
+    public static void setViewportOrigin(int x, int y) {
+        viewportOrigin.setLocation(x, y);
     }
 
     public static float getViewportScale() {
