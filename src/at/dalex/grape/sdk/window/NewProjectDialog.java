@@ -5,6 +5,7 @@ import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.project.WindowSettings;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.grape.sdk.window.helper.NumberTextFieldFilter;
+import at.dalex.util.ThemeUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -45,6 +46,7 @@ public class NewProjectDialog extends Stage implements Initializable {
 
         try {
             Parent root = fxmlLoader.load();
+            ThemeUtil.applyThemeToParent(root);
             Scene dialogScene = new Scene(root, 450, 445);
             this.browse_button = (Button) dialogScene.lookup("#button_browse");
             this.create_button = (Button) dialogScene.lookup("#button_create");

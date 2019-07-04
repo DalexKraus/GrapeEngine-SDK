@@ -1,9 +1,9 @@
 package at.dalex.grape.sdk.window;
 
-import at.dalex.grape.sdk.Main;
 import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import at.dalex.grape.sdk.window.viewport.ViewportManager;
+import at.dalex.util.ThemeUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,8 +22,7 @@ public class Window extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/javafx/mainwindow.fxml"));
 
         //Apply dark theme for this window
-        if (Main.useDarkTheme())
-            root.getStylesheets().add("/resources/javafx/theme_dark.css");
+        ThemeUtil.applyThemeToParent(root);
 
         mainScene = new Scene(root, 1280, 720);
         stage = primaryStage;
