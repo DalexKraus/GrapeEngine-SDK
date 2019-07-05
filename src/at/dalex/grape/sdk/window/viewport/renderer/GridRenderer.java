@@ -53,6 +53,11 @@ public class GridRenderer implements ITickCallback {
             g.strokeLine(xPos, 0, xPos, viewportHeight);
         }
 
+        //Draw colored axes
+        g.setStroke(Color.RED);
+        g.strokeLine(0, origin.y * scale, viewportWidth, origin.y * scale);
+        g.setStroke(Color.BLUE);
+        g.strokeLine(origin.x * scale, 0, origin.x * scale, viewportHeight);
     }
 
     /**
