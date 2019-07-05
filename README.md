@@ -38,4 +38,10 @@ on this project as frequently as possible, I am unable to give any support at th
     - Node Pipeline for constructing Effects
     - Kernel Support
     - _Possible_ Shading pipeline
+
+## Why dynamic?
+Well, there are many things that can be considered dynamic in a engine, 
+but the term _"dynamic"_ mostly represents the feature to dynamically build together components,
+even at runtime. Although this feature is not mentioned on the list, I am really looking forward implementing it.
+More details about that topic coming soon.
      
