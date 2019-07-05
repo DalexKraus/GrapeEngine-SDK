@@ -6,11 +6,20 @@ import javafx.scene.input.ScrollEvent;
 
 import java.awt.Point;
 
+/**
+ * This class derives from {@link TitledPane}, containing all
+ * vieport components, such as the {@link ViewportCanvas}.
+ */
 public class ViewportPanel extends TitledPane {
 
+    /* Title of the tab in the window */
     private static final String TAB_TITLE = "Viewport";
-    private static Point dragOffset = new Point(0, 0);
+    /* The 'vector' from the component's origin to the mouse*/
+    private static Point gridDragOffset = new Point(0, 0);
 
+    /**
+     * Creates a new {@link ViewportPanel}.
+     */
     public ViewportPanel() {
         super(TAB_TITLE, ViewportManager.getViewportCanvas());
 
@@ -20,15 +29,26 @@ public class ViewportPanel extends TitledPane {
         setOnScroll(this::gridScaleEvent);
     }
 
+    /**
+     * Callback for mouse clicks.
+     * This is used to set the initial drag position to calculate
+     * the {@link ViewportPanel#gridDragOffset} vector from.
+     * @param e The MouseEvent
+     */
     private void mousePressedEvent(MouseEvent e) {
         Point previousGridOrigin = ViewportManager.getViewportOrigin();
-        dragOffset.x = (int) (previousGridOrigin.getX() - e.getX());
-        dragOffset.y = (int) (previousGridOrigin.getY() - e.getY());
+        gridDragOffset.x = (int) (previousGridOrigin.getX() - e.getX());
+        gridDragOffset.y = (int) (previousGridOrigin.getY() - e.getY());
     }
 
+    /**
+     * Callback for mouse dragging.
+     * This is used to calculate the new position of the dragged component.
+     * @param e The MouseEvent
+     */
     private void mouseDragEvent(MouseEvent e) {
-        int newGridOriginX = (int) (e.getX() + dragOffset.x);
-        int newGridOriginY = (int) (e.getY() + dragOffset.y);
+        int newGridOriginX = (int) (e.getX() + gridDragOffset.x);
+        int newGridOriginY = (int) (e.getY() + gridDragOffset.y);
         ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
     }
 
@@ -42,7 +62,7 @@ public class ViewportPanel extends TitledPane {
         float speedUp = ViewportManager.MAX_SCALE / previousScale;
         speedUp = 240.0f / speedUp;
 
-        float scale = previousScale + (float) (e.getDeltaY() / 50.0f * ((speedUp / 240.0f)));
+        float scale = previousScale + (float) (e.getDeltaY() / 75.0f * (speedUp / 240.0f));
         ViewportManager.setViewportScale(scale);
     }
 }
