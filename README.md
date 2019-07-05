@@ -3,6 +3,39 @@
 *Software Development Kit* for the **GrapeEngine**, a dynamic 2D game-engine written in Java.
 This engine makes use of OpenGL and GLFW using LWJGL (https://www.lwjgl.org/).
 
----
+
+## Important:
 Please note, that this is only a spare time project for me, and although I try to work
 on this project as frequently as possible, I am unable to give any support at the moment.
+
+## (Planned) Features:
+(This list is only a rough sketch and does not contain everything)
+
+  * Easy to use Graphics-Utility
+  * Tilemaps
+    - Layer Support
+    - Chunk System (Allows for Infinite Maps and Dynamic loading)
+    - Entities
+    - Multiple Collision Layers
+    - **Recursive** Templates and Prefabs
+    - Instanced Rendering (Performance)
+  * Lighting
+    - Baked Lightmaps (static Lighting)
+    - Dynamic Lighting
+    - Colored Lights
+    - Directional Lighting (e.g. Flashlight)
+    - Shadow Maps
+  * Tile-Based Animations
+    - Uses Atlas as source
+    - Repeatable
+    - Animation Editor
+    - Speed Manipulation (also works in reverse)
+  * Particles
+    - Animation as source
+    - Particle Systems (Forms and Timed Sequences)
+    - Instanced Rendering (Performance)
+  * Post Processing:
+    - Node Pipeline for constructing Effects
+    - Kernel Support
+    - _Possible_ Shading pipeline
+     
