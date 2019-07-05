@@ -9,7 +9,7 @@ import java.awt.Point;
 public class ViewportManager {
 
     private static ViewportCanvas viewportCanvas;
-    private static float viewportScale = 0.25f;
+    private static float viewportScale = 1.0f;
     private static Point viewportOrigin = new Point(0, 0);
 
     /* Boundaries for scaling */
