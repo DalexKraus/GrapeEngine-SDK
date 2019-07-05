@@ -6,6 +6,9 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents the actual canvas where stuff gets drawn.
+ */
 public class ViewportCanvas extends Canvas {
 
     private final int MAX_WIDTH = 8192;
@@ -17,6 +20,9 @@ public class ViewportCanvas extends Canvas {
     public ViewportCanvas() {
         this.graphicsContext = getGraphicsContext2D();
 
+        /**
+         * Animation Loop
+         */
         new AnimationTimer() {
             final long startTime = System.nanoTime();
             double lastLoopDistance = -1;
@@ -33,6 +39,12 @@ public class ViewportCanvas extends Canvas {
         }.start();
     }
 
+    /**
+     * Draws everything needed onto the canvas
+     * by calling each registered {@link ITickCallback}.
+     *
+     * @param deltaTime The time it took the last frame to render.
+     */
     private void draw(double deltaTime) {
         //Clear canvas
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
@@ -42,11 +54,22 @@ public class ViewportCanvas extends Canvas {
         }
     }
 
+    /**
+     * Register a new {@link ITickCallback} which
+     * gets invoked when a new frame gets to be drawn.
+     *
+     * @param callback The renderer which implements the {@link ITickCallback} interface.
+     */
     public void registerTickCallback(ITickCallback callback) {
         if (!tickCallbacks.contains(callback))
             tickCallbacks.add(callback);
     }
 
+    /**
+     * Unregisters a previously registered {@link ITickCallback}.
+     *
+     * @param callback The {@link ITickCallback} to unregister
+     */
     public void unregisterTickCallback(ITickCallback callback) {
         tickCallbacks.remove(callback);
     }
@@ -87,6 +110,9 @@ public class ViewportCanvas extends Canvas {
         super.setHeight(height);
     }
 
+    /**
+     * @return The {@link GraphicsContext} of this canvas.
+     */
     public GraphicsContext getGraphicsContext() {
         return this.graphicsContext;
     }
