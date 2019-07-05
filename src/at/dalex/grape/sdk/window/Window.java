@@ -2,7 +2,6 @@ package at.dalex.grape.sdk.window;
 
 import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
-import at.dalex.grape.sdk.window.viewport.ViewportManager;
 import at.dalex.util.ThemeUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,9 +25,6 @@ public class Window extends Application {
 
         mainScene = new Scene(root, 1280, 720);
         stage = primaryStage;
-
-        //Initialize ViewportManager
-        ViewportManager.init();
 
         /* *** MenuBar *** */
         MenuBar menuBar = (MenuBar) mainScene.lookup("#menu_bar");

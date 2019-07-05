@@ -1,43 +1,44 @@
 package at.dalex.grape.sdk.window.viewport;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 
-public class ViewportCanvas extends Canvas implements Runnable {
+public class ViewportCanvas extends Canvas {
 
     private final int MAX_WIDTH = 8192;
     private final int MAX_HEIGHT = 4608;
 
-    private Thread updateThread;
     private GraphicsContext graphicsContext;
     private ArrayList<ITickCallback> tickCallbacks = new ArrayList<>();
 
     public ViewportCanvas() {
         this.graphicsContext = getGraphicsContext2D();
-        //Update the canvas in a different thread to increase performance
-        new Thread(this, "Viewport Update/Draw").start();
+
+        new AnimationTimer() {
+            final long startTime = System.nanoTime();
+            double lastLoopDistance = -1;
+
+            @Override
+            public void handle(long currentTime) {
+                double timeDistance = (currentTime - startTime) / 1000000000.0f;
+                double deltaTime = 0.0f;
+                if (lastLoopDistance > 0)
+                    deltaTime = timeDistance - lastLoopDistance;
+                lastLoopDistance = timeDistance;
+                draw(deltaTime);
+            }
+        }.start();
     }
 
-    private void draw() {
+    private void draw(double deltaTime) {
         //Clear canvas
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
         for (ITickCallback callback : this.tickCallbacks) {
-            callback.update(0.0D);
+            callback.update(deltaTime);
             callback.draw(getGraphicsContext());
-        }
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            draw();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 

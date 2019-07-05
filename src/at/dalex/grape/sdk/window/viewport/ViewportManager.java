@@ -12,12 +12,14 @@ public class ViewportManager {
     public static final float MIN_SCALE = 0.05f;
     public static final float MAX_SCALE = 12.0f;
 
-    public static void init() {
+    private static void init() {
         viewportCanvas = new ViewportCanvas();
         viewportCanvas.registerTickCallback(new GridRenderer());
     }
 
     public static ViewportCanvas getViewportCanvas() {
+        if (viewportCanvas == null)
+            init();
         return viewportCanvas;
     }
 

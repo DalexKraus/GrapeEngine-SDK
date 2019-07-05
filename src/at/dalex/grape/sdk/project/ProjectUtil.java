@@ -5,7 +5,6 @@ import at.dalex.grape.sdk.resource.ResouceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.*;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
-import at.dalex.grape.sdk.window.viewport.ViewportManager;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.JSONUtil;
 import javafx.geometry.Pos;
