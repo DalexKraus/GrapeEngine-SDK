@@ -1,7 +1,7 @@
 package at.dalex.grape.sdk.window.viewport;
 
 import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
-import java.awt.Point;
+import at.dalex.util.math.Vector2f;
 
 /**
  * This class is used to manage the viewport.
@@ -10,7 +10,7 @@ public class ViewportManager {
 
     private static ViewportCanvas viewportCanvas;
     private static float viewportScale = 1.0f;
-    private static Point viewportOrigin = new Point(0, 0);
+    private static Vector2f viewportOrigin = new Vector2f(480, 480);
 
     /* Boundaries for scaling */
     public static final float MIN_SCALE = 0.05f;
@@ -40,7 +40,7 @@ public class ViewportManager {
     /**
      * @return The origin of the viewport. (or the world)
      */
-    public static Point getViewportOrigin() {
+    public static Vector2f getViewportOrigin() {
         return viewportOrigin;
     }
 
@@ -51,8 +51,16 @@ public class ViewportManager {
      * @param x The x-coordinate of the origin
      * @param y The y-coordinate of the origin
      */
-    public static void setViewportOrigin(int x, int y) {
-        viewportOrigin.setLocation(x, y);
+    public static void setViewportOrigin(float x, float y) {
+        viewportOrigin.set(x, y);
+    }
+
+    /**
+     * Sets the origin of the viewport.
+     * @param origin The vector representing the origin
+     */
+    public static void setViewportOrigin(Vector2f origin) {
+        viewportOrigin = origin;
     }
 
     /**

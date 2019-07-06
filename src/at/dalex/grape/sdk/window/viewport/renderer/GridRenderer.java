@@ -2,6 +2,7 @@ package at.dalex.grape.sdk.window.viewport.renderer;
 
 import at.dalex.grape.sdk.window.viewport.ITickCallback;
 import at.dalex.grape.sdk.window.viewport.ViewportManager;
+import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -34,12 +35,10 @@ public class GridRenderer implements ITickCallback {
         g.setStroke(LINE_COLOR);
 
         float scale = ViewportManager.getViewportScale();
-        Point origin = ViewportManager.getViewportOrigin();
+        Vector2f origin = ViewportManager.getViewportOrigin();
 
-        System.out.println("Y: " + origin.y);
-
-        double overlapDistanceX = calculateAxisOverlapDistance((float) origin.getX());
-        double overlapDistanceY = calculateAxisOverlapDistance((float) origin.getY());
+        double overlapDistanceX = calculateAxisOverlapDistance(origin.getX());
+        double overlapDistanceY = calculateAxisOverlapDistance(origin.getY());
 
         //Horizontal lines
         for (int y = 0; y <= viewportHeight / (tileSize * scale); y++) {
@@ -56,7 +55,7 @@ public class GridRenderer implements ITickCallback {
         //Draw colored axes
         g.setStroke(Color.RED);
         g.strokeLine(0, origin.y * scale, viewportWidth, origin.y * scale);
-        g.setStroke(Color.BLUE);
+        g.setStroke(Color.LIME);
         g.strokeLine(origin.x * scale, 0, origin.x * scale, viewportHeight);
     }
 

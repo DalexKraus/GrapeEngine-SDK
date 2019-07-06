@@ -1,21 +1,24 @@
 package at.dalex.grape.sdk.window.viewport;
 
+import at.dalex.util.math.Vector2f;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
-import java.awt.Point;
+import static at.dalex.grape.sdk.window.viewport.ViewportManager.MIN_SCALE;
+import static at.dalex.grape.sdk.window.viewport.ViewportManager.MAX_SCALE;
 
 /**
  * This class derives from {@link TitledPane}, containing all
- * vieport components, such as the {@link ViewportCanvas}.
+ * viewport components, such as the {@link ViewportCanvas}.
  */
 public class ViewportPanel extends TitledPane {
 
     /* Title of the tab in the window */
     private static final String TAB_TITLE = "Viewport";
     /* The 'vector' from the component's origin to the mouse*/
-    private static Point gridDragOffset = new Point(0, 0);
+    private static Vector2f gridDragOffset = new Vector2f();
+    private static Vector2f pivotPoint = new Vector2f();
 
     /**
      * Creates a new {@link ViewportPanel}.
@@ -23,9 +26,12 @@ public class ViewportPanel extends TitledPane {
     public ViewportPanel() {
         super(TAB_TITLE, ViewportManager.getViewportCanvas());
 
-        //Set event listeners
+        //Drag listeners
         setOnMousePressed(this::mousePressedEvent);
         setOnMouseDragged(this::mouseDragEvent);
+
+        //Scroll listeners
+        setOnMouseMoved(this::mouseMoveEvent);
         setOnScroll(this::gridScaleEvent);
     }
 
@@ -36,22 +42,41 @@ public class ViewportPanel extends TitledPane {
      * @param e The MouseEvent
      */
     private void mousePressedEvent(MouseEvent e) {
-        Point previousGridOrigin = ViewportManager.getViewportOrigin();
-        float scale = ViewportManager.getViewportScale();
-        gridDragOffset.x = (int) (previousGridOrigin.getX() - e.getX() / scale);
-        gridDragOffset.y = (int) (previousGridOrigin.getY() - e.getY() / scale);
+        gridDragOffset = translateMouseToWorldCoordinates(e);
+    }
+
+    /**
+     * Callback for mouse movement.
+     * This is used to
+     * @param e
+     */
+    private void mouseMoveEvent(MouseEvent e) {
+        pivotPoint = translateMouseToWorldCoordinates(e);
     }
 
     /**
      * Callback for mouse dragging.
-     * This is used to calculate the new position of the dragged component.
+     * This is used to calculate the new position of the world's origin.
      * @param e The MouseEvent
      */
     private void mouseDragEvent(MouseEvent e) {
         float scale = ViewportManager.getViewportScale();
-        int newGridOriginX = (int) (e.getX() / scale + gridDragOffset.x);
-        int newGridOriginY = (int) (e.getY() / scale + gridDragOffset.y);
+        float newGridOriginX = (float) (e.getX() / scale + gridDragOffset.x);
+        float newGridOriginY = (float) (e.getY() / scale + gridDragOffset.y);
         ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
+    }
+
+    /**
+     * Translates the screen coordinates of the mous to world coordinates.
+     * @param e The mouse event
+     * @return The vector representing the position of the mous in the world.
+     */
+    private Vector2f translateMouseToWorldCoordinates(MouseEvent e) {
+        Vector2f previousGridOrigin = ViewportManager.getViewportOrigin();
+        float scale = ViewportManager.getViewportScale();
+        float xPos = (float) (previousGridOrigin.getX() - e.getX() / scale);
+        float yPos = (float) (previousGridOrigin.getY() - (e.getY() - getHeaderHeight()) / scale);
+        return new Vector2f(xPos, yPos);
     }
 
     /**
@@ -60,11 +85,21 @@ public class ViewportPanel extends TitledPane {
      */
     private void gridScaleEvent(ScrollEvent e) {
         float previousScale = ViewportManager.getViewportScale();
+        double scale = previousScale * Math.pow(1.00525, e.getDeltaY());
 
-        float speedUp = ViewportManager.MAX_SCALE / previousScale;
-        speedUp = 240.0f / speedUp;
+        //Clamp scale in-between boundaries
+        scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
+        ViewportManager.setViewportScale((float) scale);
 
-        float scale = previousScale + (float) (e.getDeltaY() / 75.0f * (speedUp / 240.0f));
-        ViewportManager.setViewportScale(scale);
+        float newGridOriginX = (float) (e.getX() / scale + pivotPoint.x);
+        float newGridOriginY = (float) ((e.getY() - getHeaderHeight()) / scale + pivotPoint.y);
+        ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
+    }
+
+    /**
+     * @return the size (the height) of the header of the pane.
+     */
+    public double getHeaderHeight() {
+        return getHeight() - ViewportManager.getViewportCanvas().getHeight();
     }
 }

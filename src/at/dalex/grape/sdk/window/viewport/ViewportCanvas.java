@@ -40,6 +40,13 @@ public class ViewportCanvas extends Canvas {
     }
 
     /**
+     * Centers the world's origin
+     */
+    public void centerOrigin() {
+        ViewportManager.setViewportOrigin((int) (getWidth() / 2.0f), (int) (getHeight() / 2.0f));
+    }
+
+    /**
      * Draws everything needed onto the canvas
      * by calling each registered {@link ITickCallback}.
      *
