@@ -1,4 +1,4 @@
-package at.dalex.grape.sdk.window;
+package at.dalex.grape.sdk.window.dialog;
 
 import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
