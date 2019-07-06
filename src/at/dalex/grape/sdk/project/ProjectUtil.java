@@ -166,11 +166,11 @@ public class ProjectUtil {
      * Reads a JSON-File, which contains information about a project.
      *
      * @param projectDirectory The root directory of the project
-     * @param projectFile The JSON-File which contains the project information
      * @return The read project if successful
      */
-    public static Project readProjectFile(File projectDirectory, File projectFile) {
+    public static Project readProjectFile(File projectDirectory) {
         JSONParser parser = new JSONParser();
+        File projectFile = new File(projectDirectory.getAbsolutePath() + "/.sdk/project.json");
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(projectFile));
             String projectName = (String) root.get("projectName");
