@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.window;
 
+import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import at.dalex.util.ThemeUtil;
@@ -10,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class Window extends Application {
 
@@ -44,6 +47,9 @@ public class Window extends Application {
             System.out.println("Exiting ...");
             System.exit(0);
         });
+
+        Project proj = ProjectUtil.readProjectFile(new File(ProjectUtil.getDefaultProjectDirectory() + "/TestGame"));
+        ProjectUtil.openProject(proj);
     }
 
     public static Scene getMainScene() {

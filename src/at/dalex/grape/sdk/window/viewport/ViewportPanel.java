@@ -66,17 +66,21 @@ public class ViewportPanel extends TitledPane {
         ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
     }
 
+    public Vector2f translateMouseToWorldCoordinates(double mouseX, double mouseY) {
+        Vector2f previousGridOrigin = ViewportManager.getViewportOrigin();
+        float scale = ViewportManager.getViewportScale();
+        float xPos = (float) (previousGridOrigin.getX() - mouseX / scale);
+        float yPos = (float) (previousGridOrigin.getY() - (mouseY - getHeaderHeight()) / scale);
+        return new Vector2f(xPos, yPos);
+    }
+
     /**
      * Translates the screen coordinates of the mous to world coordinates.
      * @param e The mouse event
      * @return The vector representing the position of the mous in the world.
      */
-    private Vector2f translateMouseToWorldCoordinates(MouseEvent e) {
-        Vector2f previousGridOrigin = ViewportManager.getViewportOrigin();
-        float scale = ViewportManager.getViewportScale();
-        float xPos = (float) (previousGridOrigin.getX() - e.getX() / scale);
-        float yPos = (float) (previousGridOrigin.getY() - (e.getY() - getHeaderHeight()) / scale);
-        return new Vector2f(xPos, yPos);
+    public Vector2f translateMouseToWorldCoordinates(MouseEvent e) {
+        return translateMouseToWorldCoordinates(e.getX(), e.getY());
     }
 
     /**
