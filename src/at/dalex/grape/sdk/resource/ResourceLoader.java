@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * This class functions as "storage" for objects (in this case resources)
  */
-public class ResouceLoader {
+public class ResourceLoader {
 
     //The 'storage'
     private static HashMap<String, Object> storage = new HashMap<String, Object>();

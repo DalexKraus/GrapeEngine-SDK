@@ -1,7 +1,6 @@
 package at.dalex.grape.sdk.resource;
 
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
-import at.dalex.grape.sdk.window.helper.DialogHelper;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
@@ -29,12 +28,19 @@ public class DefaultResources {
 
         //Images
         /* Folders */
-        ResouceLoader.store(loadImage("resources/images/folder_black32x32.png"), "image.folder.black32");
-        ResouceLoader.store(loadImage("resources/images/folder_black16x16.png"), "image.folder.black16");
-        ResouceLoader.store(loadImage("resources/images/project_icon.png"), "image.folder.project");
+        ResourceLoader.store(loadImage("resources/images/folder_black32x32.png"), "image.folder.black32");
+        ResourceLoader.store(loadImage("resources/images/folder_black16x16.png"), "image.folder.black16");
+        ResourceLoader.store(loadImage("resources/images/project_icon.png"), "image.folder.project");
 
         /* Files */
-        ResouceLoader.store(loadImage("resources/images/file_black16x16.png"), "image.file.generic.black16");
+        ResourceLoader.store(loadImage("resources/images/map_icon.png"), "image.file.map");
+        ResourceLoader.store(loadImage("resources/images/lua_icon.png"), "image.file.lua");
+
+        /* Icons */
+        ResourceLoader.store(loadImage("resources/images/map.png"), "image.icon.map");
+
+        /* Files */
+        ResourceLoader.store(loadImage("resources/images/file_black16x16.png"), "image.file.generic.black16");
     }
 
     /**

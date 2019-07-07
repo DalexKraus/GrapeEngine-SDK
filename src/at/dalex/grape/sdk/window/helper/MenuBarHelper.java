@@ -1,10 +1,9 @@
 package at.dalex.grape.sdk.window.helper;
 
 import at.dalex.grape.sdk.window.Window;
-import at.dalex.grape.sdk.window.listener.CloseProjectListener;
-import at.dalex.grape.sdk.window.listener.HelpAboutListener;
-import at.dalex.grape.sdk.window.listener.NewProjectListener;
-import at.dalex.grape.sdk.window.listener.OpenProjectListener;
+import at.dalex.grape.sdk.window.dialog.NewMapDialog;
+import at.dalex.grape.sdk.window.listener.*;
+import at.dalex.grape.sdk.window.viewport.ViewportManager;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -25,14 +24,20 @@ public class MenuBarHelper {
         menuBar.getMenus().clear();
         Menu fileMenu = new Menu("File");
         Menu editMenu = new Menu("Edit");
+        Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
 
         /* File */
         Menu file_new = new Menu("New");
+        //create:project
         MenuItem file_new_project = new MenuItem("Project...");
         file_new_project.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN));
         file_new_project.setOnAction(new NewProjectListener());
         file_new.getItems().add(file_new_project);
+        //create:map
+        MenuItem file_new_map = new MenuItem("Map...");
+        file_new_map.setOnAction(listener -> NewMapDialog.showDialog());
+        file_new.getItems().add(file_new_map);
 
         MenuItem file_openProject = new MenuItem("Open Project...");
         file_openProject.setOnAction(new OpenProjectListener(Window.getPrimaryStage()));
@@ -44,13 +49,19 @@ public class MenuBarHelper {
         fileMenu.getItems().add(file_openProject);
         fileMenu.getItems().add(file_close);
 
+        /* View */
+        MenuItem view_toggle_grid = new MenuItem("ToggleTile Grid");
+        view_toggle_grid.setOnAction(handler -> ViewportManager.toggleTileGrid());
+        view_toggle_grid.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.ALT_DOWN));
+        viewMenu.getItems().add(view_toggle_grid);
+
         /* About */
         MenuItem help_about = new MenuItem("About");
         help_about.setOnAction(new HelpAboutListener());
         helpMenu.getItems().add(help_about);
 
         //Add menus
-        menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
 
         //Apply application name (for macOS devices)
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "GrapeEngine SDK");

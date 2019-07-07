@@ -1,7 +1,7 @@
 package at.dalex.grape.sdk.project;
 
 import at.dalex.grape.sdk.Main;
-import at.dalex.grape.sdk.resource.ResouceLoader;
+import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.*;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
@@ -29,6 +29,7 @@ public class ProjectUtil {
 
     //The currently opened project
     private static Project currentProject;
+    private static FileBrowserItem fileBrowserRoot;
 
     /**
      * Opens the given @{link Project} in the editor.
@@ -73,10 +74,16 @@ public class ProjectUtil {
         centerSplitPane.getItems().clear();
 
         /* File Browser*/
-        ImageView rootImage = new ImageView(ResouceLoader.get("image.folder.project", Image.class));
-        FileBrowserItem rootItem = new FileBrowserItem(new BrowserFile(project.getProjectDirectory().getPath()), rootImage);
-        TitledPane projectPane = new TitledPane("Project", new TreeView<>(rootItem));
+        Project currentProject = getCurrentProject();
+
+        ImageView rootImage = new ImageView(ResourceLoader.get("image.folder.project", Image.class));
+        fileBrowserRoot = new FileBrowserItem(new BrowserFile(currentProject.getProjectDirectory().getPath()), rootImage);
+        fileBrowserRoot.setExpanded(true);
+
+        TreeView fileBrowser = new TreeView<>(fileBrowserRoot);
+        TitledPane projectPane = new TitledPane("Project", fileBrowser);
         projectPane.setPrefHeight(Double.MAX_VALUE);
+
         centerSplitPane.getItems().add(projectPane);
         centerSplitPane.setDividerPosition(0, 0.25f);
 
@@ -222,6 +229,13 @@ public class ProjectUtil {
      */
     public static boolean isAnyProjectOpened() {
         return getCurrentProject() != null;
+    }
+
+    /**
+     * @return The root of the file-browser
+     */
+    public static FileBrowserItem getFileBrowserRoot() {
+        return fileBrowserRoot;
     }
 
     /**

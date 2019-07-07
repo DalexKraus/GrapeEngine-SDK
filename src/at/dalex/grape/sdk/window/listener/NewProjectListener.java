@@ -1,6 +1,6 @@
 package at.dalex.grape.sdk.window.listener;
 
-import at.dalex.grape.sdk.window.NewProjectDialog;
+import at.dalex.grape.sdk.window.dialog.NewProjectDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

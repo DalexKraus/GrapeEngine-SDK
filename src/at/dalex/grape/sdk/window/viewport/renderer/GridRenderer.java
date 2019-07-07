@@ -40,16 +40,19 @@ public class GridRenderer implements ITickCallback {
         double overlapDistanceX = calculateAxisOverlapDistance(origin.getX());
         double overlapDistanceY = calculateAxisOverlapDistance(origin.getY());
 
-        //Horizontal lines
-        for (int y = 0; y <= viewportHeight / (tileSize * scale); y++) {
-            double yPos = 0.5f + (overlapDistanceY + (float) y * tileSize) * scale;
-            g.strokeLine(0, yPos, viewportWidth, yPos);
-        }
+        //Draw tile-grid
+        if (ViewportManager.isTileGridShowing()) {
+            //Horizontal lines
+            for (int y = 0; y <= viewportHeight / (tileSize * scale); y++) {
+                double yPos = 0.5f + (overlapDistanceY + (float) y * tileSize) * scale;
+                g.strokeLine(0, yPos, viewportWidth, yPos);
+            }
 
-        //Vertical lines
-        for (int x = 0; x <= viewportWidth / (tileSize * scale); x++) {
-            double xPos = 0.5f + (overlapDistanceX + (float) x * tileSize) * scale;
-            g.strokeLine(xPos, 0, xPos, viewportHeight);
+            //Vertical lines
+            for (int x = 0; x <= viewportWidth / (tileSize * scale); x++) {
+                double xPos = 0.5f + (overlapDistanceX + (float) x * tileSize) * scale;
+                g.strokeLine(xPos, 0, xPos, viewportHeight);
+            }
         }
 
         //Draw colored axes

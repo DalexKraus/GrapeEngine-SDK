@@ -16,6 +16,8 @@ public class ViewportManager {
     public static final float MIN_SCALE = 0.05f;
     public static final float MAX_SCALE = 12.0f;
 
+    private static boolean showTileGrid = true;
+
     /**
      * Initializes the entire viewport.
      */
@@ -80,5 +82,13 @@ public class ViewportManager {
     public static void setViewportScale(float scale) {
         // Clamp viewport scale between MIN_SCALE and MAX_SCALE
         viewportScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
+    }
+
+    public static boolean isTileGridShowing() {
+        return showTileGrid;
+    }
+
+    public static void toggleTileGrid() {
+        showTileGrid = !showTileGrid;
     }
 }

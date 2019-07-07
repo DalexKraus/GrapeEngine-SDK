@@ -1,6 +1,6 @@
 package at.dalex.grape.sdk.window.filebrowser;
 
-import at.dalex.grape.sdk.resource.ResouceLoader;
+import at.dalex.grape.sdk.resource.ResourceLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -12,10 +12,6 @@ import java.io.File;
 
 public class FileBrowserItem extends TreeItem<BrowserFile> {
 
-    private boolean isLeaf;
-    private boolean isFirstTimeChildren = true;
-    private boolean isFirstTimeLeaf = true;
-
     /**
      * Creates a new {@link FileBrowserItem} with an icon
      * @param file The file that represents this item
@@ -23,6 +19,7 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
      */
     public FileBrowserItem(BrowserFile file, Node graphic) {
         super(new BrowserFile(file.getPath()), graphic);
+        refreshChildren(this);
     }
 
     /**
@@ -35,57 +32,55 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
 
     @Override
     public ObservableList<TreeItem<BrowserFile>> getChildren() {
-        if (isFirstTimeChildren) {
-            isFirstTimeChildren = false;
-            super.getChildren().setAll(buildChildren(this));
-        }
         return super.getChildren();
     }
 
-    private ObservableList<TreeItem<BrowserFile>> buildChildren(TreeItem<BrowserFile> TreeItem) {
-        BrowserFile file = TreeItem.getValue();
-        if (file == null || file.isFile())
-            return FXCollections.emptyObservableList();
+    public void refreshChildren(TreeItem<BrowserFile> treeItem) {
+        BrowserFile browserFile = treeItem.getValue();
+        if (browserFile == null || browserFile.isFile())
+            return;
 
-        File[] files = file.listFiles();
-        if (files != null) {
-            ObservableList<TreeItem<BrowserFile>> children = FXCollections.observableArrayList();
-            for (File childFile : files) {
-                BrowserFile childBrowserFile = null;
-                Image itemIcon = ResouceLoader.get(
-                        childFile.isDirectory() ? "image.folder.black16" : "image.file.generic.black16", Image.class);
+        if (getValue().listFiles() == null)
+            return;
 
-                //Check getFilterStatus before adding next item
-                FilterRule filterRule = FileBrowserFilter.getRuleFor(childFile);
-                FileBrowserFilter.FilterStatus filterStatus = FileBrowserFilter.getFilterStatus(filterRule);
+        for (File file : browserFile.listFiles()) {
+            FilterRule filterRule = FileBrowserFilter.getRuleFor(file);
+            FileBrowserFilter.FilterStatus filterStatus = FileBrowserFilter.getFilterStatus(filterRule);
 
-                //Skip child if it should be hidden
-                if (filterStatus == FileBrowserFilter.FilterStatus.APPLY_HIDE)
-                    continue;
+            String nodeTitle = filterStatus == FileBrowserFilter.FilterStatus.NO_MATCH ? file.getPath()
+                    : (filterRule.getCustomName() != null ? filterRule.getCustomName() : file.getName());
 
-                if (filterStatus == FileBrowserFilter.FilterStatus.NO_MATCH) {
-                    childBrowserFile = new BrowserFile(childFile.getPath());
-                }
-                else if (filterStatus == FileBrowserFilter.FilterStatus.APPLY_CUSTOMS) {
-                    childBrowserFile = new BrowserFile(
-                            (filterRule.getCustomName() != null) ? filterRule.getCustomName() : childFile.getName());
-                    if (filterRule.getCustomIcon() != null)
-                        itemIcon = filterRule.getCustomIcon();
-                }
+            if (containsChildNode(nodeTitle) || filterStatus == FileBrowserFilter.FilterStatus.APPLY_HIDE)
+                continue;
 
-                children.add(new FileBrowserItem(childBrowserFile, new ImageView(itemIcon)));
-            }
-            return children;
+            Image nodeIcon = ResourceLoader.get(
+                    file.isDirectory() ? "image.folder.black16" : "image.file.generic.black16", Image.class);
+            if (filterStatus == FileBrowserFilter.FilterStatus.APPLY_CUSTOMS && filterRule.getCustomIcon() != null)
+                nodeIcon = filterRule.getCustomIcon();
+
+            BrowserFile childBrowserFile = new BrowserFile(nodeTitle);
+            FileBrowserItem childItem = new FileBrowserItem(childBrowserFile, new ImageView(nodeIcon));
+
+            if (file.isDirectory())
+                childItem.refreshChildren(childItem);
+
+            super.getChildren().add(childItem);
         }
-        return FXCollections.emptyObservableList();
     }
+
+    private boolean containsChildNode(String nodeTitle) {
+        for (TreeItem<BrowserFile> child : getChildren()) {
+            if (child.getValue().getName().equals(nodeTitle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     @Override
     public boolean isLeaf() {
-        if (isFirstTimeLeaf) {
-            isFirstTimeLeaf = false;
-            isLeaf = getValue().isFile();
-        }
-        return isLeaf;
+        return !getValue().isDirectory();
     }
 }

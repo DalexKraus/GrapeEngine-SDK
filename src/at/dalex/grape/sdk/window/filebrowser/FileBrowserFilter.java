@@ -1,5 +1,9 @@
 package at.dalex.grape.sdk.window.filebrowser;
 
+import at.dalex.grape.sdk.map.MapUtil;
+import at.dalex.grape.sdk.resource.ResourceLoader;
+import javafx.scene.image.Image;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -15,7 +19,13 @@ public class FileBrowserFilter {
     /* Apply default rules here */
     //TODO: Maybe load from a fixed json file in the editor's resource folder?
     static {
-        //Wow, such empty.
+        //Map files
+        FilterRule mapFileRule = new FilterRule(FilterRule.Visibility.VISIBLE);
+        mapFileRule.setCustomIcon(ResourceLoader.get("image.file.map", Image.class));
+        //Lua files
+        FilterRule luaFileRule = new FilterRule(FilterRule.Visibility.VISIBLE);
+        luaFileRule.setCustomIcon(ResourceLoader.get("image.file.lua", Image.class));
+        setExtensionRule(".lua", luaFileRule);
     }
 
     /**

@@ -31,7 +31,7 @@ public class OpenProjectListener implements EventHandler<ActionEvent> {
             DialogHelper.showErrorDialog("Error", null, "The selected folder does not seem to contain " +
                                                         "a valid project!");
 
-        Project toOpen = ProjectUtil.readProjectFile(selectedFolder, projectFile);
+        Project toOpen = ProjectUtil.readProjectFile(selectedFolder);
         ProjectUtil.openProject(toOpen);
     }
 }

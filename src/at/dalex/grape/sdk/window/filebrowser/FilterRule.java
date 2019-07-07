@@ -30,11 +30,26 @@ public class FilterRule {
         return customIcon;
     }
 
+    /*
+     * Sets the custom icon for this rule
+     */
+    public void setCustomIcon(Image icon) {
+        this.customIcon = icon;
+    }
+
     /**
      * @return Should the filename be replaced?
      */
     public String getCustomName() {
         return customName;
+    }
+
+    /**
+     * Sets the custom name for this rule
+     * @param customName
+     */
+    public void setCustomName(String customName) {
+        this.customName = customName;
     }
 
     /**
