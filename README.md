@@ -1,6 +1,7 @@
 # GrapeEngine-SDK
 
-*Software Development Kit* for the **GrapeEngine**, a dynamic 2D game-engine written in Java.
+## About:
+The GrapeEngine-SDK is a *Software Development Kit* for the **GrapeEngine**, a dynamic 2D game-engine written in Java.
 This engine makes use of OpenGL and GLFW using LWJGL (https://www.lwjgl.org/).
 
 
