@@ -42,7 +42,7 @@ public class ViewportPanel extends TitledPane {
      * @param e The MouseEvent
      */
     private void mousePressedEvent(MouseEvent e) {
-        gridDragOffset = translateMouseToWorldCoordinates(e);
+        gridDragOffset = translateMouseToWorldSpace(e);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ViewportPanel extends TitledPane {
      * @param e
      */
     private void mouseMoveEvent(MouseEvent e) {
-        pivotPoint = translateMouseToWorldCoordinates(e);
+        pivotPoint = translateMouseToWorldSpace(e);
     }
 
     /**
@@ -66,7 +66,14 @@ public class ViewportPanel extends TitledPane {
         ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
     }
 
-    public Vector2f translateMouseToWorldCoordinates(double mouseX, double mouseY) {
+    /**
+     * Translates the given (window!) mouse coordinates to world space,
+     * 0 0 being the world's origin, as seen by the red and green lines.
+     * @param mouseX The mouse x location in the window
+     * @param mouseY The mouse y location in the window
+     * @return The translated mouse position in world space.
+     */
+    public Vector2f translateMouseToWorldSpace(double mouseX, double mouseY) {
         Vector2f previousGridOrigin = ViewportManager.getViewportOrigin();
         float scale = ViewportManager.getViewportScale();
         float xPos = (float) (previousGridOrigin.getX() - mouseX / scale);
@@ -79,8 +86,8 @@ public class ViewportPanel extends TitledPane {
      * @param e The mouse event
      * @return The vector representing the position of the mous in the world.
      */
-    public Vector2f translateMouseToWorldCoordinates(MouseEvent e) {
-        return translateMouseToWorldCoordinates(e.getX(), e.getY());
+    public Vector2f translateMouseToWorldSpace(MouseEvent e) {
+        return translateMouseToWorldSpace(e.getX(), e.getY());
     }
 
     /**
