@@ -28,6 +28,7 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
      */
     public FileBrowserItem(BrowserFile file) {
         super(new BrowserFile(file.getPath()));
+        refreshChildren(this);
     }
 
     @Override
@@ -47,10 +48,10 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
             FilterRule filterRule = FileBrowserFilter.getRuleFor(file);
             FileBrowserFilter.FilterStatus filterStatus = FileBrowserFilter.getFilterStatus(filterRule);
 
-            String nodeTitle = filterStatus == FileBrowserFilter.FilterStatus.NO_MATCH ? file.getPath()
+            String nodeContent = filterStatus == FileBrowserFilter.FilterStatus.NO_MATCH ? file.getPath()
                     : (filterRule.getCustomName() != null ? filterRule.getCustomName() : file.getName());
 
-            if (containsChildNode(nodeTitle) || filterStatus == FileBrowserFilter.FilterStatus.APPLY_HIDE)
+            if (containsChildNode(nodeContent) || filterStatus == FileBrowserFilter.FilterStatus.APPLY_HIDE)
                 continue;
 
             Image nodeIcon = ResourceLoader.get(
@@ -58,26 +59,20 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
             if (filterStatus == FileBrowserFilter.FilterStatus.APPLY_CUSTOMS && filterRule.getCustomIcon() != null)
                 nodeIcon = filterRule.getCustomIcon();
 
-            BrowserFile childBrowserFile = new BrowserFile(nodeTitle);
+            BrowserFile childBrowserFile = new BrowserFile(nodeContent);
             FileBrowserItem childItem = new FileBrowserItem(childBrowserFile, new ImageView(nodeIcon));
-
-            if (file.isDirectory())
-                childItem.refreshChildren(childItem);
-
             super.getChildren().add(childItem);
         }
     }
 
     private boolean containsChildNode(String nodeTitle) {
-        for (TreeItem<BrowserFile> child : getChildren()) {
-            if (child.getValue().getName().equals(nodeTitle)) {
+        for (TreeItem<BrowserFile> child : super.getChildren()) {
+            if (child.getValue().getName().equals(new File(nodeTitle).getName())) {
                 return true;
             }
         }
         return false;
     }
-
-
 
     @Override
     public boolean isLeaf() {
