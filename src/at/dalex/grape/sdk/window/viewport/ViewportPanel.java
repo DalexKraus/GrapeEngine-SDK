@@ -62,7 +62,7 @@ public class ViewportPanel extends TitledPane {
     private void mouseDragEvent(MouseEvent e) {
         float scale = ViewportManager.getViewportScale();
         float newGridOriginX = (float) (e.getX() / scale + gridDragOffset.x);
-        float newGridOriginY = (float) (e.getY() / scale + gridDragOffset.y);
+        float newGridOriginY = (float) ((e.getY() - getHeaderHeight()) / scale + gridDragOffset.y);
         ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
     }
 
