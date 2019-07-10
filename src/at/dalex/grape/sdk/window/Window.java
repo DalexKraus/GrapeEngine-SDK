@@ -6,6 +6,7 @@ import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
+import at.dalex.grape.sdk.window.listener.FileBrowserListener;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ThemeUtil;
 import javafx.application.Application;
@@ -82,13 +83,13 @@ public class Window extends Application {
         fileBrowserRoot.setExpanded(true);
 
         TreeView fileBrowser = new TreeView<>(fileBrowserRoot);
-        fileBrowser.addEventHandler(MouseEvent.MOUSE_CLICKED, handler -> System.out.println("helloo"));
+        fileBrowser.addEventHandler(MouseEvent.MOUSE_CLICKED, new FileBrowserListener());
         TitledPane projectPane = new TitledPane("Project", fileBrowser);
         projectPane.setPrefHeight(Double.MAX_VALUE);
 
         mainSplitPane.getItems().add(projectPane);
         mainSplitPane.setDividerPosition(0, 0.25f);
-        mainSplitPane.getItems().add(new Pane()); //Otherwise the filebrowser would cover the entire window.
+        mainSplitPane.getItems().add(new Pane()); //Otherwise the file-browser would cover the entire window.
     }
 
     /**
