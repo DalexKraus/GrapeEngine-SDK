@@ -18,6 +18,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -41,6 +42,8 @@ public class Window extends Application {
         mainScene = new Scene(root, 1280, 720);
         stage = primaryStage;
 
+        mainSplitPane = (SplitPane) root.lookup("#centerSplitPane");
+
         /* *** MenuBar *** */
         MenuBar menuBar = (MenuBar) mainScene.lookup("#menu_bar");
         menuBar.setUseSystemMenuBar(true);
@@ -48,8 +51,6 @@ public class Window extends Application {
 
         /* *** Information Text *** */
         ProjectUtil.closeProject();
-
-        mainSplitPane = (SplitPane) root.lookup("#centerSplitPane");
 
         mainScene.setFill(Color.TRANSPARENT);
         primaryStage.setTitle("GrapeEngine Software Development Kit");
@@ -84,6 +85,7 @@ public class Window extends Application {
 
         mainSplitPane.getItems().add(projectPane);
         mainSplitPane.setDividerPosition(0, 0.25f);
+        mainSplitPane.getItems().add(new Pane()); //Otherwise the filebrowser would cover the entire window.
     }
 
     /**
