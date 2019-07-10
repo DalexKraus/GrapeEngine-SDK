@@ -10,13 +10,15 @@
      */
 
     /* Godot-Blue */
-    /* -fx-base: #323b4f; */
+    /* -fx-base: #323b4f;
+     * -fx-dark: #333d55;
+     */
 
     /* Godot-Gray */
     /* -fx-base: #413c45; */
 
-    -fx-base: #45506a;
-    -fx-dark: #333d55;
+    -fx-base: #505050;
+    -fx-dark: #4b4b4b;
 
     /* A very light grey used for the background of windows.  See also
      * -fx-text-background-color, which should be used as the -fx-text-fill
