@@ -66,7 +66,7 @@ public class Window extends Application {
             System.exit(0);
         });
 
-        Project proj = ProjectUtil.readProjectFile(new File(ProjectUtil.getDefaultProjectDirectory() + "/Test"));
+        Project proj = ProjectUtil.readProjectFile(new File(ProjectUtil.getDefaultProjectDirectory() + "/Game01"));
         ProjectUtil.openProject(proj);
     }
 
