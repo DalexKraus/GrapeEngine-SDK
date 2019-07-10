@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
      */
     public FileBrowserItem(BrowserFile file, Node graphic) {
         super(new BrowserFile(file.getPath()), graphic);
-        refreshChildren(this);
+        refreshChildren();
     }
 
     @Override
@@ -33,17 +32,24 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
         return super.getChildren();
     }
 
+    /**
+     * Collects all paths of folders, which are currently expanded
+     * within this item.
+     */
     private void collectExpandedPaths() {
         for (TreeItem<BrowserFile> child : getChildren()) {
             if (child.isExpanded()) previousExpandedPaths.add(child.getValue().getPath());
         }
     }
 
-    public void refreshChildren(TreeItem<BrowserFile> treeItem) {
+    /**
+     * Refreshes the children of this item.
+     */
+    public void refreshChildren() {
         collectExpandedPaths();     //Save previous expaneded branches
         this.getChildren().clear(); //Remove all nodes from the tree
 
-        BrowserFile browserFile = treeItem.getValue();
+        BrowserFile browserFile = getValue();
         if (browserFile == null || browserFile.isFile())
             return;
 

@@ -18,10 +18,12 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.beans.EventHandler;
 import java.io.File;
 
 public class Window extends Application {
@@ -80,6 +82,7 @@ public class Window extends Application {
         fileBrowserRoot.setExpanded(true);
 
         TreeView fileBrowser = new TreeView<>(fileBrowserRoot);
+        fileBrowser.addEventHandler(MouseEvent.MOUSE_CLICKED, handler -> System.out.println("helloo"));
         TitledPane projectPane = new TitledPane("Project", fileBrowser);
         projectPane.setPrefHeight(Double.MAX_VALUE);
 
@@ -101,7 +104,7 @@ public class Window extends Application {
      * Refreshes the file browser to show created or delted files.
      */
     public static void refreshFileBrowser() {
-        fileBrowserRoot.refreshChildren(fileBrowserRoot);
+        fileBrowserRoot.refreshChildren();
     }
 
     /**
