@@ -59,7 +59,7 @@ public class MenuBarHelper {
         viewMenu.getItems().add(view_toggle_grid);
         //view:refreshfilebrowser
         MenuItem view_refresh_file_browser = new MenuItem("Refresh File Browser");
-        view_refresh_file_browser.setOnAction(handler -> ProjectUtil.getFileBrowserRoot().refreshChildren(ProjectUtil.getFileBrowserRoot()));
+        view_refresh_file_browser.setOnAction(handler -> Window.refreshFileBrowser());
         viewMenu.getItems().add(view_refresh_file_browser);
 
         /* About */

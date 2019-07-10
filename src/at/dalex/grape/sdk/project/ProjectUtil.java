@@ -29,7 +29,7 @@ public class ProjectUtil {
 
     //The currently opened project
     private static Project currentProject;
-    private static FileBrowserItem fileBrowserRoot;
+
 
     /**
      * Opens the given @{link Project} in the editor.
@@ -69,28 +69,9 @@ public class ProjectUtil {
         //Update fileBrowser getFilterStatus rule for sdk folder
         FileBrowserFilter.setFileRule(projectFile.getParentFile(), new FilterRule(FilterRule.Visibility.HIDDEN));
 
-        //Update file browser
-        SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
-        centerSplitPane.getItems().clear();
-
-        /* File Browser*/
-        Project currentProject = getCurrentProject();
-
-        ImageView rootImage = new ImageView(ResourceLoader.get("image.folder.project", Image.class));
-        fileBrowserRoot = new FileBrowserItem(new BrowserFile(currentProject.getProjectDirectory().getPath()), rootImage);
-        fileBrowserRoot.setExpanded(true);
-
-        TreeView fileBrowser = new TreeView<>(fileBrowserRoot);
-        TitledPane projectPane = new TitledPane("Project", fileBrowser);
-        projectPane.setPrefHeight(Double.MAX_VALUE);
-
-        centerSplitPane.getItems().add(projectPane);
-        centerSplitPane.setDividerPosition(0, 0.25f);
-
-        /* Viewport */
-        TitledPane viewportPanel = new ViewportPanel();
-        viewportPanel.setPrefHeight(Double.MAX_VALUE);
-        centerSplitPane.getItems().add(viewportPanel);
+        //Create filebrowser
+        Window.getMainSplitPane().getItems().clear(); //Clear before adding
+        Window.createFileBrowser();
 
         //Project opening process succeeded.
         return true;
@@ -103,8 +84,8 @@ public class ProjectUtil {
      */
     public static void closeProject() {
         currentProject = null;
-        SplitPane centerSplitPane = (SplitPane) Window.getMainScene().lookup("#centerSplitPane");
-        centerSplitPane.getItems().clear();
+        SplitPane mainSplitPane = Window.getMainSplitPane();
+        mainSplitPane.getItems().clear();
         /* Create Label */
         Label noProjectLabel = new Label("No project is currently opened");
         //--- Ultra mega extreme cheat to change font size, wtf?!(Because there is no setSize method)
@@ -114,7 +95,7 @@ public class ProjectUtil {
         noProjectLabel.setAlignment(Pos.CENTER);
         noProjectLabel.setMaxWidth(Double.MAX_VALUE);
         /* Add to SplitPane */
-        centerSplitPane.getItems().add(noProjectLabel);
+        mainSplitPane.getItems().add(noProjectLabel);
     }
 
     /**
@@ -229,13 +210,6 @@ public class ProjectUtil {
      */
     public static boolean isAnyProjectOpened() {
         return getCurrentProject() != null;
-    }
-
-    /**
-     * @return The root of the file-browser
-     */
-    public static FileBrowserItem getFileBrowserRoot() {
-        return fileBrowserRoot;
     }
 
     /**

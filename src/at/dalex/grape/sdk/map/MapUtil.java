@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.map;
 
 import at.dalex.grape.sdk.project.ProjectUtil;
+import at.dalex.grape.sdk.window.Window;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,6 +20,6 @@ public class MapUtil {
             e.printStackTrace();
         }
 
-        ProjectUtil.getFileBrowserRoot().refreshChildren(ProjectUtil.getFileBrowserRoot());
+        Window.refreshFileBrowser();
     }
 }

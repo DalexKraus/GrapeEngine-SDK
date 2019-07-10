@@ -11,5 +11,4 @@ public class RectangleNode extends NodeBase {
     public RectangleNode() {
         super("Rectangle");
     }
-
 }
