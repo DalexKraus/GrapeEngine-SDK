@@ -84,10 +84,16 @@ public class ViewportManager {
         viewportScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
     }
 
+    /**
+     * @return Whether or not the grid is currently drawn
+     */
     public static boolean isTileGridShowing() {
         return showTileGrid;
     }
 
+    /**
+     * Toggles grid drawing
+     */
     public static void toggleTileGrid() {
         showTileGrid = !showTileGrid;
     }
