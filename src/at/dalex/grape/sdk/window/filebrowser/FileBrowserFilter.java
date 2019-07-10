@@ -1,6 +1,5 @@
 package at.dalex.grape.sdk.window.filebrowser;
 
-import at.dalex.grape.sdk.map.MapUtil;
 import at.dalex.grape.sdk.resource.ResourceLoader;
 import javafx.scene.image.Image;
 
