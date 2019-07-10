@@ -1,7 +1,6 @@
 package at.dalex.grape.sdk.window.filebrowser;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
@@ -9,8 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class FileBrowserItem extends TreeItem<BrowserFile> {
+
+    //This is used to remember which nodes were expanded.
+    //When the tree is rebuilt, those values are read.
+    private ArrayList<String> previousExpandedPaths = new ArrayList<>();
 
     /**
      * Creates a new {@link FileBrowserItem} with an icon
@@ -36,7 +41,16 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
         return super.getChildren();
     }
 
+    private void collectExpandedPaths() {
+        for (TreeItem<BrowserFile> child : getChildren()) {
+            if (child.isExpanded()) previousExpandedPaths.add(child.getValue().getPath());
+        }
+    }
+
     public void refreshChildren(TreeItem<BrowserFile> treeItem) {
+        collectExpandedPaths();     //Save previous expaneded branches
+        this.getChildren().clear(); //Remove all nodes from the tree
+
         BrowserFile browserFile = treeItem.getValue();
         if (browserFile == null || browserFile.isFile())
             return;
@@ -44,6 +58,7 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
         if (getValue().listFiles() == null)
             return;
 
+        //Build the tree
         for (File file : browserFile.listFiles()) {
             FilterRule filterRule = FileBrowserFilter.getRuleFor(file);
             FileBrowserFilter.FilterStatus filterStatus = FileBrowserFilter.getFilterStatus(filterRule);
@@ -61,6 +76,11 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
 
             BrowserFile childBrowserFile = new BrowserFile(nodeContent);
             FileBrowserItem childItem = new FileBrowserItem(childBrowserFile, new ImageView(nodeIcon));
+
+            //If the node was previously expanded, do it again
+            if (previousExpandedPaths.contains(file.getPath()) && Objects.requireNonNull(file.list()).length > 0)
+                childItem.setExpanded(true);
+
             super.getChildren().add(childItem);
         }
     }
