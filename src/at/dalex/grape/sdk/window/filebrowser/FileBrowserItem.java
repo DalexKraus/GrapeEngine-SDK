@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,15 +25,6 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
      */
     public FileBrowserItem(BrowserFile file, Node graphic) {
         super(new BrowserFile(file.getPath()), graphic);
-        refreshChildren(this);
-    }
-
-    /**
-     * Creates a new {@link FileBrowserItem}.
-     * @param file The file that represents this item
-     */
-    public FileBrowserItem(BrowserFile file) {
-        super(new BrowserFile(file.getPath()));
         refreshChildren(this);
     }
 
