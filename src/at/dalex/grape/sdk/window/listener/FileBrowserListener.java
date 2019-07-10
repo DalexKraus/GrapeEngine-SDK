@@ -1,8 +1,15 @@
 package at.dalex.grape.sdk.window.listener;
 
+import at.dalex.grape.sdk.map.MapUtil;
+import at.dalex.grape.sdk.window.Window;
+import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import java.io.File;
 
 public class FileBrowserListener implements EventHandler<MouseEvent> {
 
@@ -18,7 +25,12 @@ public class FileBrowserListener implements EventHandler<MouseEvent> {
      * @param event The MouseEvent responsible for the event
      */
     private void handleDoubleClick(MouseEvent event) {
+        TreeItem<BrowserFile> selectedItem = getClickedBrowserItem();
+        File clickedFile = selectedItem.getValue();
+        String fileName = clickedFile.getName();
 
+        if (fileName.endsWith(MapUtil.MAPFILE_EXT))
+            Window.createViewport();
     }
 
     /**
@@ -27,5 +39,10 @@ public class FileBrowserListener implements EventHandler<MouseEvent> {
      */
     private void handleRightClick(MouseEvent event) {
 
+    }
+
+    private TreeItem<BrowserFile> getClickedBrowserItem() {
+        ObservableList selectedItems = Window.getFileBrowser().getSelectionModel().getSelectedItems();
+        return selectedItems.size() > 0 ? (TreeItem<BrowserFile>) selectedItems.get(0) : null;
     }
 }

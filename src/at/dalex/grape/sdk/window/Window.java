@@ -7,6 +7,7 @@ import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import at.dalex.grape.sdk.window.listener.FileBrowserListener;
+import at.dalex.grape.sdk.window.viewport.ViewportManager;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ThemeUtil;
 import javafx.application.Application;
@@ -33,6 +34,7 @@ public class Window extends Application {
     private static Stage stage;
 
     private static SplitPane mainSplitPane;
+    private static TreeView fileBrowser;
     private static FileBrowserItem fileBrowserRoot;
 
     @Override
@@ -82,7 +84,7 @@ public class Window extends Application {
         fileBrowserRoot = new FileBrowserItem(new BrowserFile(currentProject.getProjectDirectory().getPath()), rootImage);
         fileBrowserRoot.setExpanded(true);
 
-        TreeView fileBrowser = new TreeView<>(fileBrowserRoot);
+        fileBrowser = new TreeView<>(fileBrowserRoot);
         fileBrowser.addEventHandler(MouseEvent.MOUSE_CLICKED, new FileBrowserListener());
         TitledPane projectPane = new TitledPane("Project", fileBrowser);
         projectPane.setPrefHeight(Double.MAX_VALUE);
@@ -96,9 +98,11 @@ public class Window extends Application {
      * Creates the viewport panel and adds it to the main split pane
      */
     public static void createViewport() {
-        TitledPane viewportPanel = new ViewportPanel();
+        ViewportPanel viewportPanel = new ViewportPanel();
         viewportPanel.setPrefHeight(Double.MAX_VALUE);
-        mainSplitPane.getItems().add(viewportPanel);
+        mainSplitPane.getItems().set(1, viewportPanel);
+        ViewportManager.setViewportOrigin(480, 480);
+        ViewportManager.setViewportScale(1.0f);
     }
 
     /**
@@ -113,6 +117,13 @@ public class Window extends Application {
      */
     public static SplitPane getMainSplitPane() {
         return mainSplitPane;
+    }
+
+    /**
+     * @return The {@link TreeView} object of the file-browser.
+     */
+    public static TreeView getFileBrowser() {
+        return fileBrowser;
     }
 
     /**
