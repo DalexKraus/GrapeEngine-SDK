@@ -63,6 +63,15 @@
     -fx-background-color: -fx-dark;
     -fx-text-fill: lightgray;
 }
+
+.tree-cell:hover {
+    -fx-background-color: derive(-fx-dark, 10%);
+}
+
+.tree-cell:selected {
+    -fx-background-color: derive(-fx-dark, 30%);
+}
+
 /* Cell-Arrow on the left */
 .tree-cell > .tree-disclosure-node > .arrow {
     -fx-background-color: gray;
