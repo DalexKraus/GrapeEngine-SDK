@@ -1,5 +1,7 @@
 package at.dalex.grape.sdk.window.helper;
 
+import at.dalex.grape.sdk.project.Project;
+import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.dialog.NewMapDialog;
 import at.dalex.grape.sdk.window.listener.*;
@@ -29,12 +31,12 @@ public class MenuBarHelper {
 
         /* File */
         Menu file_new = new Menu("New");
-        //create:project
+        //new:project
         MenuItem file_new_project = new MenuItem("Project...");
         file_new_project.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN));
         file_new_project.setOnAction(new NewProjectListener());
         file_new.getItems().add(file_new_project);
-        //create:map
+        //new:map
         MenuItem file_new_map = new MenuItem("Map...");
         file_new_map.setOnAction(listener -> NewMapDialog.showDialog());
         file_new.getItems().add(file_new_map);
@@ -50,10 +52,15 @@ public class MenuBarHelper {
         fileMenu.getItems().add(file_close);
 
         /* View */
+        //view:togglegrid
         MenuItem view_toggle_grid = new MenuItem("ToggleTile Grid");
         view_toggle_grid.setOnAction(handler -> ViewportManager.toggleTileGrid());
         view_toggle_grid.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.ALT_DOWN));
         viewMenu.getItems().add(view_toggle_grid);
+        //view:refreshfilebrowser
+        MenuItem view_refresh_file_browser = new MenuItem("Refresh File Browser");
+        view_refresh_file_browser.setOnAction(handler -> ProjectUtil.getFileBrowserRoot().refreshChildren(ProjectUtil.getFileBrowserRoot()));
+        viewMenu.getItems().add(view_refresh_file_browser);
 
         /* About */
         MenuItem help_about = new MenuItem("About");
