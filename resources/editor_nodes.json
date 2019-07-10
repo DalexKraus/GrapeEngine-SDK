@@ -1,0 +1,10 @@
+{
+    "shape":
+    {
+        "Rectangle":
+        {
+            "class": "at.dalex.grape.sdk.map.node.RectangleNode",
+            "properties": ["Width", "Height"]
+        }
+    }
+}
