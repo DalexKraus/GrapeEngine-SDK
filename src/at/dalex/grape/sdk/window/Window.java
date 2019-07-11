@@ -14,10 +14,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +31,7 @@ public class Window extends Application {
     private static Stage stage;
 
     private static SplitPane mainSplitPane;
+    private static TabPane viewportTabPane;
     private static TreeView fileBrowser;
     private static FileBrowserItem fileBrowserRoot;
 
@@ -95,12 +93,13 @@ public class Window extends Application {
     }
 
     /**
-     * Creates the viewport panel and adds it to the main split pane
+     * Creates the viewport panel and adds it to the viewport tab pane,
+     * which is contained by the center-split-pane.
      */
     public static void createViewport() {
-        ViewportPanel viewportPanel = new ViewportPanel();
-        viewportPanel.setPrefHeight(Double.MAX_VALUE);
-        mainSplitPane.getItems().set(1, viewportPanel);
+        viewportTabPane = new TabPane();
+        viewportTabPane.getTabs().add(new ViewportPanel());
+        mainSplitPane.getItems().set(1, viewportTabPane);
         ViewportManager.setViewportOrigin(480, 480);
         ViewportManager.setViewportScale(1.0f);
     }
@@ -117,6 +116,13 @@ public class Window extends Application {
      */
     public static SplitPane getMainSplitPane() {
         return mainSplitPane;
+    }
+
+    /**
+     * @return The viewport's {@link TabPane} containing the individual tabs
+     */
+    public static TabPane getViewportTabPane() {
+        return viewportTabPane;
     }
 
     /**

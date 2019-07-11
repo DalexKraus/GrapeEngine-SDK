@@ -2,12 +2,16 @@ package at.dalex.grape.sdk.window.listener;
 
 import at.dalex.grape.sdk.map.MapUtil;
 import at.dalex.grape.sdk.window.Window;
+import at.dalex.grape.sdk.window.editor.CodeEditorManager;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import org.fxmisc.flowless.VirtualizedScrollPane;
 
 import java.io.File;
 
@@ -31,6 +35,12 @@ public class FileBrowserListener implements EventHandler<MouseEvent> {
 
         if (fileName.endsWith(MapUtil.MAPFILE_EXT))
             Window.createViewport();
+
+        if (fileName.endsWith(".lua")) {
+
+            Tab editor = new Tab("Code Editor", new StackPane(new VirtualizedScrollPane<>(CodeEditorManager.getCodeArea())));
+            Window.getViewportTabPane().getTabs().add(editor);
+        }
     }
 
     /**

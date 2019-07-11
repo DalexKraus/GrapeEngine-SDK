@@ -54,17 +54,18 @@ public class CodeEditorManager {
      */
     private static void createCodeArea() {
         codeArea = new CodeArea();
-        
+
         //Set the default code scheme
         currentScheme = new JavaScheme();
+
+        codeArea.replaceText(0, 0, sampleCode);
+        codeArea.getStylesheets().add("/resources/javafx/code.css");
 
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         Subscription cleanupWhenNoLongerNeedIt = codeArea
                 .multiPlainChanges()
-                .successionEnds(Duration.ofMillis(500))
+                .successionEnds(Duration.ofMillis(100))
                 .subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
-
-        codeArea.replaceText(0, 0, sampleCode);
     }
 
     /**
@@ -77,7 +78,7 @@ public class CodeEditorManager {
         Matcher matcher = currentScheme.getCompiledPattern().matcher(text);
         StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
 
-        while(matcher.find()) {
+        while (matcher.find()) {
             String styleClass = null;
             for (String patternName : currentScheme.getPatternKeys()) {
                 styleClass = matcher.group(patternName) != null ? patternName : null;
