@@ -38,7 +38,7 @@ public class CodeEditorManager {
             "}"
     });
 
-    private static CodeArea codeArea = new CodeArea();
+    private static CodeArea codeArea;
     private static CodeSchemeBase currentScheme;
 
     /**
@@ -53,6 +53,8 @@ public class CodeEditorManager {
      * Creates the {@link CodeArea}
      */
     private static void createCodeArea() {
+        codeArea = new CodeArea();
+        
         //Set the default code scheme
         currentScheme = new JavaScheme();
 

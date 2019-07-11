@@ -35,7 +35,7 @@ public abstract class CodeSchemeBase {
     protected void compilePattern() {
         StringBuilder patternBuilder = new StringBuilder();
         for (String patternName : patterns.keySet())
-            patternBuilder.append("|(?<" + patternName + ">" + patterns.get(patternName + ")"));
+            patternBuilder.append("|(?<" + patternName + ">" + patterns.get(patternName) + ")");
 
         this.compiledPattern = Pattern.compile(patternBuilder.toString());
     }
