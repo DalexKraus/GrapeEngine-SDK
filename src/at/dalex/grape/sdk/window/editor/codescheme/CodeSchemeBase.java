@@ -16,7 +16,7 @@ public abstract class CodeSchemeBase {
      */
     protected void setKeywordPattern(String... keywords) {
         String keywordPattern = "\\b(" + String.join("|", keywords) + ")\\b";
-        addPattern("KEYWORD", keywordPattern);
+        addPattern("keyword", keywordPattern);
     }
 
     /**
@@ -35,8 +35,9 @@ public abstract class CodeSchemeBase {
     protected void compilePattern() {
         StringBuilder patternBuilder = new StringBuilder();
         for (String patternName : patterns.keySet())
-            patternBuilder.append("|(?<" + patternName + ">" + patterns.get(patternName) + ")");
+            patternBuilder.append("(?<" + patternName + ">" + patterns.get(patternName) + ")|");
 
+        System.out.println("pattern; " + patternBuilder.toString());
         this.compiledPattern = Pattern.compile(patternBuilder.toString());
     }
 
