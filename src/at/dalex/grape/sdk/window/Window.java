@@ -93,13 +93,19 @@ public class Window extends Application {
     }
 
     /**
+     * Prepares the viewport by adding the TabPane to the center-split-pane.
+     */
+    public static void prepareViewport() {
+        viewportTabPane = new TabPane();
+        mainSplitPane.getItems().set(1, viewportTabPane);
+    }
+
+    /**
      * Creates the viewport panel and adds it to the viewport tab pane,
      * which is contained by the center-split-pane.
      */
     public static void createViewport() {
-        viewportTabPane = new TabPane();
         viewportTabPane.getTabs().add(new ViewportPanel());
-        mainSplitPane.getItems().set(1, viewportTabPane);
         ViewportManager.setViewportOrigin(480, 480);
         ViewportManager.setViewportScale(1.0f);
     }

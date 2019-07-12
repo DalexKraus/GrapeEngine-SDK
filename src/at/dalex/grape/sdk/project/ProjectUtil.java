@@ -72,6 +72,7 @@ public class ProjectUtil {
         //Create filebrowser
         Window.getMainSplitPane().getItems().clear(); //Clear before adding
         Window.createFileBrowser();
+        Window.prepareViewport();
 
         //Project opening process succeeded.
         return true;
