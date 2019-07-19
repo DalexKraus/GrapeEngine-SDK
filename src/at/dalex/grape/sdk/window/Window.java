@@ -7,6 +7,7 @@ import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import at.dalex.grape.sdk.window.listener.FileBrowserListener;
+import at.dalex.grape.sdk.window.propertypanel.MapPropertyPanel;
 import at.dalex.grape.sdk.window.viewport.ViewportManager;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ThemeUtil;
@@ -34,6 +35,7 @@ public class Window extends Application {
     private static TabPane viewportTabPane;
     private static TreeView fileBrowser;
     private static FileBrowserItem fileBrowserRoot;
+    private static MapPropertyPanel mapPropertyPanel;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,7 +68,7 @@ public class Window extends Application {
             System.exit(0);
         });
 
-        Project proj = ProjectUtil.readProjectFile(new File(ProjectUtil.getDefaultProjectDirectory() + "/Game01"));
+        Project proj = ProjectUtil.readProjectFile(new File(ProjectUtil.getDefaultProjectDirectory() + "/Test"));
         ProjectUtil.openProject(proj);
     }
 
@@ -93,6 +95,15 @@ public class Window extends Application {
     }
 
     /**
+     * Prepares the property panel by adding it to the center-split-pane.
+     */
+    public static void preparePropertyPanel() {
+        mapPropertyPanel = new MapPropertyPanel();
+        mainSplitPane.getItems().add(mapPropertyPanel);
+        mainSplitPane.setDividerPosition(1, 0.75f);
+    }
+
+    /**
      * Prepares the viewport by adding the TabPane to the center-split-pane.
      */
     public static void prepareViewport() {
@@ -108,6 +119,7 @@ public class Window extends Application {
         viewportTabPane.getTabs().add(new ViewportPanel());
         ViewportManager.setViewportOrigin(480, 480);
         ViewportManager.setViewportScale(1.0f);
+        preparePropertyPanel();
     }
 
     /**
