@@ -1,13 +1,13 @@
 package at.dalex.grape.sdk.window.viewport;
 
+import at.dalex.grape.sdk.window.Window;
 import at.dalex.util.math.Vector2f;
+import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-
-import javax.swing.text.html.CSS;
 
 import static at.dalex.grape.sdk.window.viewport.ViewportManager.MIN_SCALE;
 import static at.dalex.grape.sdk.window.viewport.ViewportManager.MAX_SCALE;
@@ -42,6 +42,9 @@ public class ViewportPanel extends Tab {
         //Scroll listeners
         content.setOnMouseMoved(this::mouseMoveEvent);
         content.setOnScroll(this::gridScaleEvent);
+
+        //Tab close listener
+        setOnCloseRequest(this::onTabClose);
     }
 
     /**
@@ -114,5 +117,17 @@ public class ViewportPanel extends Tab {
         float newGridOriginX = (float) (e.getX() / scale + pivotPoint.x);
         float newGridOriginY = (float) (e.getY() / scale + pivotPoint.y);
         ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
+    }
+
+    /**
+     * Callback for closing requests of this tab.
+     * Usually invoked by the user when pressing the 'x' of the tab.
+     *
+     * This callback is used for closing the maps's property panel.
+     *
+     * @param event The corresponding event
+     */
+    public void onTabClose(Event event) {
+        Window.removePropertyPanel();
     }
 }

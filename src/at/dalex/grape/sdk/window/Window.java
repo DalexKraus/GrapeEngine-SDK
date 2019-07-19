@@ -95,6 +95,13 @@ public class Window extends Application {
     }
 
     /**
+     * Removes the property panel from the center-split-pane.
+     */
+    public static void removePropertyPanel() {
+        mainSplitPane.getItems().remove(2);
+    }
+
+    /**
      * Prepares the property panel by adding it to the center-split-pane.
      */
     public static void preparePropertyPanel() {
