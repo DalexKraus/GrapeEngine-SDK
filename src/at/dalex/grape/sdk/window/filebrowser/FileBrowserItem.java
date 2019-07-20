@@ -27,11 +27,6 @@ public class FileBrowserItem extends TreeItem<BrowserFile> {
         refreshChildren();
     }
 
-    @Override
-    public ObservableList<TreeItem<BrowserFile>> getChildren() {
-        return super.getChildren();
-    }
-
     /**
      * Collects all paths of folders, which are currently expanded
      * within this item.
