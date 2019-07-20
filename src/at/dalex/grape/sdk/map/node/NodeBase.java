@@ -1,10 +1,13 @@
 package at.dalex.grape.sdk.map.node;
 
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 
 public abstract class NodeBase {
 
     private String title;
+    private Image treeIcon;
 
     private NodeBase parent;
     private ArrayList<NodeBase> children = new ArrayList<>();
@@ -18,12 +21,23 @@ public abstract class NodeBase {
      *
      * @param title The title of this node
      */
-    public NodeBase(String title) {
+    public NodeBase(String title, Image treeIcon) {
         this.title = title;
+        this.treeIcon = treeIcon;
     }
 
+    /**
+     * @return The title of this node visible in the map's node list.
+     */
     public String getTitle() {
         return this.title;
+    }
+
+    /**
+     * @return The icon of this node visible in the map's node list.
+     */
+    public Image getTreeIcon() {
+        return treeIcon;
     }
 
     /**
