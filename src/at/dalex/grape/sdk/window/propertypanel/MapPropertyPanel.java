@@ -1,38 +1,36 @@
 package at.dalex.grape.sdk.window.propertypanel;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
-public class MapPropertyPanel extends TitledPane {
+public class MapPropertyPanel extends SplitPane {
 
     private static final String TAB_TITLE = "Properties";
-    private SplitPane splitPane;
     private TreeView nodeTree;
     private NodeTreeBar nodeTreeBar;
 
     public MapPropertyPanel() {
         /* Set the title and add a split-pane for content (vertical orientation) */
-        setText(TAB_TITLE);
-        this.splitPane = new SplitPane();
-        splitPane.setOrientation(Orientation.VERTICAL);
-        setContent(splitPane);
-        setCollapsible(false);
+        setOrientation(Orientation.VERTICAL);
 
         /* Set preferred dimensions */
         setPrefHeight(Double.MAX_VALUE);
 
-        /* Create Node-Tree */
+        /* Create Scene-Nodes-Box */
+        VBox sceneNodesBox = new VBox();
+        sceneNodesBox.setPadding(new Insets(0, 0, 0, 0));
         this.nodeTree = new TreeView();
-        splitPane.getItems().add(nodeTree);
-
-        /* Create and add NodeTreeBar */
         this.nodeTreeBar = new NodeTreeBar();
-        splitPane.getItems().add(nodeTreeBar);
-        splitPane.getItems().add(new Pane());
+        sceneNodesBox.getChildren().add(nodeTree);
+        sceneNodesBox.getChildren().add(nodeTreeBar);
+        getItems().add(new TitledPane("Scene Nodes", sceneNodesBox));
+        getItems().add(new TitledPane("Properties", new Pane()));
 
-        splitPane.setDividerPosition(0, 0.5f);
+        setDividerPosition(0, 0.5f);
     }
 }
