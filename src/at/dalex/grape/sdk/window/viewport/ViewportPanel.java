@@ -20,7 +20,7 @@ public class ViewportPanel extends Tab {
 
     /* Title of the tab in the window */
     private static final String TAB_TITLE = "Viewport";
-    private static final String CSS_ID = "viewport";
+
 
     /* The 'vector' from the component's origin to the mouse*/
     private static Vector2f gridDragOffset = new Vector2f();
@@ -31,8 +31,6 @@ public class ViewportPanel extends Tab {
      */
     public ViewportPanel() {
         super(TAB_TITLE, ViewportManager.getViewportCanvas());
-        //Apply an id to the panel for use in css
-        setStyle("id=\"" + CSS_ID + "\"");
 
         //Drag listeners
         Node content = getContent();
