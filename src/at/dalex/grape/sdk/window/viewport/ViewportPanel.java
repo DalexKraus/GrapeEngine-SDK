@@ -31,8 +31,8 @@ public class ViewportPanel extends Tab {
     /**
      * Creates a new {@link ViewportPanel}.
      */
-    public ViewportPanel() {
-        super(TAB_TITLE);
+    public ViewportPanel(String viewportTitle) {
+        super(viewportTitle);
         this.viewportCanvas = new ViewportCanvas();
         setContent(viewportCanvas);
 

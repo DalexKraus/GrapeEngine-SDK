@@ -126,11 +126,11 @@ public class Window extends Application {
     }
 
     /**
-     * Creates the viewport panel and adds it to the viewport tab pane,
+     * Creates another viewport panel and adds it to the viewport tab pane,
      * which is contained by the center-split-pane.
      */
-    public static void createViewport() {
-        ViewportPanel viewportPanel = new ViewportPanel();
+    public static void createViewport(String viewportTitle) {
+        ViewportPanel viewportPanel = new ViewportPanel(viewportTitle);
         viewportPanel.getViewportCanvas().setViewportOrigin(480, 480);
         viewportPanel.getViewportCanvas().setViewportScale(1.0f);
         viewportTabPane.getTabs().add(viewportPanel);

@@ -34,7 +34,7 @@ public class FileBrowserListener implements EventHandler<MouseEvent> {
         String fileName = clickedFile.getName();
 
         if (fileName.endsWith(MapUtil.MAPFILE_EXT))
-            Window.createViewport();
+            Window.createViewport(fileName.replaceFirst("[.][^.]+$", ""));
 
         if (fileName.endsWith(".lua")) {
 
