@@ -22,19 +22,45 @@ public class Project {
         this.windowSettings = windowSettings;
     }
 
+    /**
+     * @return The project's name
+     */
     public String getProjectName() {
         return projectName;
     }
 
+    /**
+     * @return The root directory of the project
+     */
     public File getProjectDirectory() {
         return projectDirectory;
     }
 
+    /**
+     * @return The window settings of this project.
+     */
     public WindowSettings getWindowSettings() {
         return windowSettings;
     }
 
+    /**
+     * @return All {@link Scene}s in this project
+     */
     public ArrayList<Scene> getScenes() {
         return scenes;
+    }
+
+    /**
+     * Returns the first {@link Scene} in this project with the given name.
+     * If no scene with this name could be found, null is returned.
+     * @param sceneName The target scene name
+     */
+    public Scene getSceneByName(String sceneName) {
+        for (Scene scene : this.scenes) {
+            if (scene.getName().equals(sceneName)) {
+                return scene;
+            }
+        }
+        return null;
     }
 }
