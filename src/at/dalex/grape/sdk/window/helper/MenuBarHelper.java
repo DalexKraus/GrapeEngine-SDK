@@ -1,11 +1,9 @@
 package at.dalex.grape.sdk.window.helper;
 
-import at.dalex.grape.sdk.project.Project;
-import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.dialog.NewMapDialog;
 import at.dalex.grape.sdk.window.listener.*;
-import at.dalex.grape.sdk.window.viewport.ViewportManager;
+import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -54,7 +52,7 @@ public class MenuBarHelper {
         /* View */
         //view:togglegrid
         MenuItem view_toggle_grid = new MenuItem("ToggleTile Grid");
-        view_toggle_grid.setOnAction(handler -> ViewportManager.toggleTileGrid());
+        view_toggle_grid.setOnAction(handler -> ViewportCanvas.toggleTileGrid());
         view_toggle_grid.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.ALT_DOWN));
         viewMenu.getItems().add(view_toggle_grid);
         //view:refreshfilebrowser

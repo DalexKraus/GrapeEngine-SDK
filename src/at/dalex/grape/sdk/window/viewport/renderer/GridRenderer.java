@@ -1,19 +1,18 @@
 package at.dalex.grape.sdk.window.viewport.renderer;
 
 import at.dalex.grape.sdk.window.viewport.ITickCallback;
-import at.dalex.grape.sdk.window.viewport.ViewportManager;
+import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.util.math.Vector2f;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.awt.Point;
-
 /**
  * This class is used to draw a Tile-Grid onto the canvas.
- * The scaling is controlled by the {@link ViewportManager#getViewportScale()} value.
+ * The scaling is controlled by the {@link ViewportCanvas#getViewportScale()} value.
  */
 public class GridRenderer implements ITickCallback {
+
+    private ViewportCanvas canvasInstance;
 
     private int viewportWidth;
     private int viewportHeight;
@@ -22,11 +21,14 @@ public class GridRenderer implements ITickCallback {
     private static final float LINE_WIDTH = 1.0f;
     private static final Color LINE_COLOR = Color.DARKGRAY;
 
+    public GridRenderer(ViewportCanvas canvasInstance) {
+        this.canvasInstance = canvasInstance;
+    }
+
     @Override
     public void update(double delta) {
-        Canvas canvas = ViewportManager.getViewportCanvas();
-        this.viewportWidth  = (int) canvas.getWidth();
-        this.viewportHeight = (int) canvas.getHeight();
+        this.viewportWidth  = (int) canvasInstance.getWidth();
+        this.viewportHeight = (int) canvasInstance.getHeight();
     }
 
     @Override
@@ -34,14 +36,14 @@ public class GridRenderer implements ITickCallback {
         g.setLineWidth(LINE_WIDTH);
         g.setStroke(LINE_COLOR);
 
-        float scale = ViewportManager.getViewportScale();
-        Vector2f origin = ViewportManager.getViewportOrigin();
+        float scale = canvasInstance.getViewportScale();
+        Vector2f origin = canvasInstance.getViewportOrigin();
 
         double overlapDistanceX = calculateAxisOverlapDistance(origin.getX());
         double overlapDistanceY = calculateAxisOverlapDistance(origin.getY());
 
         //Draw tile-grid
-        if (ViewportManager.isTileGridShowing()) {
+        if (ViewportCanvas.isTileGridShowing()) {
             //Horizontal lines
             for (int y = 0; y <= viewportHeight / (tileSize * scale); y++) {
                 double yPos = 0.5f + (overlapDistanceY + (float) y * tileSize) * scale;

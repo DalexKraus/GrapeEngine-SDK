@@ -9,8 +9,8 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
-import static at.dalex.grape.sdk.window.viewport.ViewportManager.MIN_SCALE;
-import static at.dalex.grape.sdk.window.viewport.ViewportManager.MAX_SCALE;
+import static at.dalex.grape.sdk.window.viewport.ViewportCanvas.MIN_SCALE;
+import static at.dalex.grape.sdk.window.viewport.ViewportCanvas.MAX_SCALE;
 
 /**
  * This class derives from {@link TitledPane}, containing all
@@ -21,16 +21,20 @@ public class ViewportPanel extends Tab {
     /* Title of the tab in the window */
     private static final String TAB_TITLE = "Viewport";
 
+    /* The instance of the viewport canvas */
+    private ViewportCanvas viewportCanvas;
 
     /* The 'vector' from the component's origin to the mouse*/
-    private static Vector2f gridDragOffset = new Vector2f();
-    private static Vector2f pivotPoint = new Vector2f();
+    private Vector2f gridDragOffset = new Vector2f();
+    private Vector2f pivotPoint = new Vector2f();
 
     /**
      * Creates a new {@link ViewportPanel}.
      */
     public ViewportPanel() {
-        super(TAB_TITLE, ViewportManager.getViewportCanvas());
+        super(TAB_TITLE);
+        this.viewportCanvas = new ViewportCanvas();
+        setContent(viewportCanvas);
 
         //Drag listeners
         Node content = getContent();
@@ -70,10 +74,10 @@ public class ViewportPanel extends Tab {
      * @param e The MouseEvent
      */
     private void mouseDragEvent(MouseEvent e) {
-        float scale = ViewportManager.getViewportScale();
+        float scale = viewportCanvas.getViewportScale();
         float newGridOriginX = (float) (e.getX() / scale + gridDragOffset.x);
         float newGridOriginY = (float) (e.getY() / scale + gridDragOffset.y);
-        ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
+        viewportCanvas.setViewportOrigin(newGridOriginX, newGridOriginY);
     }
 
     /**
@@ -84,8 +88,8 @@ public class ViewportPanel extends Tab {
      * @return The translated mouse position in world space.
      */
     public Vector2f translateMouseToWorldSpace(double mouseX, double mouseY) {
-        Vector2f previousGridOrigin = ViewportManager.getViewportOrigin();
-        float scale = ViewportManager.getViewportScale();
+        Vector2f previousGridOrigin = viewportCanvas.getViewportOrigin();
+        float scale = viewportCanvas.getViewportScale();
         float xPos = (float) (previousGridOrigin.getX() - mouseX / scale);
         float yPos = (float) (previousGridOrigin.getY() - mouseY / scale);
         return new Vector2f(xPos, yPos);
@@ -105,16 +109,16 @@ public class ViewportPanel extends Tab {
      * @param e Mouse scroll-event
      */
     private void gridScaleEvent(ScrollEvent e) {
-        float previousScale = ViewportManager.getViewportScale();
+        float previousScale = viewportCanvas.getViewportScale();
         double scale = previousScale * Math.pow(1.00525, e.getDeltaY());
 
         //Clamp scale in-between boundaries
         scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
-        ViewportManager.setViewportScale((float) scale);
+        viewportCanvas.setViewportScale((float) scale);
 
         float newGridOriginX = (float) (e.getX() / scale + pivotPoint.x);
         float newGridOriginY = (float) (e.getY() / scale + pivotPoint.y);
-        ViewportManager.setViewportOrigin(newGridOriginX, newGridOriginY);
+        viewportCanvas.setViewportOrigin(newGridOriginX, newGridOriginY);
     }
 
     /**
@@ -128,5 +132,12 @@ public class ViewportPanel extends Tab {
     public void onTabClose(Event event) {
         Window.removePropertyPanel();
         //TODO: Update property panel to other map if there's any left.
+    }
+
+    /**
+     * @return The {@link ViewportCanvas} of this {@link ViewportCanvas}.
+     */
+    public ViewportCanvas getViewportCanvas() {
+        return this.viewportCanvas;
     }
 }

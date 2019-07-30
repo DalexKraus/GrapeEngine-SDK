@@ -8,7 +8,6 @@ import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import at.dalex.grape.sdk.window.listener.FileBrowserListener;
 import at.dalex.grape.sdk.window.propertypanel.MapPropertyPanel;
-import at.dalex.grape.sdk.window.viewport.ViewportManager;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ThemeUtil;
 import javafx.application.Application;
@@ -131,9 +130,10 @@ public class Window extends Application {
      * which is contained by the center-split-pane.
      */
     public static void createViewport() {
-        viewportTabPane.getTabs().add(new ViewportPanel());
-        ViewportManager.setViewportOrigin(480, 480);
-        ViewportManager.setViewportScale(1.0f);
+        ViewportPanel viewportPanel = new ViewportPanel();
+        viewportPanel.getViewportCanvas().setViewportOrigin(480, 480);
+        viewportPanel.getViewportCanvas().setViewportScale(1.0f);
+        viewportTabPane.getTabs().add(viewportPanel);
         preparePropertyPanel();
     }
 
@@ -156,6 +156,11 @@ public class Window extends Application {
      */
     public static TabPane getViewportTabPane() {
         return viewportTabPane;
+    }
+
+    public static ViewportPanel getSelectedViewport() {
+        Tab selectedTab = viewportTabPane.getSelectionModel().getSelectedItem();
+        return (ViewportPanel) selectedTab;
     }
 
     /**

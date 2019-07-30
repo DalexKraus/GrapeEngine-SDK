@@ -1,5 +1,7 @@
 package at.dalex.grape.sdk.window.viewport;
 
+import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
+import at.dalex.util.math.Vector2f;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,11 +16,20 @@ public class ViewportCanvas extends Canvas {
     private final int MAX_WIDTH = 8192;
     private final int MAX_HEIGHT = 4608;
 
+    /* Boundaries for scaling */
+    public static final float MIN_SCALE = 0.05f;
+    public static final float MAX_SCALE = 12.0f;
+    private float viewportScale = 1.0f;
+
+    private Vector2f viewportOrigin = new Vector2f(480, 480);
+    private static boolean showTileGrid = true;
+
     private GraphicsContext graphicsContext;
     private ArrayList<ITickCallback> tickCallbacks = new ArrayList<>();
 
     public ViewportCanvas() {
         this.graphicsContext = getGraphicsContext2D();
+        registerTickCallback(new GridRenderer(this));
 
         /**
          * Animation Loop
@@ -43,7 +54,7 @@ public class ViewportCanvas extends Canvas {
      * Centers the world's origin
      */
     public void centerOrigin() {
-        ViewportManager.setViewportOrigin((int) (getWidth() / 2.0f), (int) (getHeight() / 2.0f));
+        setViewportOrigin((int) (getWidth() / 2.0f), (int) (getHeight() / 2.0f));
     }
 
     /**
@@ -122,5 +133,64 @@ public class ViewportCanvas extends Canvas {
      */
     public GraphicsContext getGraphicsContext() {
         return this.graphicsContext;
+    }
+
+    /**
+     * @return The origin of the viewport. (or the world)
+     */
+    public Vector2f getViewportOrigin() {
+        return viewportOrigin;
+    }
+
+    /**
+     * Sets the origin of the viewport.
+     * (Or the world)
+     *
+     * @param x The x-coordinate of the origin
+     * @param y The y-coordinate of the origin
+     */
+    public void setViewportOrigin(float x, float y) {
+        viewportOrigin.set(x, y);
+    }
+
+    /**
+     * Sets the origin of the viewport.
+     * @param origin The vector representing the origin
+     */
+    public void setViewportOrigin(Vector2f origin) {
+        viewportOrigin = origin;
+    }
+
+    /**
+     * @return The scale of the viewport.
+     */
+    public float getViewportScale() {
+        return viewportScale;
+    }
+
+    /**
+     * Sets the scale of the viewport.
+     * Any passed values outside of {@link ViewportCanvas#MIN_SCALE} and {@link ViewportCanvas#MAX_SCALE}
+     * are going to be clamped to the boundaries.
+     *
+     * @param scale The desired scale of the viewport
+     */
+    public void setViewportScale(float scale) {
+        // Clamp viewport scale between MIN_SCALE and MAX_SCALE
+        viewportScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
+    }
+
+    /**
+     * @return Whether or not the grid is currently drawn
+     */
+    public static boolean isTileGridShowing() {
+        return showTileGrid;
+    }
+
+    /**
+     * Toggles grid drawing
+     */
+    public static void toggleTileGrid() {
+        showTileGrid = !showTileGrid;
     }
 }
