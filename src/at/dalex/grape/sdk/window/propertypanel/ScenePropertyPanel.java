@@ -8,13 +8,13 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class MapPropertyPanel extends SplitPane {
+public class ScenePropertyPanel extends SplitPane {
 
     private static final String TAB_TITLE = "Properties";
     private TreeView nodeTree;
     private NodeTreeBar nodeTreeBar;
 
-    public MapPropertyPanel() {
+    public ScenePropertyPanel() {
         /* Set the title and add a split-pane for content (vertical orientation) */
         setOrientation(Orientation.VERTICAL);
 
@@ -29,7 +29,7 @@ public class MapPropertyPanel extends SplitPane {
         sceneNodesBox.getChildren().add(nodeTree);
         sceneNodesBox.getChildren().add(nodeTreeBar);
         getItems().add(new TitledPane("Scene Nodes", sceneNodesBox));
-        getItems().add(new TitledPane("Properties", new Pane()));
+        getItems().add(new TitledPane(TAB_TITLE, new Pane()));
 
         setDividerPosition(0, 0.5f);
     }

@@ -18,9 +18,9 @@ public class FileBrowserFilter {
     /* Apply default rules here */
     //TODO: Maybe load from a fixed json file in the editor's resource folder?
     static {
-        //Map files
-        FilterRule mapFileRule = new FilterRule(FilterRule.Visibility.VISIBLE);
-        mapFileRule.setCustomIcon(ResourceLoader.get("image.file.map", Image.class));
+        //Scene files
+        FilterRule sceneFileRule = new FilterRule(FilterRule.Visibility.VISIBLE);
+        sceneFileRule.setCustomIcon(ResourceLoader.get("image.file.scene", Image.class));
         //Lua files
         FilterRule luaFileRule = new FilterRule(FilterRule.Visibility.VISIBLE);
         luaFileRule.setCustomIcon(ResourceLoader.get("image.file.lua", Image.class));

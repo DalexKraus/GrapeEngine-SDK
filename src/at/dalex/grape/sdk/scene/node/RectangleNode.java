@@ -1,4 +1,4 @@
-package at.dalex.grape.sdk.map.node;
+package at.dalex.grape.sdk.scene.node;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
 import javafx.scene.image.Image;

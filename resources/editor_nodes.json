@@ -3,7 +3,7 @@
     {
         "Rectangle":
         {
-            "class": "at.dalex.grape.sdk.map.node.RectangleNode",
+            "class": "at.dalex.grape.sdk.scene.node.RectangleNode",
             "properties": ["Width", "Height"]
         }
     }

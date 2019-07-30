@@ -1,7 +1,7 @@
 package at.dalex.grape.sdk.window.helper;
 
 import at.dalex.grape.sdk.window.Window;
-import at.dalex.grape.sdk.window.dialog.NewMapDialog;
+import at.dalex.grape.sdk.window.dialog.NewSceneDialog;
 import at.dalex.grape.sdk.window.listener.*;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import javafx.scene.control.Menu;
@@ -34,10 +34,10 @@ public class MenuBarHelper {
         file_new_project.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN));
         file_new_project.setOnAction(new NewProjectListener());
         file_new.getItems().add(file_new_project);
-        //new:map
-        MenuItem file_new_map = new MenuItem("Map...");
-        file_new_map.setOnAction(listener -> NewMapDialog.showDialog());
-        file_new.getItems().add(file_new_map);
+        //new:scene
+        MenuItem file_new_scene = new MenuItem("Scene...");
+        file_new_scene.setOnAction(listener -> NewSceneDialog.showDialog());
+        file_new.getItems().add(file_new_scene);
 
         MenuItem file_openProject = new MenuItem("Open Project...");
         file_openProject.setOnAction(new OpenProjectListener(Window.getPrimaryStage()));

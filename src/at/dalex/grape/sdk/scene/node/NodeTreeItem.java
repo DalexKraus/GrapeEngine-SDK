@@ -1,4 +1,4 @@
-package at.dalex.grape.sdk.map.node;
+package at.dalex.grape.sdk.scene.node;
 
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;

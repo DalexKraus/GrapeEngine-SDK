@@ -122,13 +122,13 @@ public class ViewportPanel extends Tab {
      * Callback for closing requests of this tab.
      * Usually invoked by the user when pressing the 'x' of the tab.
      *
-     * This callback is used for closing the maps's property panel.
+     * This callback is used for closing the scene's property panel.
      *
      * @param event The corresponding event
      */
     public void onTabClose(Event event) {
         Window.removePropertyPanel();
-        //TODO: Update property panel to other map if there's any left.
+        //TODO: Update property panel to other scene if there's any left.
     }
 
     /**

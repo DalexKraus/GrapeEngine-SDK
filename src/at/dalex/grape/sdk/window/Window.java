@@ -7,7 +7,7 @@ import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import at.dalex.grape.sdk.window.helper.MenuBarHelper;
 import at.dalex.grape.sdk.window.listener.FileBrowserListener;
-import at.dalex.grape.sdk.window.propertypanel.MapPropertyPanel;
+import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ThemeUtil;
 import javafx.application.Application;
@@ -32,7 +32,7 @@ public class Window extends Application {
     private static TabPane viewportTabPane;
     private static TreeView fileBrowser;
     private static FileBrowserItem fileBrowserRoot;
-    private static MapPropertyPanel mapPropertyPanel;
+    private static ScenePropertyPanel scenePropertyPanel;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -97,7 +97,7 @@ public class Window extends Application {
      */
     public static void removePropertyPanel() {
         if (mainSplitPane.getItems().size() >= 3) {
-            //Only close if no map views are open
+            //Only close if no scene views are open
             //Decrement the tab count by one (the tab has not been removed yet)
             if ((viewportTabPane.getTabs().size() - 1) == 0) {
                 mainSplitPane.getItems().remove(2);
@@ -112,8 +112,8 @@ public class Window extends Application {
         if (mainSplitPane.getItems().size() == 3)
             return;
 
-        mapPropertyPanel = new MapPropertyPanel();
-        mainSplitPane.getItems().add(mapPropertyPanel);
+        scenePropertyPanel = new ScenePropertyPanel();
+        mainSplitPane.getItems().add(scenePropertyPanel);
         mainSplitPane.setDividerPosition(1, 0.75f);
     }
 

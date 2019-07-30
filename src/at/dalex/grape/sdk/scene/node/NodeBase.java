@@ -1,4 +1,4 @@
-package at.dalex.grape.sdk.map.node;
+package at.dalex.grape.sdk.scene.node;
 
 import javafx.scene.image.Image;
 
@@ -14,7 +14,7 @@ public abstract class NodeBase {
 
     /**
      * Create a new {@link NodeBase} using a given title.
-     * This title will be shown in the maps's node list.
+     * This title will be shown in the scene's node list.
      *
      * The title vibible in the editor's node-creation window
      * is parsed from the corresponding json-file!
@@ -27,21 +27,21 @@ public abstract class NodeBase {
     }
 
     /**
-     * @return The title of this node visible in the map's node list.
+     * @return The title of this node visible in the scene's node list.
      */
     public String getTitle() {
         return this.title;
     }
 
     /**
-     * @return The icon of this node visible in the map's node list.
+     * @return The icon of this node visible in the scene's node list.
      */
     public Image getTreeIcon() {
         return treeIcon;
     }
 
     /**
-     * Sets the title of the node visible in the maps's node list.
+     * Sets the title of the node visible in the scene's node list.
      *
      * Whitespaces and tabs will be removed.
      * If the given title only consists of whitespaces or tabs,

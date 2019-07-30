@@ -24,7 +24,7 @@ public class ProjectUtil {
 
     //The names of the default directories for each project.
     private static final String[] DEFAULT_SUB_DIRS = {
-            "maps", "resource", "scripts", "shaders", "sounds", "textures"
+            "scenes", "resource", "scripts", "shaders", "sounds", "textures"
     };
 
     //The currently opened project

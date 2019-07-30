@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class ResourceLoader {
 
     //The 'storage'
-    private static HashMap<String, Object> storage = new HashMap<String, Object>();
+    private static HashMap<String, Object> storage = new HashMap<>();
 
     /**
      * Store a new object in the storage using a unique key.

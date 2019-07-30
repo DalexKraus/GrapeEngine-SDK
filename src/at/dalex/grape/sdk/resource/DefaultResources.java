@@ -33,11 +33,11 @@ public class DefaultResources {
         ResourceLoader.store(loadImage("resources/images/project_icon.png"), "image.folder.project");
 
         /* Files */
-        ResourceLoader.store(loadImage("resources/images/map_icon.png"), "image.file.map");
+        ResourceLoader.store(loadImage("resources/images/map_icon.png"), "image.file.scene");
         ResourceLoader.store(loadImage("resources/images/lua_icon.png"), "image.file.lua");
 
         /* Icons */
-        ResourceLoader.store(loadImage("resources/images/map.png"), "image.icon.map");
+        ResourceLoader.store(loadImage("resources/images/map.png"), "image.icon.scene");
 
         /* Node Icons*/
         ResourceLoader.store(loadImage("resources/images/node/rectangle.png"), "image.icon.node.rectangle");

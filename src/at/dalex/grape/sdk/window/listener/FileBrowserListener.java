@@ -1,6 +1,6 @@
 package at.dalex.grape.sdk.window.listener;
 
-import at.dalex.grape.sdk.map.MapUtil;
+import at.dalex.grape.sdk.scene.SceneUtil;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.editor.CodeEditorManager;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
@@ -33,7 +33,7 @@ public class FileBrowserListener implements EventHandler<MouseEvent> {
         File clickedFile = selectedItem.getValue();
         String fileName = clickedFile.getName();
 
-        if (fileName.endsWith(MapUtil.MAPFILE_EXT))
+        if (fileName.endsWith(SceneUtil.SCENEFILE_EXT))
             Window.createViewport(fileName.replaceFirst("[.][^.]+$", ""));
 
         if (fileName.endsWith(".lua")) {

@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox;
 
 /**
  * This class holds the widgets below the node tree in the
- * {@link MapPropertyPanel}.
+ * {@link ScenePropertyPanel}.
  */
 public class NodeTreeBar extends HBox {
 
