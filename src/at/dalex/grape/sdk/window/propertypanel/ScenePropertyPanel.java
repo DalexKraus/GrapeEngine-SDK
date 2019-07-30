@@ -4,12 +4,14 @@ import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.scene.node.RootNode;
 import at.dalex.grape.sdk.window.Window;
+import at.dalex.grape.sdk.window.listener.NodeTreeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -45,10 +47,15 @@ public class ScenePropertyPanel extends SplitPane {
         String currentSceneName = Window.getSelectedViewport().getText();
         RootNode sceneRootNode = ProjectUtil.getCurrentProject().getSceneByName(currentSceneName).getRootNode();
         this.nodeTree = new TreeView<>(new NodeTreeItem(sceneRootNode, new ImageView(sceneRootNode.getTreeIcon())));
+        nodeTree.addEventHandler(MouseEvent.MOUSE_CLICKED, new NodeTreeListener(this));
     }
 
     public void refreshNodeTree() {
         ((NodeTreeItem) nodeTree.getRoot()).refreshChildren();
+    }
+
+    public TreeView<NodeTreeItem> getNodeTree() {
+        return this.nodeTree;
     }
 
     public NodeTreeBar getNodeTreeBar() {

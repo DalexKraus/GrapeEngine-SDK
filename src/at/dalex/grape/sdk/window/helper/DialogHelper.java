@@ -65,7 +65,7 @@ public class DialogHelper {
 
         //Apply dark theme
         if (Main.useDarkTheme())
-            alertDialog.getDialogPane().getStylesheets().add("/resources/javafx/theme_dark.css");
+            alertDialog.getDialogPane().getStylesheets().add("");
 
         return alertDialog;
     }

@@ -17,6 +17,6 @@ public class ThemeUtil {
     public static void applyThemeToParent(Parent node) {
         //Different themes will be added in the future
         if (Main.useDarkTheme())
-            node.getStylesheets().add("/resources/javafx/theme_dark.css");
+            node.getStylesheets().add("/resources/javafx/theme_dark/theme.css");
     }
 }

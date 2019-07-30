@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.window.propertypanel;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
+import at.dalex.grape.sdk.window.dialog.NewNodeDialog;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -19,11 +20,16 @@ public class NodeTreeBar extends HBox {
     public NodeTreeBar() {
         /* Create buttons*/
         addNodeButton = new Button("", new ImageView(ResourceLoader.get("image.icon.node.add", Image.class)));
+        addNodeButton.setOnAction(handler -> new NewNodeDialog());
         addNodeButton.setDisable(true);
         getChildren().add(addNodeButton);
 
         setMaxHeight(28);
         setPadding(new Insets(2, 2, 2, 2));
         getStyleClass().add(STYLE_CLASS);
+    }
+
+    public Button getAddNodeButton() {
+        return this.addNodeButton;
     }
 }
