@@ -42,6 +42,7 @@ public class DefaultResources {
         /* Node Icons*/
         ResourceLoader.store(loadImage("resources/images/node/rectangle.png"), "image.icon.node.rectangle");
         ResourceLoader.store(loadImage("resources/images/node/add.png"), "image.icon.node.add");
+        ResourceLoader.store(loadImage("resources/images/node/root.png"), "image.icon.node.root");
 
         /* Files */
         ResourceLoader.store(loadImage("resources/images/file_black16x16.png"), "image.file.generic.black16");
