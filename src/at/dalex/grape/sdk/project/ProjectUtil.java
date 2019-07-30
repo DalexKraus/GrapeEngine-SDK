@@ -207,9 +207,11 @@ public class ProjectUtil {
     public static void refreshSceneList(Project project) {
         File sceneDirectory = new File(project.getProjectDirectory().getAbsolutePath() + "./scenes/");
         File[] sceneFiles = sceneDirectory.listFiles();
-        if (sceneFiles == null)
+        if (sceneFiles == null) {
             return;
+        }
 
+        project.getScenes().clear();
         for (File sceneFile : sceneFiles) {
             if (!sceneFile.getName().endsWith(SceneUtil.SCENEFILE_EXT))
                 continue;
