@@ -18,9 +18,6 @@ import static at.dalex.grape.sdk.window.viewport.ViewportCanvas.MAX_SCALE;
  */
 public class ViewportPanel extends Tab {
 
-    /* Title of the tab in the window */
-    private static final String TAB_TITLE = "Viewport";
-
     /* The instance of the viewport canvas */
     private ViewportCanvas viewportCanvas;
 
