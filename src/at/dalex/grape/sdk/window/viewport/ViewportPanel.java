@@ -129,5 +129,6 @@ public class ViewportPanel extends Tab {
      */
     public void onTabClose(Event event) {
         Window.removePropertyPanel();
+        //TODO: Update property panel to other map if there's any left.
     }
 }

@@ -68,7 +68,7 @@ public class Window extends Application {
             System.exit(0);
         });
 
-        Project proj = ProjectUtil.readProjectFile(new File(ProjectUtil.getDefaultProjectDirectory() + "/Test"));
+        Project proj = ProjectUtil.readProjectFile(new File(ProjectUtil.getDefaultProjectDirectory() + "/Game01"));
         ProjectUtil.openProject(proj);
     }
 
@@ -98,13 +98,22 @@ public class Window extends Application {
      * Removes the property panel from the center-split-pane.
      */
     public static void removePropertyPanel() {
-        mainSplitPane.getItems().remove(2);
+        if (mainSplitPane.getItems().size() >= 3) {
+            //Only close if no map views are open
+            //Decrement the tab count by one (the tab has not been removed yet)
+            if ((viewportTabPane.getTabs().size() - 1) == 0) {
+                mainSplitPane.getItems().remove(2);
+            }
+        }
     }
 
     /**
      * Prepares the property panel by adding it to the center-split-pane.
      */
     public static void preparePropertyPanel() {
+        if (mainSplitPane.getItems().size() == 3)
+            return;
+
         mapPropertyPanel = new MapPropertyPanel();
         mainSplitPane.getItems().add(mapPropertyPanel);
         mainSplitPane.setDividerPosition(1, 0.75f);
