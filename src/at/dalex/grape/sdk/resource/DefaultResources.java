@@ -39,6 +39,10 @@ public class DefaultResources {
         /* Icons */
         ResourceLoader.store(loadImage("resources/images/map.png"), "image.icon.map");
 
+        /* Node Icons*/
+        ResourceLoader.store(loadImage("resources/images/node/rectangle.png"), "image.icon.node.rectangle");
+        ResourceLoader.store(loadImage("resources/images/node/add.png"), "image.icon.node.add");
+
         /* Files */
         ResourceLoader.store(loadImage("resources/images/file_black16x16.png"), "image.file.generic.black16");
     }
