@@ -14,6 +14,8 @@ public class NodeTreeItem extends TreeItem<NodeBase> {
      * Refreshes the children of this item.
      */
     public void refreshChildren() {
+        super.getChildren().clear();
+
         NodeBase node = getValue();
         if (node == null)
             return;

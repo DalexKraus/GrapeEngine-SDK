@@ -145,6 +145,16 @@ public class Window extends Application {
     }
 
     /**
+     * Refreshes the node tree of the currently opened scene.
+     * If no scene is opened, the tree will not be refreshed.
+     */
+    public static void refreshNodeTree() {
+        if (getSelectedViewport() != null) {
+            scenePropertyPanel.refreshNodeTree();
+        }
+    }
+
+    /**
      * @return The main {@link SplitPane} of this window
      */
     public static SplitPane getMainSplitPane() {
