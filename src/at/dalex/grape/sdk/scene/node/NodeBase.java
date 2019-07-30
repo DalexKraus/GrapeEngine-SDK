@@ -1,13 +1,15 @@
 package at.dalex.grape.sdk.scene.node;
 
+import at.dalex.grape.sdk.resource.ResourceLoader;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class NodeBase {
+public abstract class NodeBase implements Serializable {
 
     private String title;
-    private Image treeIcon;
+    private String treeIconStorageKey;
 
     private NodeBase parent;
     private ArrayList<NodeBase> children = new ArrayList<>();
@@ -20,10 +22,12 @@ public abstract class NodeBase {
      * is parsed from the corresponding json-file!
      *
      * @param title The title of this node
+     * @param treeIconStorageKey The icon of the node in the tree,
+     *                           in form of a storage key.
      */
-    public NodeBase(String title, Image treeIcon) {
+    public NodeBase(String title, String treeIconStorageKey) {
         this.title = title;
-        this.treeIcon = treeIcon;
+        this.treeIconStorageKey = treeIconStorageKey;
     }
 
     /**
@@ -34,10 +38,10 @@ public abstract class NodeBase {
     }
 
     /**
-     * @return The icon of this node visible in the scene's node list.
+     * @return The {@link Image} of this node visible in the scene's node list.
      */
     public Image getTreeIcon() {
-        return treeIcon;
+        return ResourceLoader.get(this.treeIconStorageKey, Image.class);
     }
 
     /**
