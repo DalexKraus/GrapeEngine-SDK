@@ -71,4 +71,9 @@ public abstract class NodeBase implements Serializable {
     public ArrayList<NodeBase> getChildren() {
         return this.children;
     }
+
+    @Override
+    public String toString() {
+        return this.title;
+    }
 }

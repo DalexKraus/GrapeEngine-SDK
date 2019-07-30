@@ -1,8 +1,5 @@
 package at.dalex.grape.sdk.scene.node;
 
-import at.dalex.grape.sdk.resource.ResourceLoader;
-import javafx.scene.image.Image;
-
 public class RectangleNode extends NodeBase {
 
     private int width;
@@ -12,6 +9,6 @@ public class RectangleNode extends NodeBase {
      * Create a new {@link RectangleNode}.
      */
     public RectangleNode() {
-        super("Rectangle", ResourceLoader.get("image.icon.node.rectangle", Image.class));
+        super("Rectangle", "image.icon.node.rectangle");
     }
 }

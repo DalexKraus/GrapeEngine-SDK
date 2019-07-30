@@ -19,6 +19,7 @@ public class Scene implements Serializable {
     }
 
     public RootNode getRootNode() {
+        System.out.println(rootNode);
         return this.rootNode;
     }
 }
