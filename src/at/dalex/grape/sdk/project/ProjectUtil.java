@@ -1,17 +1,15 @@
 package at.dalex.grape.sdk.project;
 
 import at.dalex.grape.sdk.Main;
-import at.dalex.grape.sdk.resource.ResourceLoader;
+import at.dalex.grape.sdk.scene.Scene;
+import at.dalex.grape.sdk.scene.SceneUtil;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.filebrowser.*;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
-import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.JSONUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -188,7 +186,10 @@ public class ProjectUtil {
             boolean isResizable = (boolean)         windowSettings.get("isResizable");
             WindowSettings settings = new WindowSettings(windowTitle, windowWidth, windowHeight, isResizable);
 
-            return new Project(projectName, projectDirectory, settings);
+            Project loadedProject = new Project(projectName, projectDirectory, settings);
+            //Update scene list
+            refreshSceneList(loadedProject);
+            return loadedProject;
         } catch (IOException e) {
             DialogHelper.showErrorDialog("Error", "Read Error", "Unable to read the project file.\n" +
                     "Target destination: " + projectFile.getAbsolutePath() + "\n\n" +
@@ -197,6 +198,25 @@ public class ProjectUtil {
             DialogHelper.showErrorDialog("Error", "Parse Error", "Could not parse the project file correctly.");
         }
         return null;
+    }
+
+    /**
+     * Updates the list containing the game's scenes of the given project.
+     * @param project The project to refresh
+     */
+    public static void refreshSceneList(Project project) {
+        File sceneDirectory = new File(project.getProjectDirectory().getAbsolutePath() + "./scenes/");
+        File[] sceneFiles = sceneDirectory.listFiles();
+        if (sceneFiles == null)
+            return;
+
+        for (File sceneFile : sceneFiles) {
+            if (!sceneFile.getName().endsWith(SceneUtil.SCENEFILE_EXT))
+                continue;
+
+            Scene loadedScene = SceneUtil.loadScene(sceneFile);
+            project.getScenes().add(loadedScene);
+        }
     }
 
     /**

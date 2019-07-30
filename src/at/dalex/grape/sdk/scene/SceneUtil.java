@@ -22,4 +22,8 @@ public class SceneUtil {
 
         Window.refreshFileBrowser();
     }
+
+    public static Scene loadScene(File sceneFile) {
+        return new Scene();
+    }
 }
