@@ -22,7 +22,7 @@ public class NodeTreeBar extends HBox {
         addNodeButton.setDisable(true);
         getChildren().add(addNodeButton);
 
-        setPrefHeight(64);
+        setMaxHeight(28);
         setPadding(new Insets(2, 2, 2, 2));
         getStyleClass().add(STYLE_CLASS);
     }

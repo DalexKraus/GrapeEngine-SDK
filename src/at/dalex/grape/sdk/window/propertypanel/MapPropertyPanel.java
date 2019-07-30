@@ -24,8 +24,6 @@ public class MapPropertyPanel extends TitledPane {
         /* Set preferred dimensions */
         setPrefHeight(Double.MAX_VALUE);
 
-        splitPane.getItems().add(new Pane());
-
         /* Create Node-Tree */
         this.nodeTree = new TreeView();
         splitPane.getItems().add(nodeTree);
@@ -33,5 +31,8 @@ public class MapPropertyPanel extends TitledPane {
         /* Create and add NodeTreeBar */
         this.nodeTreeBar = new NodeTreeBar();
         splitPane.getItems().add(nodeTreeBar);
+        splitPane.getItems().add(new Pane());
+
+        splitPane.setDividerPosition(0, 0.5f);
     }
 }
