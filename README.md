@@ -45,5 +45,5 @@ even at runtime. Although this feature is not mentioned on the list, I am really
 More details about that topic coming soon.
 
 ## Screenshots
-[alpha]: https://raw.githubusercontent.com/DalexKraus/GrapeEngine-SDK/master/alpha_screenshot.png "Alpha Screenshot"
+![Alt text](/alpha_screenshot.png?raw=true "Alpha Screenshot")
      
