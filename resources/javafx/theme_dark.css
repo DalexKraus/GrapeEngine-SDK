@@ -17,8 +17,8 @@
     /* Godot-Gray */
     /* -fx-base: #413c45; */
 
-    -fx-base: #505050;
-    -fx-dark: #4b4b4b;
+    -fx-base: #343746;
+    -fx-dark: #282a36;
 
     /* A very light grey used for the background of windows.  See also
      * -fx-text-background-color, which should be used as the -fx-text-fill
@@ -85,7 +85,32 @@
 
 
 
+/* SplitPane */
+.split-pane-divider {
+    -fx-padding: 0px;
+    -fx-border-width: 1px;
+    -fx-border-color: -fx-base;
+    -fx-background-color: -fx-base;
+}
+
+
+
+/* TitledPane */
+.titled-pane > .title{
+    -fx-background-color: -fx-base;
+    -fx-border-color: -fx-dark;
+    -fx-border-width: 1px;
+}
+
+
+
 /* Checkboxes */
 .check-box:selected .mark {
     -fx-background-color: lightgray;
+}
+
+
+/* Properties Panel - NodeTreeBar */
+.nodeTreeBar {
+    -fx-background-color: -fx-dark;
 }

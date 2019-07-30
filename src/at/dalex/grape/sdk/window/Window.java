@@ -22,8 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.beans.EventHandler;
 import java.io.File;
 
 public class Window extends Application {
@@ -87,6 +85,7 @@ public class Window extends Application {
         fileBrowser = new TreeView<>(fileBrowserRoot);
         fileBrowser.addEventHandler(MouseEvent.MOUSE_CLICKED, new FileBrowserListener());
         TitledPane projectPane = new TitledPane("Project", fileBrowser);
+        projectPane.setCollapsible(false);
         projectPane.setPrefHeight(Double.MAX_VALUE);
 
         mainSplitPane.getItems().add(projectPane);

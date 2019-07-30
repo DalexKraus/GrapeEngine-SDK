@@ -11,6 +11,7 @@ public class MapPropertyPanel extends TitledPane {
     private static final String TAB_TITLE = "Properties";
     private SplitPane splitPane;
     private TreeView nodeTree;
+    private NodeTreeBar nodeTreeBar;
 
     public MapPropertyPanel() {
         /* Set the title and add a split-pane for content (vertical orientation) */
@@ -26,8 +27,11 @@ public class MapPropertyPanel extends TitledPane {
         /* Create Node-Tree */
         this.nodeTree = new TreeView();
         splitPane.getItems().add(nodeTree);
+
+        /* Create and add NodeTreeBar */
+        this.nodeTreeBar = new NodeTreeBar();
+        splitPane.getItems().add(nodeTreeBar);
         splitPane.getItems().add(new Pane());
         splitPane.setDividerPosition(0, 0.5f);
     }
-
 }
