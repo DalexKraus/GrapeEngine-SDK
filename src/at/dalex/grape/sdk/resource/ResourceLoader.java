@@ -1,5 +1,9 @@
 package at.dalex.grape.sdk.resource;
 
+import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
+
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 /**
@@ -7,8 +11,20 @@ import java.util.HashMap;
  */
 public class ResourceLoader {
 
+    private static File editor_executable_directory;
+
     //The 'storage'
     private static HashMap<String, Object> storage = new HashMap<>();
+
+    /* Retrieve the location of the program */
+    static {
+        try {
+            editor_executable_directory = new File(ResourceLoader.class.getProtectionDomain()
+                    .getCodeSource().getLocation().toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Store a new object in the storage using a unique key.
@@ -49,5 +65,14 @@ public class ResourceLoader {
      */
     public static void dispose(String key) {
         storage.remove(key);
+        //Call garbage collector
+        System.gc();
+    }
+
+    /**
+     * @return The directory in which this program is located.
+     */
+    public static File getEditorExecutableDirectroy() {
+        return editor_executable_directory;
     }
 }

@@ -16,15 +16,10 @@ import java.net.URISyntaxException;
  */
 public class DefaultResources {
 
-    private static File editor_executable_directory;
+
 
     public static void loadDefaultResources() {
-        try {
-            editor_executable_directory = new File(FileBrowserItem.class.getProtectionDomain()
-                    .getCodeSource().getLocation().toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+
 
         //Images
         /* Folders */
@@ -55,7 +50,8 @@ public class DefaultResources {
      */
     private static Image loadImage(String resourcePath) {
         try {
-            File resourceFile = new File(editor_executable_directory.getAbsolutePath() + "/" + resourcePath);
+            File executableDir = ResourceLoader.getEditorExecutableDirectroy();
+            File resourceFile = new File(executableDir.getAbsolutePath() + "/" + resourcePath);
             BufferedImage bufferedImage = ImageIO.read(resourceFile);
             return SwingFXUtils.toFXImage(bufferedImage, null);
         }
@@ -66,10 +62,5 @@ public class DefaultResources {
         return null;
     }
 
-    /**
-     * @return The directory in which this program is located.
-     */
-    public static File getEditorExecutableDirectroy() {
-        return editor_executable_directory;
-    }
+
 }
