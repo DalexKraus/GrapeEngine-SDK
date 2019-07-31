@@ -18,8 +18,8 @@
     <center>
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.0" minWidth="10.0" prefWidth="420.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.0" minWidth="0.0" prefWidth="0.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -40,7 +40,7 @@
                                 <Insets left="32.0" top="32.0" />
                             </padding>
                         </Label>
-                        <Label fx:id="node_class" text="\$NODE_CLASS">
+                        <Label fx:id="node_class" prefHeight="17.0" prefWidth="407.0" text="\$NODE_CLASS">
                             <padding>
                                 <Insets left="32.0" />
                             </padding>
