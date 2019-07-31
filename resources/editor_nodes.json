@@ -1,10 +1,19 @@
 {
-    "shape":
+    "Rectangle":
     {
-        "Rectangle":
-        {
-            "class": "at.dalex.grape.sdk.scene.node.RectangleNode",
-            "properties": ["Width", "Height"]
-        }
+        "class": "at.dalex.grape.sdk.scene.node.RectangleNode",
+        "properties":
+        [
+            {
+                "name":                 "Width",
+                "dataType":             "float",
+                "initValue":            "64.0"
+            },
+            {
+                "name":                 "Height",
+                "dataType":             "float",
+                "initValue":            "64.0"
+            }
+        ]
     }
 }

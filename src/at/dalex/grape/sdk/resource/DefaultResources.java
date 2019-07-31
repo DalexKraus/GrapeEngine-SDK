@@ -65,4 +65,11 @@ public class DefaultResources {
         }
         return null;
     }
+
+    /**
+     * @return The directory in which this program is located.
+     */
+    public static File getEditorExecutableDirectroy() {
+        return editor_executable_directory;
+    }
 }

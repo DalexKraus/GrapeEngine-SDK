@@ -169,7 +169,7 @@ public class ProjectUtil {
                         " version differs from the SDK's version,\n" +
                         "opening may result in irreversible damage!");
 
-                ButtonType cancelButton = new ButtonType("Cancel");
+                ButtonType cancelButton   = new ButtonType("Cancel");
                 ButtonType continueButton = new ButtonType("Continue");
                 openAlert.getButtonTypes().setAll(continueButton, cancelButton);
 
