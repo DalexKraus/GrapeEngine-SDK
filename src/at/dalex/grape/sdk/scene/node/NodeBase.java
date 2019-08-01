@@ -6,12 +6,14 @@ import javafx.scene.image.Image;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class represents the foundation for every node usable in the editor.
+ */
 public abstract class NodeBase implements Serializable {
 
     private String title;
     private String treeIconStorageKey;
 
-    private NodeBase parent;
     private ArrayList<NodeBase> children = new ArrayList<>();
 
     /**
@@ -56,13 +58,6 @@ public abstract class NodeBase implements Serializable {
     public void setTitle(String title) {
         String trimmedTitle = title.trim();
         this.title = trimmedTitle.length() > 0 ? trimmedTitle : this.title;
-    }
-
-    /**
-     * @return Returns the parent of this node in the tree
-     */
-    public NodeBase getParent() {
-        return this.parent;
     }
 
     /**
