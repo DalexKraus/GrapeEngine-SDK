@@ -10,8 +10,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This class is used to read the classes from all node types
+ * (which can be used in the editor later on)
+ * from the given file.
+ */
 public class NodeReader {
 
+    /**
+     * Reads all node classes from the given file.
+     *
+     * @param nodeFile The file which from which to read from
+     * @return A list containing all classes
+     */
     public static ArrayList<Class> readNodeFile(File nodeFile) {
         ArrayList<Class> nodeClasses = new ArrayList<>();
         JSONParser parser = new JSONParser();
