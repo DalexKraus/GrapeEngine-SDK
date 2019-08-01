@@ -39,7 +39,6 @@ public class NewNodeDialog extends Stage {
     private NodeBase lastSelectedNode;
 
     public NewNodeDialog() {
-
         /* Load node classes from resource file */
         File executableDir = ResourceLoader.getEditorExecutableDirectroy();
         File nodeFile = new File(executableDir + "/resources/editor_nodes.json");
@@ -99,6 +98,11 @@ public class NewNodeDialog extends Stage {
         }
     }
 
+    /**
+     * Handles the process of adding the user selected node
+     * to the node tree in the editor.
+     * @param selectedNodeInstance The selected node instance (selected by the user)
+     */
     private void handleNodeSelection(NodeBase selectedNodeInstance) {
         //Get the selected node in the node tree
         NodeTreeItem selectedNodeTreeItem = Window.getScenePropertyPanel().getSelectedNode();
