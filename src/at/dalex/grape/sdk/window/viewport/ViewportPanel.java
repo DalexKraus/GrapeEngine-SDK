@@ -128,6 +128,10 @@ public class ViewportPanel extends Tab {
      */
     public void onTabClose(Event event) {
         Window.removePropertyPanel();
+        //Clean-Up
+        viewportCanvas.dispose();
+        viewportCanvas = null;
+
         //TODO: Update property panel to other scene if there's any left.
     }
 

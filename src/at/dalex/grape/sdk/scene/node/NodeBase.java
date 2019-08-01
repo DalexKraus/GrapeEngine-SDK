@@ -1,6 +1,8 @@
 package at.dalex.grape.sdk.scene.node;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
+import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.io.Serializable;
@@ -31,6 +33,12 @@ public abstract class NodeBase implements Serializable {
         this.title = title;
         this.treeIconStorageKey = treeIconStorageKey;
     }
+
+    /**
+     * Every node must be able to draw itself (onto the viewport).
+     * @param g The {@link GraphicsContext} from the {@link at.dalex.grape.sdk.window.viewport.ViewportCanvas}
+     */
+    public abstract void draw(ViewportCanvas canvas, GraphicsContext g);
 
     /**
      * @return The title of this node visible in the scene's node list.

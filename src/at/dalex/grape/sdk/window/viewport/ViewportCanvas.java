@@ -1,7 +1,10 @@
 package at.dalex.grape.sdk.window.viewport;
 
 import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
+import at.dalex.grape.sdk.window.viewport.renderer.NodeRenderer;
+import at.dalex.util.Disposable;
 import at.dalex.util.math.Vector2f;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
 /**
  * This class represents the actual canvas where stuff gets drawn.
  */
-public class ViewportCanvas extends Canvas {
+public class ViewportCanvas extends Canvas implements Disposable {
 
     private final int MAX_WIDTH = 8192;
     private final int MAX_HEIGHT = 4608;
@@ -27,14 +30,17 @@ public class ViewportCanvas extends Canvas {
     private GraphicsContext graphicsContext;
     private ArrayList<ITickCallback> tickCallbacks = new ArrayList<>();
 
+    private AnimationTimer animationTimer;
+
     public ViewportCanvas() {
         this.graphicsContext = getGraphicsContext2D();
         registerTickCallback(new GridRenderer(this));
+        registerTickCallback(new NodeRenderer(this));
 
         /**
          * Animation Loop
          */
-        new AnimationTimer() {
+        this.animationTimer = new AnimationTimer() {
             final long startTime = System.nanoTime();
             double lastLoopDistance = -1;
 
@@ -47,7 +53,8 @@ public class ViewportCanvas extends Canvas {
                 lastLoopDistance = timeDistance;
                 draw(deltaTime);
             }
-        }.start();
+        };
+        animationTimer.start();
     }
 
     /**
@@ -192,5 +199,12 @@ public class ViewportCanvas extends Canvas {
      */
     public static void toggleTileGrid() {
         showTileGrid = !showTileGrid;
+    }
+
+    @Override
+    public void dispose() {
+        tickCallbacks.clear();
+        animationTimer.stop();
+        animationTimer = null;
     }
 }
