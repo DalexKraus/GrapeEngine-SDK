@@ -47,3 +47,7 @@ More details about that topic coming soon.
 ## Screenshots
 ![Alt text](/alpha_screenshot.png?raw=true "Alpha Screenshot")
      
+## Used Libraries
+This SDK is dependent on the following libraries:
+* [JSON-Simple](https://code.google.com/archive/p/json-simple/)
+* [RichTextFX](https://github.com/FXMisc/RichTextFX)
