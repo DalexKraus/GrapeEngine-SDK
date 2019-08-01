@@ -146,16 +146,6 @@ public class Window extends Application {
     }
 
     /**
-     * Refreshes the node tree of the currently opened scene.
-     * If no scene is opened, the tree will not be refreshed.
-     */
-    public static void refreshNodeTree() {
-        if (getSelectedViewport() != null) {
-            scenePropertyPanel.refreshNodeTree();
-        }
-    }
-
-    /**
      * @return The main {@link SplitPane} of this window
      */
     public static SplitPane getMainSplitPane() {
@@ -169,6 +159,9 @@ public class Window extends Application {
         return viewportTabPane;
     }
 
+    /**
+     * @return The {@link ViewportPanel} currently visible in the editor.
+     */
     public static ViewportPanel getSelectedViewport() {
         Tab selectedTab = viewportTabPane.getSelectionModel().getSelectedItem();
         return (ViewportPanel) selectedTab;
@@ -179,6 +172,13 @@ public class Window extends Application {
      */
     public static TreeView getFileBrowser() {
         return fileBrowser;
+    }
+
+    /**
+     * @return The {@link ScenePropertyPanel}, the panel visible on the right hand side.
+     */
+    public static ScenePropertyPanel getScenePropertyPanel() {
+        return scenePropertyPanel;
     }
 
     /**

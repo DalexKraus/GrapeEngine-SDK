@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.window.helper;
 
 import at.dalex.grape.sdk.Main;
+import at.dalex.util.ThemeUtil;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 

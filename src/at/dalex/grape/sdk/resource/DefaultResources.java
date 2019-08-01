@@ -1,6 +1,5 @@
 package at.dalex.grape.sdk.resource;
 
-import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
@@ -8,7 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * This class loads the default resources which
@@ -19,8 +17,6 @@ public class DefaultResources {
 
 
     public static void loadDefaultResources() {
-
-
         //Images
         /* Folders */
         ResourceLoader.store(loadImage("resources/images/folder_black32x32.png"), "image.folder.black32");
@@ -36,6 +32,10 @@ public class DefaultResources {
 
         /* Node Icons*/
         ResourceLoader.store(loadImage("resources/images/node/rectangle.png"), "image.icon.node.rectangle");
+        ResourceLoader.store(loadImage("resources/images/node/light.png"), "image.icon.node.light");
+        ResourceLoader.store(loadImage("resources/images/node/logic_autosave.png"), "image.icon.node.logicautosave");
+        ResourceLoader.store(loadImage("resources/images/node/logic_script.png"), "image.icon.node.logicscript");
+
         ResourceLoader.store(loadImage("resources/images/node/add.png"), "image.icon.node.add");
         ResourceLoader.store(loadImage("resources/images/node/root.png"), "image.icon.node.root");
 

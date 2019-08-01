@@ -21,15 +21,14 @@ public class NodeTreeItem extends TreeItem<NodeBase> {
             return;
 
         for (NodeBase child : node.getChildren()) {
-            String nodeTitle = node.getTitle();
-            Image nodeIcon = node.getTreeIcon();
+            Image nodeIcon = child.getTreeIcon();
 
-            super.getChildren().add(new NodeTreeItem(node, new ImageView(nodeIcon)));
+            //Create new tree node for child and rebuild it's children
+            NodeTreeItem childTreeNode = new NodeTreeItem(child, new ImageView(nodeIcon));
+            childTreeNode.refreshChildren();
+
+            //Finally add the populated child node to the list of children (of this node)
+            super.getChildren().add(childTreeNode);
         }
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return super.isLeaf();
     }
 }

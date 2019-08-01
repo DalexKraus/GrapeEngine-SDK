@@ -5,6 +5,7 @@ import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.scene.node.RootNode;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.listener.NodeTreeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
@@ -52,6 +53,14 @@ public class ScenePropertyPanel extends SplitPane {
 
     public void refreshNodeTree() {
         ((NodeTreeItem) nodeTree.getRoot()).refreshChildren();
+    }
+
+    /**
+     * @return The <b>first</b> selected node.
+     */
+    public NodeTreeItem getSelectedNode() {
+        ObservableList selectedItems = nodeTree.getSelectionModel().getSelectedItems();
+        return (NodeTreeItem) selectedItems.get(0);
     }
 
     public TreeView<NodeTreeItem> getNodeTree() {

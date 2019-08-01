@@ -2,5 +2,17 @@
     "Rectangle":
     {
         "class": "at.dalex.grape.sdk.scene.node.RectangleNode"
+    },
+    "Light":
+    {
+        "class": "at.dalex.grape.sdk.scene.node.LightNode"
+    },
+    "LogicAutosave":
+    {
+        "class": "at.dalex.grape.sdk.scene.node.LogicAutosaveNode"
+    },
+    "LogicScript":
+    {
+        "class": "at.dalex.grape.sdk.scene.node.LogicScriptNode"
     }
 }
