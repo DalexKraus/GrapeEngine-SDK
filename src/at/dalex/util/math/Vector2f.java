@@ -122,6 +122,18 @@ public class Vector2f {
         return (float) Math.sqrt(lengthSquared());
     }
 
+    public Vector2f add(Vector2f other) {
+        this.x += other.x;
+        this.y += other.y;
+        return this;
+    }
+
+    public Vector2f add(float xOffset, float yOffset) {
+        this.x += xOffset;
+        this.y += yOffset;
+        return this;
+    }
+
     /**
      * Add a vector to another vector and place the result in a destination
      * vector.

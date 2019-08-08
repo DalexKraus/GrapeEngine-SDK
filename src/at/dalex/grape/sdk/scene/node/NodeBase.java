@@ -1,7 +1,9 @@
 package at.dalex.grape.sdk.scene.node;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
+import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
+import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -13,10 +15,18 @@ import java.util.ArrayList;
  */
 public abstract class NodeBase implements Serializable {
 
+    /* Generic */
     private String title;
     private String treeIconStorageKey;
 
+    /* Positioning */
+    private Vector2f parentSpaceLocation;
+    private int width;
+    private int height;
+
+    /* Node management */
     private ArrayList<NodeBase> children = new ArrayList<>();
+    private NodeBase parent;
 
     /**
      * Create a new {@link NodeBase} using a given title.
@@ -34,11 +44,32 @@ public abstract class NodeBase implements Serializable {
         this.treeIconStorageKey = treeIconStorageKey;
     }
 
+    public void drawNode(ViewportCanvas canvas, GraphicsContext g) {
+        //Draw resize knobs
+        Image knob = ResourceLoader.get("image.icon.node.resizeknob", Image.class);
+
+        ViewportCanvas  currentCanvas   = Window.getSelectedViewport().getViewportCanvas();
+        Vector2f        viewportOrigin  = currentCanvas.getViewportOrigin();
+        Vector2f        worldPosition   = viewportOrigin.add(this.getWorldPosition());
+        float           viewportScale   = currentCanvas.getViewportScale();
+
+        Vector2f[] cornerPositions = getBoundaryCorners();
+        float[] knobOffsets = { -4, -4, 4, -4, -4, 4, 4, 4 };
+
+        for (int i = 0; i < knobOffsets.length; i++) {
+            Vector2f knobPosition = worldPosition.add(cornerPositions[i / 2]);
+            g.drawImage(knob, knobPosition.x * viewportScale + knobOffsets[i], knobPosition.y * viewportScale);
+        }
+
+        //Finally draw the actual node
+        draw(canvas, g);
+    }
+
     /**
      * Every node must be able to draw itself (onto the viewport).
      * @param g The {@link GraphicsContext} from the {@link at.dalex.grape.sdk.window.viewport.ViewportCanvas}
      */
-    public abstract void draw(ViewportCanvas canvas, GraphicsContext g);
+    protected abstract void draw(ViewportCanvas canvas, GraphicsContext g);
 
     /**
      * @return The title of this node visible in the scene's node list.
@@ -66,6 +97,75 @@ public abstract class NodeBase implements Serializable {
     public void setTitle(String title) {
         String trimmedTitle = title.trim();
         this.title = trimmedTitle.length() > 0 ? trimmedTitle : this.title;
+    }
+
+    /**
+     * @return The position of this node in the world.
+     */
+    public Vector2f getWorldPosition() {
+        if (parentSpaceLocation == null) {
+            this.parentSpaceLocation = new Vector2f();
+        }
+        return parent != null ? parent.getWorldPosition().add(parentSpaceLocation) : parentSpaceLocation;
+    }
+
+    /**
+     * Sets the position of the node relative to it's parent.
+     * @param parentSpaceLocation The position vector
+     */
+    public void setParentSpaceLocation(Vector2f parentSpaceLocation) {
+        this.parentSpaceLocation = parentSpaceLocation;
+    }
+
+    /**
+     * @return The width of this node in the world
+     */
+    public int getWidth() {
+        return this.width;
+    }
+
+    /**
+     * Sets the width of this node in the world.
+     * @param width The new width
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    /**
+     * @return The height of this node in the world
+     */
+    public int getHeight() {
+        return this.height;
+    }
+
+    /**
+     * Sets the height of this node in the world.
+     * @param height The new height
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    /**
+     * @return The corner positions of this node (in parent space).
+     */
+    public Vector2f[] getBoundaryCorners() {
+        return new Vector2f[] {
+                new Vector2f(parentSpaceLocation.x,         parentSpaceLocation.y),
+                new Vector2f(parentSpaceLocation.x + width, parentSpaceLocation.y),
+                new Vector2f(parentSpaceLocation.x,         parentSpaceLocation.y + height),
+                new Vector2f(parentSpaceLocation.x + width, parentSpaceLocation.y + height)
+        };
+    }
+
+    /**
+     * Add a child node to this node.
+     * @param child The child node to add
+     */
+    public void addChild(NodeBase child) {
+        child.parent = this;
+        this.children.add(child);
     }
 
     /**

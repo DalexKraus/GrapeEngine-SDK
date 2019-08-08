@@ -53,7 +53,7 @@ public class NodeRenderer implements ITickCallback {
      */
     private void drawNode(NodeBase nodeInstance, GraphicsContext g) {
         //Draw the given node
-        nodeInstance.draw(canvasInstance, g);
+        nodeInstance.drawNode(canvasInstance, g);
 
         //Draw children
         for (NodeBase child : nodeInstance.getChildren()) {

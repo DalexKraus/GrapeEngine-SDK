@@ -29,6 +29,7 @@ public class DefaultResources {
 
         /* Icons */
         ResourceLoader.store(loadImage("resources/images/map.png"), "image.icon.scene");
+        ResourceLoader.store(loadImage("resources/images/node/resize_knob.png"), "image.icon.node.resizeknob");
 
         /* Node Icons*/
         ResourceLoader.store(loadImage("resources/images/node/rectangle.png"), "image.icon.node.rectangle");
