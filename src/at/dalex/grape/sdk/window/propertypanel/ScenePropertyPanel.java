@@ -1,10 +1,10 @@
 package at.dalex.grape.sdk.window.propertypanel;
 
-import at.dalex.grape.sdk.project.ProjectUtil;
+import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.scene.node.RootNode;
-import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.listener.NodeTreeListener;
+import at.dalex.util.ViewportUtil;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -45,10 +45,12 @@ public class ScenePropertyPanel extends SplitPane {
     }
 
     private void createTreeView() {
-        String currentSceneName = Window.getSelectedViewport().getText();
-        RootNode sceneRootNode = ProjectUtil.getCurrentProject().getSceneByName(currentSceneName).getRootNode();
-        this.nodeTree = new TreeView<>(new NodeTreeItem(sceneRootNode, new ImageView(sceneRootNode.getTreeIcon())));
-        nodeTree.addEventHandler(MouseEvent.MOUSE_CLICKED, new NodeTreeListener(this));
+        Scene currentScene = ViewportUtil.getEditingScene();
+        if (currentScene != null) {
+            RootNode sceneRootNode = currentScene.getRootNode();
+            this.nodeTree = new TreeView<>(new NodeTreeItem(sceneRootNode, new ImageView(sceneRootNode.getTreeIcon())));
+            nodeTree.addEventHandler(MouseEvent.MOUSE_CLICKED, new NodeTreeListener(this));
+        }
     }
 
     public void refreshNodeTree() {

@@ -41,7 +41,9 @@ public class NodeRenderer implements ITickCallback {
         if (currentViewport != null) {
             String viewportName = currentViewport.getText();
             Scene currentScene = ProjectUtil.getCurrentProject().getSceneByName(viewportName);
-            drawNode(currentScene.getRootNode(), g);
+            if (currentScene != null) {
+                drawNode(currentScene.getRootNode(), g);
+            }
         }
     }
 
