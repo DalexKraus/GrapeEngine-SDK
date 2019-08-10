@@ -205,7 +205,7 @@ public class ProjectUtil {
      * @param project The project to refresh
      */
     public static void refreshSceneList(Project project) {
-        File sceneDirectory = new File(project.getProjectDirectory().getAbsolutePath() + "./scenes/");
+        File sceneDirectory = new File(project.getProjectDirectory().getAbsolutePath() + "/scenes/");
         File[] sceneFiles = sceneDirectory.listFiles();
         if (sceneFiles == null) {
             return;
