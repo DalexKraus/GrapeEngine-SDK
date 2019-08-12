@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class represents the foundation for every node usable in the editor.
@@ -45,20 +46,28 @@ public abstract class NodeBase implements Serializable {
     }
 
     public void drawNode(ViewportCanvas canvas, GraphicsContext g) {
+        //RootNodes don't need to draw themselves.
+        if (this instanceof RootNode)
+            return;
+
         //Draw resize knobs
         Image knob = ResourceLoader.get("image.icon.node.resizeknob", Image.class);
 
         ViewportCanvas  currentCanvas   = Window.getSelectedViewport().getViewportCanvas();
-        Vector2f        viewportOrigin  = currentCanvas.getViewportOrigin();
+        //The origin needs to be cloned in order to prevent modifications to the reference object
+        Vector2f        viewportOrigin  = currentCanvas.getViewportOrigin().clone();
         Vector2f        worldPosition   = viewportOrigin.add(this.getWorldPosition());
         float           viewportScale   = currentCanvas.getViewportScale();
 
         Vector2f[] cornerPositions = getBoundaryCorners();
         float[] knobOffsets = { -4, -4, 4, -4, -4, 4, 4, 4 };
 
-        for (int i = 0; i < knobOffsets.length; i++) {
+        for (int i = 0; i < knobOffsets.length; i += 2) {
             Vector2f knobPosition = worldPosition.add(cornerPositions[i / 2]);
-            g.drawImage(knob, knobPosition.x * viewportScale + knobOffsets[i], knobPosition.y * viewportScale);
+            g.drawImage(knob,
+                    knobPosition.x * viewportScale,
+                    knobPosition.y * viewportScale,
+                    4, 4);
         }
 
         //Finally draw the actual node

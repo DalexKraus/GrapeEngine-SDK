@@ -1,6 +1,6 @@
 package at.dalex.util.math;
 
-public class Vector2f {
+public class Vector2f implements Cloneable {
 
     public float x, y;
 
@@ -229,5 +229,16 @@ public class Vector2f {
         Vector2f other = (Vector2f)obj;
         if (x == other.x && y == other.y) return true;
         return false;
+    }
+
+    public Vector2f clone() {
+        Vector2f clone = null;
+        try {
+            clone = (Vector2f) super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.err.println("Unable to clone vector.");
+            e.printStackTrace();
+        }
+        return clone;
     }
 }
