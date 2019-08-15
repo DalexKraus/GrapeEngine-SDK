@@ -16,6 +16,19 @@ public class ViewportUtil {
      * @return The current scene or null if no scene could be found.
      */
     public static Scene getEditingScene() {
+        ViewportPanel currentViewport = getEditingViewport();
+        Project currentProject = ProjectUtil.getCurrentProject();
+
+        //Get the current scene by searching for it in the currently opened
+        //project, as the viewport title equals the scene file without the extension.
+        return currentProject.getSceneByName(currentViewport.getText());
+    }
+
+    /**
+     * Retrieves the Viewport object which is currently visible to the user.
+     * @return The visible {@link ViewportPanel}
+     */
+    public static ViewportPanel getEditingViewport() {
         Project currentProject = ProjectUtil.getCurrentProject();
 
         //Throw an exception of no project is opened
@@ -28,8 +41,6 @@ public class ViewportUtil {
         if (currentViewport == null)
             throw new IllegalStateException("A viewport must be opened to retrieve the current scene.");
 
-        //Get the current scene by searching for it in the currently opened
-        //project, as the viewport title equals the scene file without the extension.
-        return currentProject.getSceneByName(currentViewport.getText());
+        return currentViewport;
     }
 }

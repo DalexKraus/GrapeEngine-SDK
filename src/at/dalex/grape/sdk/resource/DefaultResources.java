@@ -14,8 +14,6 @@ import java.io.IOException;
  */
 public class DefaultResources {
 
-
-
     public static void loadDefaultResources() {
         //Images
         /* Folders */

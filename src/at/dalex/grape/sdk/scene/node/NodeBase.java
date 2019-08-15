@@ -2,19 +2,22 @@ package at.dalex.grape.sdk.scene.node;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.Window;
+import at.dalex.grape.sdk.window.event.EventHandler;
+import at.dalex.grape.sdk.window.event.EventListener;
+import at.dalex.grape.sdk.window.event.InteractionEvent;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
+import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * This class represents the foundation for every node usable in the editor.
  */
-public abstract class NodeBase implements Serializable {
+public abstract class NodeBase implements EventListener, Serializable {
 
     /* Generic */
     private String title;
@@ -43,14 +46,24 @@ public abstract class NodeBase implements Serializable {
     public NodeBase(String title, String treeIconStorageKey) {
         this.title = title;
         this.treeIconStorageKey = treeIconStorageKey;
+
+        if (!(this instanceof RootNode))
+            ViewportUtil.getEditingViewport().addInteractionListener(this);
     }
 
+    /**
+     * Draws the node onto the viewport canvas currently visible to the user.
+     * If the node is selected, resize-knobs are rendered here.
+     *
+     * @param canvas The current canvas visible to the user
+     * @param g The {@link GraphicsContext} of that canvas.
+     */
     public void drawNode(ViewportCanvas canvas, GraphicsContext g) {
         //RootNodes don't need to draw themselves.
         if (this instanceof RootNode)
             return;
 
-        //Draw resize knobs
+        /* Draw resize knobs */
         Image knob = ResourceLoader.get("image.icon.node.resizeknob", Image.class);
 
         ViewportCanvas  currentCanvas   = Window.getSelectedViewport().getViewportCanvas();
@@ -59,16 +72,21 @@ public abstract class NodeBase implements Serializable {
         Vector2f        worldPosition   = viewportOrigin.add(this.getWorldPosition());
         float           viewportScale   = currentCanvas.getViewportScale();
 
+        int knobSize = 8;
         Vector2f[] cornerPositions = getBoundaryCorners();
-        float[] knobOffsets = { -4, -4, 4, -4, -4, 4, 4, 4 };
+        float[] knobOffsets = { -2, -2, 2, -2, -2, 2, 2, 2 };
+        for (int i = 0; i < knobOffsets.length; i++)
+            if (knobOffsets[i] < 0) knobOffsets[i] -= knobSize;
 
         for (int i = 0; i < knobOffsets.length; i += 2) {
-            Vector2f knobPosition = worldPosition.add(cornerPositions[i / 2]);
+            Vector2f knobPosition = cornerPositions[i / 2].add(worldPosition);
             g.drawImage(knob,
-                    knobPosition.x * viewportScale,
-                    knobPosition.y * viewportScale,
-                    4, 4);
+                    knobPosition.x * viewportScale + knobOffsets[i],
+                    knobPosition.y * viewportScale + knobOffsets[i + 1],
+                    knobSize, knobSize);
         }
+
+        /* --- --- --- --- --- */
 
         //Finally draw the actual node
         draw(canvas, g);
@@ -169,6 +187,25 @@ public abstract class NodeBase implements Serializable {
     }
 
     /**
+     * Checks if the given coordinates intersect
+     * with the boundaries of this node.
+     * The passed coordinates must be in screen-space.
+     *
+     * @return Intersects with the boundaries
+     */
+    public boolean intersectsWithScreenCoordinates(Vector2f screenCoordinates) {
+        //Transform the screen-coordinates into world-coordinates
+        screenCoordinates.add(ViewportUtil.getEditingViewport().getViewportCanvas().getViewportOrigin().clone().negate());
+
+        //Check if coordinate is inside the boundaries of this node.
+        //(Basic AABB collision check)
+        Vector2f worldPos = getWorldPosition();
+        return (screenCoordinates.x >= worldPos.x && screenCoordinates.y >= worldPos.y
+                && screenCoordinates.x <= (screenCoordinates.x + width)
+                && screenCoordinates.y <= (screenCoordinates.y + height));
+    }
+
+    /**
      * Add a child node to this node.
      * @param child The child node to add
      */
@@ -184,8 +221,18 @@ public abstract class NodeBase implements Serializable {
         return this.children;
     }
 
+    /**
+     * This node needs to be able to represent itself
+     * in the node tree.
+     * @return The name of this node.
+     */
     @Override
     public String toString() {
         return this.title;
+    }
+
+    @EventHandler
+    public void onMouseMove(InteractionEvent e) {
+        System.out.println("MousePos: " + e.getMouseEventInstance().getX() + " | " + e.getMouseEventInstance().getY());
     }
 }

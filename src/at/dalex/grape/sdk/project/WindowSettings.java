@@ -2,7 +2,7 @@ package at.dalex.grape.sdk.project;
 
 /**
  * This class contains information about the game's window.
- * E.g.: window width and height, the title of the window, etc.
+ * EventHandler.g.: window width and height, the title of the window, etc.
  */
 public class WindowSettings {
 

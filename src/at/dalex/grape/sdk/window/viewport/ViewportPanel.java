@@ -1,13 +1,21 @@
 package at.dalex.grape.sdk.window.viewport;
 
 import at.dalex.grape.sdk.window.Window;
+import at.dalex.grape.sdk.window.event.EventBase;
+import at.dalex.grape.sdk.window.event.EventListener;
+import at.dalex.grape.sdk.window.event.EventManager;
+import at.dalex.grape.sdk.window.event.InteractionEvent;
 import at.dalex.util.math.Vector2f;
 import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import static at.dalex.grape.sdk.window.viewport.ViewportCanvas.MIN_SCALE;
 import static at.dalex.grape.sdk.window.viewport.ViewportCanvas.MAX_SCALE;
@@ -25,6 +33,9 @@ public class ViewportPanel extends Tab {
     private Vector2f gridDragOffset = new Vector2f();
     private Vector2f pivotPoint = new Vector2f();
 
+    /* List of listeners responsible for interactions */
+    private ArrayList<EventListener> interactionListeners = new ArrayList<>();
+
     /**
      * Creates a new {@link ViewportPanel}.
      */
@@ -33,17 +44,54 @@ public class ViewportPanel extends Tab {
         this.viewportCanvas = new ViewportCanvas();
         setContent(viewportCanvas);
 
-        //Drag listeners
+        //Mouse listeners
         Node content = getContent();
-        content.setOnMousePressed(this::mousePressedEvent);
-        content.setOnMouseDragged(this::mouseDragEvent);
+        content.setOnMousePressed(this::onMouseEvent);
+        content.setOnMouseDragged(this::onMouseEvent);
+        content.setOnMouseMoved(this::onMouseEvent);
 
-        //Scroll listeners
-        content.setOnMouseMoved(this::mouseMoveEvent);
+        //Scroll listener
         content.setOnScroll(this::gridScaleEvent);
 
         //Tab close listener
         setOnCloseRequest(this::onTabClose);
+    }
+
+    public void addInteractionListener(EventListener listenerInstance) {
+        if (!interactionListeners.contains(listenerInstance)) {
+            interactionListeners.add(listenerInstance);
+        }
+    }
+
+    public void removeInteractionListener(EventListener listenerInstance) {
+        interactionListeners.remove(listenerInstance);
+    }
+
+    /**
+     * This method is used for listening to mouse events.
+     * The method will invoke a new InteractionEvent
+     * for use in other locations of the editor.
+     *
+     * After that, this method will redirect the event
+     * to the responsible sub-method.
+     *
+     * @param event The mouse event that was made by the user
+     */
+    private void onMouseEvent(MouseEvent event) {
+        //Invoke new InteractionEvent
+        EventBase eventInstance = new InteractionEvent(event);
+        for (EventListener listenerInstance : interactionListeners) {
+            ArrayList<Method> handlerMethods = EventManager.getEventHandlerMethods(listenerInstance);
+            EventManager.callHandlerMethods(listenerInstance, handlerMethods, eventInstance);
+        }
+
+        EventType<? extends MouseEvent> eventType = event.getEventType();
+        if (eventType.equals(MouseEvent.MOUSE_PRESSED))
+            mousePressEvent(event);
+        if (eventType.equals(MouseEvent.MOUSE_DRAGGED))
+            mouseDragEvent(event);
+        if (eventType.equals(MouseEvent.MOUSE_MOVED))
+            mouseMoveEvent(event);
     }
 
     /**
@@ -52,13 +100,12 @@ public class ViewportPanel extends Tab {
      * the {@link ViewportPanel#gridDragOffset} vector from.
      * @param e The MouseEvent
      */
-    private void mousePressedEvent(MouseEvent e) {
+    private void mousePressEvent(MouseEvent e) {
         gridDragOffset = translateMouseToWorldSpace(e);
     }
 
     /**
      * Callback for mouse movement.
-     * This is used to
      * @param e
      */
     private void mouseMoveEvent(MouseEvent e) {
@@ -75,6 +122,7 @@ public class ViewportPanel extends Tab {
         float newGridOriginX = (float) (e.getX() / scale + gridDragOffset.x);
         float newGridOriginY = (float) (e.getY() / scale + gridDragOffset.y);
         viewportCanvas.setViewportOrigin(newGridOriginX, newGridOriginY);
+
     }
 
     /**
