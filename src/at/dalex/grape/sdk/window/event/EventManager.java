@@ -40,7 +40,7 @@ public class EventManager {
         for (Method method : listenerMethods) {
             //Check if method is annotated with an 'EventHandler' annotation
             if (method.isAnnotationPresent(EventHandler.class)) {
-                handlerMethods.add( method );
+                handlerMethods.add(method);
             }
         }
 
@@ -55,6 +55,10 @@ public class EventManager {
      */
     public static void callHandlerMethods(EventListener listenerInstance, ArrayList<Method> handlerMethods, EventBase invocationEvent) {
         for (Method handlerMethod : handlerMethods) {
+            //Break if event has been cancelled by a handler method
+            if (invocationEvent.isCancelled())
+                break;
+
             //Skip if method does not contains parameter with the type of the invocation event
             Class<?>[] parameterTypes = handlerMethod.getParameterTypes();
             if (!Arrays.asList(parameterTypes).contains(invocationEvent.getClass()))
