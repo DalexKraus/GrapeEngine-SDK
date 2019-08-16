@@ -10,6 +10,9 @@ import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +34,10 @@ public abstract class NodeBase implements EventListener, Serializable {
     /* Node management */
     private ArrayList<NodeBase> children = new ArrayList<>();
     private NodeBase parent;
+
+    /* Editing */
+    private boolean isSelected;
+    private Rectangle[] resizeKnobHitboxes;
 
     /**
      * Create a new {@link NodeBase} using a given title.
@@ -64,28 +71,29 @@ public abstract class NodeBase implements EventListener, Serializable {
             return;
 
         /* Draw resize knobs */
-        Image knob = ResourceLoader.get("image.icon.node.resizeknob", Image.class);
+        if (isSelected) {
+            Image knob = ResourceLoader.get("image.icon.node.resizeknob", Image.class);
 
-        ViewportCanvas  currentCanvas   = Window.getSelectedViewport().getViewportCanvas();
-        //The origin needs to be cloned in order to prevent modifications to the reference object
-        Vector2f        viewportOrigin  = currentCanvas.getViewportOrigin().clone();
-        Vector2f        worldPosition   = viewportOrigin.add(this.getWorldPosition());
-        float           viewportScale   = currentCanvas.getViewportScale();
+            ViewportCanvas currentCanvas = Window.getSelectedViewport().getViewportCanvas();
+            //The origin needs to be cloned in order to prevent modifications to the reference object
+            Vector2f viewportOrigin = currentCanvas.getViewportOrigin().clone();
+            Vector2f worldPosition = viewportOrigin.add(this.getWorldPosition());
+            float viewportScale = currentCanvas.getViewportScale();
 
-        int knobSize = 8;
-        Vector2f[] cornerPositions = getBoundaryCorners();
-        float[] knobOffsets = { -2, -2, 2, -2, -2, 2, 2, 2 };
-        for (int i = 0; i < knobOffsets.length; i++)
-            if (knobOffsets[i] < 0) knobOffsets[i] -= knobSize;
+            int knobSize = 8;
+            Vector2f[] cornerPositions = getBoundaryCorners();
+            float[] knobOffsets = {-2, -2, 2, -2, -2, 2, 2, 2};
+            for (int i = 0; i < knobOffsets.length; i++)
+                if (knobOffsets[i] < 0) knobOffsets[i] -= knobSize;
 
-        for (int i = 0; i < knobOffsets.length; i += 2) {
-            Vector2f knobPosition = cornerPositions[i / 2].add(worldPosition);
-            g.drawImage(knob,
-                    knobPosition.x * viewportScale + knobOffsets[i],
-                    knobPosition.y * viewportScale + knobOffsets[i + 1],
-                    knobSize, knobSize);
+            for (int i = 0; i < knobOffsets.length; i += 2) {
+                Vector2f knobPosition = cornerPositions[i / 2].add(worldPosition);
+                g.drawImage(knob,
+                        knobPosition.x * viewportScale + knobOffsets[i],
+                        knobPosition.y * viewportScale + knobOffsets[i + 1],
+                        knobSize, knobSize);
+            }
         }
-
         /* --- --- --- --- --- */
 
         //Finally draw the actual node
@@ -133,7 +141,7 @@ public abstract class NodeBase implements EventListener, Serializable {
         if (parentSpaceLocation == null) {
             this.parentSpaceLocation = new Vector2f();
         }
-        return parent != null ? parent.getWorldPosition().add(parentSpaceLocation) : parentSpaceLocation;
+        return parent != null ? parent.getWorldPosition().clone().add(parentSpaceLocation) : parentSpaceLocation;
     }
 
     /**
@@ -175,14 +183,14 @@ public abstract class NodeBase implements EventListener, Serializable {
     }
 
     /**
-     * @return The corner positions of this node (in parent space).
+     * @return The corner positions of this node (in local space).
      */
     public Vector2f[] getBoundaryCorners() {
         return new Vector2f[] {
-                new Vector2f(parentSpaceLocation.x,         parentSpaceLocation.y),
-                new Vector2f(parentSpaceLocation.x + width, parentSpaceLocation.y),
-                new Vector2f(parentSpaceLocation.x,         parentSpaceLocation.y + height),
-                new Vector2f(parentSpaceLocation.x + width, parentSpaceLocation.y + height)
+                new Vector2f(0, 0),
+                new Vector2f(width, 0),
+                new Vector2f(0, height),
+                new Vector2f(width, height)
         };
     }
 
@@ -195,14 +203,16 @@ public abstract class NodeBase implements EventListener, Serializable {
      */
     public boolean intersectsWithScreenCoordinates(Vector2f screenCoordinates) {
         //Transform the screen-coordinates into world-coordinates
-        screenCoordinates.add(ViewportUtil.getEditingViewport().getViewportCanvas().getViewportOrigin().clone().negate());
+        ViewportCanvas currentCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
+        screenCoordinates.scale(1.0f / currentCanvas.getViewportScale());
+        screenCoordinates.add(currentCanvas.getViewportOrigin().clone().negate());
 
         //Check if coordinate is inside the boundaries of this node.
         //(Basic AABB collision check)
         Vector2f worldPos = getWorldPosition();
         return (screenCoordinates.x >= worldPos.x && screenCoordinates.y >= worldPos.y
-                && screenCoordinates.x <= (screenCoordinates.x + width)
-                && screenCoordinates.y <= (screenCoordinates.y + height));
+                && screenCoordinates.x <= (worldPos.x + width)
+                && screenCoordinates.y <= (worldPos.y + height));
     }
 
     /**
@@ -222,6 +232,13 @@ public abstract class NodeBase implements EventListener, Serializable {
     }
 
     /**
+     * @return Whether or not this node is currently selected in the scene.
+     */
+    public boolean isSelected() {
+        return this.isSelected;
+    }
+
+    /**
      * This node needs to be able to represent itself
      * in the node tree.
      * @return The name of this node.
@@ -231,8 +248,17 @@ public abstract class NodeBase implements EventListener, Serializable {
         return this.title;
     }
 
+    /**
+     * Handle selection using interaction events
+     * from the {@link ViewportCanvas} currently visible.
+     * @param event
+     */
     @EventHandler
-    public void onMouseMove(InteractionEvent e) {
-        System.out.println("MousePos: " + e.getMouseEventInstance().getX() + " | " + e.getMouseEventInstance().getY());
+    public void NodeInteractionHandler(InteractionEvent event) {
+        MouseEvent mouseEvent = event.getMouseEventInstance();
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
+            this.isSelected = intersectsWithScreenCoordinates(mouseScreenPosition);
+        }
     }
 }
