@@ -2,6 +2,7 @@ package at.dalex.grape.sdk.window;
 
 import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
+import at.dalex.grape.sdk.resource.DefaultResources;
 import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
@@ -43,6 +44,7 @@ public class Window extends Application {
         ThemeUtil.applyThemeToParent(root);
 
         mainScene = new Scene(root, 1280, 720);
+        primaryStage.getIcons().add(ResourceLoader.get("image.app-icon", Image.class));
         stage = primaryStage;
 
         mainSplitPane = (SplitPane) root.lookup("#centerSplitPane");

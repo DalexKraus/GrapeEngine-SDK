@@ -85,13 +85,17 @@ public class ViewportPanel extends Tab {
             EventManager.callHandlerMethods(listenerInstance, handlerMethods, eventInstance);
         }
 
-        EventType<? extends MouseEvent> eventType = event.getEventType();
-        if (eventType.equals(MouseEvent.MOUSE_PRESSED))
-            mousePressEvent(event);
-        if (eventType.equals(MouseEvent.MOUSE_DRAGGED))
-            mouseDragEvent(event);
-        if (eventType.equals(MouseEvent.MOUSE_MOVED))
-            mouseMoveEvent(event);
+        //Pass event to responsible sub components
+        //if the event hasn't been cancelled by a handler
+        if (!eventInstance.isCancelled()) {
+            EventType<? extends MouseEvent> eventType = event.getEventType();
+            if (eventType.equals(MouseEvent.MOUSE_PRESSED))
+                mousePressEvent(event);
+            if (eventType.equals(MouseEvent.MOUSE_DRAGGED))
+                mouseDragEvent(event);
+            if (eventType.equals(MouseEvent.MOUSE_MOVED))
+                mouseMoveEvent(event);
+        }
     }
 
     /**

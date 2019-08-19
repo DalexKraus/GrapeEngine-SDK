@@ -256,9 +256,9 @@ public abstract class NodeBase implements EventListener, Serializable {
     @EventHandler
     public void NodeInteractionHandler(InteractionEvent event) {
         MouseEvent mouseEvent = event.getMouseEventInstance();
-        if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
-            this.isSelected = intersectsWithScreenCoordinates(mouseScreenPosition);
+        Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
+        if (intersectsWithScreenCoordinates(mouseScreenPosition)) {
+            this.isSelected = mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED;
         }
     }
 }

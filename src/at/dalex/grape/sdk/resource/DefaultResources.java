@@ -16,6 +16,10 @@ public class DefaultResources {
 
     public static void loadDefaultResources() {
         //Images
+
+        /* Application icon */
+        ResourceLoader.store(loadImage("resources/images/grape.png"), "image.app-icon");
+
         /* Folders */
         ResourceLoader.store(loadImage("resources/images/folder_black32x32.png"), "image.folder.black32");
         ResourceLoader.store(loadImage("resources/images/folder_black16x16.png"), "image.folder.black16");
