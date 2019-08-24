@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 public class NodeTreeItem extends TreeItem<NodeBase> {
 
+    private final int TREE_ICON_SIZE = 24;
+
     public NodeTreeItem(NodeBase node, ImageView iconImage) {
         super(node, iconImage);
     }
@@ -28,7 +30,11 @@ public class NodeTreeItem extends TreeItem<NodeBase> {
             Image nodeIcon = child.getTreeIcon();
 
             //Create new tree node for child and rebuild it's children
-            NodeTreeItem childTreeNode = new NodeTreeItem(child, new ImageView(nodeIcon));
+            ImageView nodeIconView = new ImageView(nodeIcon);
+            nodeIconView.setFitWidth(TREE_ICON_SIZE);
+            nodeIconView.setFitHeight(TREE_ICON_SIZE);
+            NodeTreeItem childTreeNode = new NodeTreeItem(child, nodeIconView);
+
             childTreeNode.refreshChildren();
 
             //Expand node if it was previously expanded

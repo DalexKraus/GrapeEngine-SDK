@@ -135,7 +135,13 @@ public class NewNodeDialog extends Stage {
             public void updateItem(String name, boolean isEmpty) {
                 super.updateItem(name, isEmpty);
                 setText(name);
-                setGraphic(new ImageView(nodeIcons.get(name)));
+
+                //Create a image view and resize it,
+                //since the resolutions of the actual icons vary.
+                ImageView nodeIconView = new ImageView(nodeIcons.get(name));
+                nodeIconView.setFitWidth(16);
+                nodeIconView.setFitHeight(16);
+                setGraphic(nodeIconView);
             }
         });
 
