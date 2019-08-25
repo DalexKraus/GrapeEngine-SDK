@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.window.viewport;
 
+import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.event.EventBase;
 import at.dalex.grape.sdk.window.event.EventListener;
@@ -11,6 +12,7 @@ import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
@@ -36,6 +38,12 @@ public class ViewportPanel extends Tab {
     /* List of listeners responsible for interactions */
     private ArrayList<EventListener> interactionListeners = new ArrayList<>();
 
+    /* List of keys currently held */
+    private static ArrayList<KeyCode> pressedKeys = new ArrayList<>();
+
+    /* List containing all currently selected nodes */
+    private static ArrayList<NodeBase> selectedNodes = new ArrayList<>();
+
     /**
      * Creates a new {@link ViewportPanel}.
      */
@@ -52,6 +60,10 @@ public class ViewportPanel extends Tab {
 
         //Scroll listener
         content.setOnScroll(this::gridScaleEvent);
+
+        //Key listener
+        content.setOnKeyPressed(handler -> pressedKeys.add(handler.getCode()));
+        content.setOnKeyReleased(handler -> pressedKeys.remove(handler.getCode()));
 
         //Tab close listener
         setOnCloseRequest(this::onTabClose);
@@ -192,5 +204,14 @@ public class ViewportPanel extends Tab {
      */
     public ViewportCanvas getViewportCanvas() {
         return this.viewportCanvas;
+    }
+
+    /**
+     * Check if a key is held by the user.
+     * @param keyCode The code of the key to check for
+     * @return Whether or not the key is currently pressed.
+     */
+    public boolean isKeyPressed(KeyCode keyCode) {
+        return pressedKeys.contains(keyCode);
     }
 }
