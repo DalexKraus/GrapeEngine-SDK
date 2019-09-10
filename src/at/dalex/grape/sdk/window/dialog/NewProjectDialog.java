@@ -174,7 +174,7 @@ public class NewProjectDialog extends Stage implements Initializable {
     }
 
     /**
-     * Opens a filebrowser and applys the selected path to the textfield
+     * Opens a file browser and applies the selected path to the textfield
      */
     private void openFileBrowser(Stage anchor, TextField pathField) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
