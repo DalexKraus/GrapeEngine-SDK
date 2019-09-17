@@ -40,7 +40,7 @@ public class NewNodeDialog extends Stage {
 
     public NewNodeDialog() {
         /* Load node classes from resource file */
-        File executableDir = ResourceLoader.getEditorExecutableDirectroy();
+        File executableDir = ResourceLoader.getEditorExecutableDirectory();
         File nodeFile = new File(executableDir + "/resources/editor_nodes.json");
         nodeClasses = NodeReader.readNodeFile(nodeFile);
 

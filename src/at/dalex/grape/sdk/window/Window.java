@@ -2,7 +2,6 @@ package at.dalex.grape.sdk.window;
 
 import at.dalex.grape.sdk.project.Project;
 import at.dalex.grape.sdk.project.ProjectUtil;
-import at.dalex.grape.sdk.resource.DefaultResources;
 import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.filebrowser.BrowserFile;
 import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
@@ -37,8 +36,9 @@ public class Window extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/resources/javafx/mainwindow.fxml"));
-        root.getStylesheets().add("/resources/javafx/theme_dark/theme.css");
+        System.out.println(ResourceLoader.getResource("resources/javafx/mainwindow.fxml"));
+        Parent root = FXMLLoader.load(ResourceLoader.getResource("resources/javafx/mainwindow.fxml"));
+        root.getStylesheets().add("resources/javafx/theme_dark/theme.css");
 
         //Apply dark theme for this window
         ThemeUtil.applyThemeToParent(root);

@@ -1,9 +1,9 @@
 package at.dalex.grape.sdk.resource;
 
-import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
-
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -16,11 +16,14 @@ public class ResourceLoader {
     //The 'storage'
     private static HashMap<String, Object> storage = new HashMap<>();
 
-    /* Retrieve the location of the program */
+    /* Retrieve the location of the program in the file system */
     static {
         try {
-            editor_executable_directory = new File(ResourceLoader.class.getProtectionDomain()
-                    .getCodeSource().getLocation().toURI());
+            String executablePath = ResourceLoader.class.getProtectionDomain()
+                    .getCodeSource().getLocation().toURI().getPath();
+
+            int separatorIndex = executablePath.lastIndexOf("/");
+            editor_executable_directory = new File(executablePath.substring(1, separatorIndex));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -72,7 +75,14 @@ public class ResourceLoader {
     /**
      * @return The directory in which this program is located.
      */
-    public static File getEditorExecutableDirectroy() {
+    public static File getEditorExecutableDirectory() {
         return editor_executable_directory;
+    }
+
+    public static URL getResource(String path) {
+        System.out.println("STAT: " + editor_executable_directory.getAbsolutePath() + "/" + path);
+        URL url =  ResourceLoader.class.getResource(editor_executable_directory.getAbsolutePath().replaceAll(File.separator, "/") + "/" + path);
+        System.out.println("URL: " + url.getPath());
+        return url;
     }
 }
