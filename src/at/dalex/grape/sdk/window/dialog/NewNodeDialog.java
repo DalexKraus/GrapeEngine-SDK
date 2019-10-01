@@ -5,6 +5,7 @@ import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.scene.node.NodeReader;
 import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.window.Window;
+import at.dalex.util.FXMLUtil;
 import at.dalex.util.ThemeUtil;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -40,62 +41,58 @@ public class NewNodeDialog extends Stage {
 
     public NewNodeDialog() {
         /* Load node classes from resource file */
-        File executableDir = ResourceLoader.getEditorExecutableDirectroy();
+        File executableDir = ResourceLoader.getEditorExecutableDirectory();
         File nodeFile = new File(executableDir + "/resources/editor_nodes.json");
         nodeClasses = NodeReader.readNodeFile(nodeFile);
 
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/javafx/dialog_new_node.fxml"));
-            fxmlLoader.setController(this);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(""));
+        fxmlLoader.setController(this);
 
-            /* Load dialog FXML */
-            Parent root = fxmlLoader.load();
-            root.getStylesheets().add("/resources/javafx/theme_dark/new_node_dialog.css");
-            ThemeUtil.applyThemeToParent(root);
+        /* Load dialog FXML */
+        Parent root = FXMLUtil.loadRelativeFXML("/resources/javafx/dialog_new_node.fxml", null);
+        FXMLUtil.addStyleSheet(root, "/resources/javafx/theme_dark/new_node_dialog.css");
+        ThemeUtil.applyThemeToParent(root);
 
-            /* Retrieve fields from FXML */
-            this.nodeListView   = (ListView<String>) root.lookup("#node_list");
-            this.searchField    = (TextField) root.lookup("#node_search");
-            this.nodeTitle      = (Label) root.lookup("#node_title");
-            this.nodeClass      = (Label) root.lookup("#node_class");
+        /* Retrieve fields from FXML */
+        this.nodeListView   = (ListView<String>) root.lookup("#node_list");
+        this.searchField    = (TextField) root.lookup("#node_search");
+        this.nodeTitle      = (Label) root.lookup("#node_title");
+        this.nodeClass      = (Label) root.lookup("#node_class");
 
-            //Fill the node list
-            loadNodeInstances();
-            populateListView();
+        //Fill the node list
+        loadNodeInstances();
+        populateListView();
 
-            //Add selection listener to the node list
-            nodeListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); //Restrict to single selection
-            nodeListView.addEventFilter(MouseEvent.MOUSE_CLICKED, handler -> {
-                ObservableList selectedItems = nodeListView.getSelectionModel().getSelectedItems();
-                String selectedNodeName = selectedItems.size() > 0 ? (String) selectedItems.get(0) : null;
-                if (selectedNodeName != null) {
-                    NodeBase selectedNodeInstance = getNodeByTitle(selectedNodeName);
-                    nodeTitle.setText(selectedNodeName);
-                    nodeClass.setText(selectedNodeInstance.getClass().getCanonicalName());
-                    this.lastSelectedNode = selectedNodeInstance;
+        //Add selection listener to the node list
+        nodeListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); //Restrict to single selection
+        nodeListView.addEventFilter(MouseEvent.MOUSE_CLICKED, handler -> {
+            ObservableList selectedItems = nodeListView.getSelectionModel().getSelectedItems();
+            String selectedNodeName = selectedItems.size() > 0 ? (String) selectedItems.get(0) : null;
+            if (selectedNodeName != null) {
+                NodeBase selectedNodeInstance = getNodeByTitle(selectedNodeName);
+                nodeTitle.setText(selectedNodeName);
+                nodeClass.setText(selectedNodeInstance.getClass().getCanonicalName());
+                this.lastSelectedNode = selectedNodeInstance;
 
-                    //User decides to create a node with the selected class (double click)
-                    if (handler.getClickCount() == 2) {
-                        handleNodeSelection(selectedNodeInstance);
-                        close();
-                    }
-                } else this.lastSelectedNode = null;
-            });
+                //User decides to create a node with the selected class (double click)
+                if (handler.getClickCount() == 2) {
+                    handleNodeSelection(selectedNodeInstance);
+                    close();
+                }
+            } else this.lastSelectedNode = null;
+        });
 
-            //Add change listener to search field
-            searchField.textProperty().addListener(changeListener -> populateListView());
+        //Add change listener to search field
+        searchField.textProperty().addListener(changeListener -> populateListView());
 
-            /* Create and set dialog scene */
-            Scene dialogScene = new Scene(root, 600, 390);
-            setScene(dialogScene);
+        /* Create and set dialog scene */
+        Scene dialogScene = new Scene(root, 600, 390);
+        setScene(dialogScene);
 
-            //Make dialog stay in foreground
-            initModality(Modality.APPLICATION_MODAL);
-            setResizable(false);
-            show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //Make dialog stay in foreground
+        initModality(Modality.APPLICATION_MODAL);
+        setResizable(false);
+        show();
     }
 
     /**

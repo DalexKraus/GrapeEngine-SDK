@@ -106,6 +106,27 @@ public abstract class NodeBase implements EventListener, Serializable {
     protected abstract void draw(ViewportCanvas canvas, GraphicsContext g);
 
     /**
+     * Checks if the given coordinates intersect
+     * with the boundaries of this node.
+     * The passed coordinates must be in screen-space.
+     *
+     * @return Intersects with the boundaries
+     */
+    public boolean intersectsWithScreenCoordinates(Vector2f screenCoordinates) {
+        //Transform the screen-coordinates into world-coordinates
+        ViewportCanvas currentCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
+        screenCoordinates.scale(1.0f / currentCanvas.getViewportScale());
+        screenCoordinates.add(currentCanvas.getViewportOrigin().clone().negate());
+
+        //Check if coordinate is inside the boundaries of this node.
+        //(Basic AABB collision check)
+        Vector2f worldPos = getWorldPosition();
+        return (screenCoordinates.x >= worldPos.x && screenCoordinates.y >= worldPos.y
+                && screenCoordinates.x <= (worldPos.x + width)
+                && screenCoordinates.y <= (worldPos.y + height));
+    }
+
+    /**
      * @return The title of this node visible in the scene's node list.
      */
     public String getTitle() {
@@ -191,27 +212,6 @@ public abstract class NodeBase implements EventListener, Serializable {
                 new Vector2f(0, height),
                 new Vector2f(width, height)
         };
-    }
-
-    /**
-     * Checks if the given coordinates intersect
-     * with the boundaries of this node.
-     * The passed coordinates must be in screen-space.
-     *
-     * @return Intersects with the boundaries
-     */
-    public boolean intersectsWithScreenCoordinates(Vector2f screenCoordinates) {
-        //Transform the screen-coordinates into world-coordinates
-        ViewportCanvas currentCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
-        screenCoordinates.scale(1.0f / currentCanvas.getViewportScale());
-        screenCoordinates.add(currentCanvas.getViewportOrigin().clone().negate());
-
-        //Check if coordinate is inside the boundaries of this node.
-        //(Basic AABB collision check)
-        Vector2f worldPos = getWorldPosition();
-        return (screenCoordinates.x >= worldPos.x && screenCoordinates.y >= worldPos.y
-                && screenCoordinates.x <= (worldPos.x + width)
-                && screenCoordinates.y <= (worldPos.y + height));
     }
 
     /**

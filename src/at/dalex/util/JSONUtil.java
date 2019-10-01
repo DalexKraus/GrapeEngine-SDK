@@ -14,7 +14,7 @@ public class JSONUtil {
         StringBuilder prettyJSONBuilder = new StringBuilder();
         int indentLevel = 0;
         boolean inQuote = false;
-        for(char charFromUnformattedJson : unformattedJsonString.toCharArray()) {
+        for (char charFromUnformattedJson : unformattedJsonString.toCharArray()) {
             switch(charFromUnformattedJson) {
                 case '"':
                     // switch the quoting status
@@ -36,7 +36,7 @@ public class JSONUtil {
                     break;
                 case '}':
                 case ']':
-                    // Ending a new block; decrese the indent level
+                    // Ending a new block; decrease the indent level
                     indentLevel--;
                     appendIndentedNewLine(indentLevel, prettyJSONBuilder);
                     prettyJSONBuilder.append(charFromUnformattedJson);

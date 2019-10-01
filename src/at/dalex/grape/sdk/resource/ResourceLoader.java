@@ -1,9 +1,8 @@
 package at.dalex.grape.sdk.resource;
 
-import at.dalex.grape.sdk.window.filebrowser.FileBrowserItem;
-
 import java.io.File;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -19,8 +18,13 @@ public class ResourceLoader {
     /* Retrieve the location of the program */
     static {
         try {
-            editor_executable_directory = new File(ResourceLoader.class.getProtectionDomain()
-                    .getCodeSource().getLocation().toURI());
+            String editorPath = new File(ResourceLoader.class.getProtectionDomain()
+                    .getCodeSource().getLocation().toURI()).toString();
+
+            int lastSeparatorIndex = editorPath.lastIndexOf('/');
+            editor_executable_directory = new File(editorPath.substring(0, lastSeparatorIndex));
+
+            System.out.println("Editor executable directory: " + editor_executable_directory.getAbsolutePath());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -72,7 +76,16 @@ public class ResourceLoader {
     /**
      * @return The directory in which this program is located.
      */
-    public static File getEditorExecutableDirectroy() {
+    public static File getEditorExecutableDirectory() {
         return editor_executable_directory;
+    }
+
+    /**
+     * Returns the absolute path of the given file.
+     * @param relativePath A file relative to the editor's directory
+     * @return The absolute file on disk.
+     */
+    public static File getAbsoluteFilePath(String relativePath) {
+        return new File(editor_executable_directory.getAbsolutePath() + relativePath);
     }
 }

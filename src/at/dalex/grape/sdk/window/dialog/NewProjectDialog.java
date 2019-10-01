@@ -5,6 +5,7 @@ import at.dalex.grape.sdk.project.ProjectUtil;
 import at.dalex.grape.sdk.project.WindowSettings;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.grape.sdk.window.helper.NumberTextFieldFilter;
+import at.dalex.util.FXMLUtil;
 import at.dalex.util.ThemeUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -41,56 +42,52 @@ public class NewProjectDialog extends Stage implements Initializable {
     private CheckBox checkBox_defaultLocation;
 
     public NewProjectDialog() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/javafx/dialog_new_project.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(""));
         fxmlLoader.setController(this);
 
-        try {
-            Parent root = fxmlLoader.load();
-            ThemeUtil.applyThemeToParent(root);
-            Scene dialogScene = new Scene(root, 450, 445);
-            this.browse_button = (Button) dialogScene.lookup("#button_browse");
-            this.create_button = (Button) dialogScene.lookup("#button_create");
-            this.cancel_button = (Button) dialogScene.lookup("#button_cancel");
-            browse_button.setOnAction(handler -> openFileBrowser(this, field_projectLocation));
-            create_button.setOnAction(handler -> tryCreateProject());
-            cancel_button.setOnAction(handler -> close());
+        Parent root = FXMLUtil.loadRelativeFXML("/resources/javafx/dialog_new_project.fxml", this);
+        ThemeUtil.applyThemeToParent(root);
+        Scene dialogScene = new Scene(root, 450, 445);
+        this.browse_button = (Button) dialogScene.lookup("#button_browse");
+        this.create_button = (Button) dialogScene.lookup("#button_create");
+        this.cancel_button = (Button) dialogScene.lookup("#button_cancel");
+        browse_button.setOnAction(handler -> openFileBrowser(this, field_projectLocation));
+        create_button.setOnAction(handler -> tryCreateProject());
+        cancel_button.setOnAction(handler -> close());
 
-            this.field_projectName = (TextField) dialogScene.lookup("#field_projectName");
-            this.field_windowTitle = (TextField) dialogScene.lookup("#field_windowTitle");
-            this.field_windowWidth = (TextField) dialogScene.lookup("#field_windowWidth");
-            this.field_windowHeight = (TextField) dialogScene.lookup("#field_windowHeight");
-            this.field_projectLocation = (TextField) dialogScene.lookup("#field_projectLocation");
+        this.field_projectName = (TextField) dialogScene.lookup("#field_projectName");
+        this.field_windowTitle = (TextField) dialogScene.lookup("#field_windowTitle");
+        this.field_windowWidth = (TextField) dialogScene.lookup("#field_windowWidth");
+        this.field_windowHeight = (TextField) dialogScene.lookup("#field_windowHeight");
+        this.field_projectLocation = (TextField) dialogScene.lookup("#field_projectLocation");
 
-            this.checkBox_resizable = (CheckBox) dialogScene.lookup("#checkbox_isResizable");
-            this.checkBox_defaultLocation = (CheckBox) dialogScene.lookup("#checkbox_defaultLocation");
+        this.checkBox_resizable = (CheckBox) dialogScene.lookup("#checkbox_isResizable");
+        this.checkBox_defaultLocation = (CheckBox) dialogScene.lookup("#checkbox_defaultLocation");
 
-            field_windowTitle.setText("Another Game");
-            field_windowWidth.setText("1280");
-            field_windowHeight.setText("720");
-            field_projectLocation.setDisable(true);
-            field_projectLocation.setText(ProjectUtil.getDefaultProjectDirectory().getPath());
+        field_windowTitle.setText("Another Game");
+        field_windowWidth.setText("1280");
+        field_windowHeight.setText("720");
+        field_projectLocation.setDisable(true);
+        field_projectLocation.setText(ProjectUtil.getDefaultProjectDirectory().getPath());
 
-            field_windowWidth.textProperty().addListener(new NumberTextFieldFilter(field_windowWidth));
-            field_windowHeight.textProperty().addListener(new NumberTextFieldFilter(field_windowHeight));
+        field_windowWidth.textProperty().addListener(new NumberTextFieldFilter(field_windowWidth));
+        field_windowHeight.textProperty().addListener(new NumberTextFieldFilter(field_windowHeight));
 
-            checkBox_resizable.setSelected(true);
-            checkBox_defaultLocation.setSelected(true);
-            browse_button.setDisable(true);
+        checkBox_resizable.setSelected(true);
+        checkBox_defaultLocation.setSelected(true);
+        browse_button.setDisable(true);
 
-            checkBox_defaultLocation.setOnAction(handler ->
-            {
-                boolean disable = checkBox_defaultLocation.isSelected();
-                field_projectLocation.setDisable(disable);
-                browse_button.setDisable(disable);
-            });
+        checkBox_defaultLocation.setOnAction(handler ->
+        {
+            boolean disable = checkBox_defaultLocation.isSelected();
+            field_projectLocation.setDisable(disable);
+            browse_button.setDisable(disable);
+        });
 
-            //Cursor jump to first field
-            Platform.runLater(() -> field_projectName.requestFocus());
+        //Cursor jump to first field
+        Platform.runLater(() -> field_projectName.requestFocus());
 
-            setScene(dialogScene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setScene(dialogScene);
 
         //Make this stage stay in foreground
         initModality(Modality.APPLICATION_MODAL);

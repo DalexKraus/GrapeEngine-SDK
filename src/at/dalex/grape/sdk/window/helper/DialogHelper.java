@@ -65,8 +65,7 @@ public class DialogHelper {
         alertDialog.setContentText(message);
 
         //Apply dark theme
-        if (Main.useDarkTheme())
-            alertDialog.getDialogPane().getStylesheets().add("");
+        ThemeUtil.applyThemeToParent(alertDialog.getDialogPane());
 
         return alertDialog;
     }
