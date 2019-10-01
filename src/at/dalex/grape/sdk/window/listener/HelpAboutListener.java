@@ -14,6 +14,7 @@ public class HelpAboutListener implements EventHandler<ActionEvent> {
                                                     "Additional developers:\n" +
                                                     "Samuel Kowatschek\n" +
                                                     "Patrick Huemer\n" +
+                                                    "Jan Fischlmayr\n" +
                                                     "\n" +
                                                     "© 2019 David Kraus. All rights reserved.");
     }
