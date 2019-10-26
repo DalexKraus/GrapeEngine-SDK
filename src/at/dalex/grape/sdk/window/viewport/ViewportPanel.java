@@ -163,9 +163,9 @@ public class ViewportPanel extends Tab {
     }
 
     /**
-     * Translates the screen coordinates of the mous to world coordinates.
+     * Translates the screen coordinates of the mouse to world coordinates.
      * @param e The mouse event
-     * @return The vector representing the position of the mous in the world.
+     * @return The vector representing the position of the mouse in the world.
      */
     public Vector2f translateMouseToWorldSpace(MouseEvent e) {
         return translateMouseToWorldSpace(e.getX(), e.getY());
