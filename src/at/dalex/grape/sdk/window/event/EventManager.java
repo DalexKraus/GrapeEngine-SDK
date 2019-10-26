@@ -55,8 +55,6 @@ public class EventManager {
      */
     public static void callHandlerMethods(EventListener listenerInstance, ArrayList<Method> handlerMethods, EventBase invocationEvent) {
         for (Method handlerMethod : handlerMethods) {
-
-            System.out.println("event stauts: " + invocationEvent.isCancelled());
             //Break if event has been cancelled by a handler method
             if (invocationEvent.isCancelled())
                 break;

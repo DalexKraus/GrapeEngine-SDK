@@ -1,8 +1,10 @@
 package at.dalex.grape.sdk.window.viewport;
 
+import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.event.*;
+import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.event.Event;
 import javafx.event.EventType;
@@ -51,6 +53,7 @@ public class ViewportPanel extends Tab {
 
         //Mouse listeners
         Node content = getContent();
+        content.setOnMouseClicked(this::onMouseEvent);
         content.setOnMousePressed(this::onMouseEvent);
         content.setOnMouseDragged(this::onMouseEvent);
         content.setOnMouseMoved(this::onMouseEvent);
@@ -100,6 +103,8 @@ public class ViewportPanel extends Tab {
             EventType<? extends MouseEvent> eventType = event.getEventType();
             if (eventType.equals(MouseEvent.MOUSE_PRESSED))
                 mousePressEvent(event);
+            if (eventType.equals(MouseEvent.MOUSE_CLICKED))
+                mouseClickEvent(event);
             if (eventType.equals(MouseEvent.MOUSE_DRAGGED))
                 mouseDragEvent(event);
             if (eventType.equals(MouseEvent.MOUSE_MOVED))
@@ -114,13 +119,21 @@ public class ViewportPanel extends Tab {
     }
 
     /**
-     * Callback for mouse clicks.
+     * Callback for mouse mouse-presses.
      * This is used to set the initial drag position to calculate
      * the {@link ViewportPanel#gridDragOffset} vector from.
      * @param e The MouseEvent
      */
     private void mousePressEvent(MouseEvent e) {
         gridDragOffset = translateMouseToWorldSpace(e);
+    }
+
+    /**
+     * Callback for mouse clicks.
+     * @param e The MouseEvent
+     */
+    private void mouseClickEvent(MouseEvent e) {
+
     }
 
     /**
@@ -138,7 +151,8 @@ public class ViewportPanel extends Tab {
      */
     private void mouseDragEvent(MouseEvent e) {
         //Skip canvas movement if some nodes are selected
-        if (selectedNodes.size() > 0)
+        Scene currentScene = ViewportUtil.getEditingScene();
+        if (currentScene.isAnyNodeSelected())
             return;
 
         float scale = viewportCanvas.getViewportScale();

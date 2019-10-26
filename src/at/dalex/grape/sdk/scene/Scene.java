@@ -14,6 +14,10 @@ public class Scene implements Serializable {
         this.rootNode = new RootNode();
     }
 
+    public boolean isAnyNodeSelected() {
+        return rootNode.isAnyChildrenSelected();
+    }
+
     public String getName() {
         return name;
     }

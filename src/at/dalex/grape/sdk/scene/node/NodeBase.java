@@ -2,10 +2,9 @@ package at.dalex.grape.sdk.scene.node;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.Window;
-import at.dalex.grape.sdk.window.event.EventHandler;
-import at.dalex.grape.sdk.window.event.EventListener;
-import at.dalex.grape.sdk.window.event.InteractionEvent;
+import at.dalex.grape.sdk.window.event.*;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
+import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
@@ -238,6 +237,18 @@ public abstract class NodeBase implements EventListener, Serializable {
     }
 
     /**
+     * @return Whether or not any children are currently selected in the scene.
+     */
+    public boolean isAnyChildrenSelected() {
+        for (NodeBase child : children) {
+            if (child.isSelected() || child.isAnyChildrenSelected()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * This node needs to be able to represent itself
      * in the node tree.
      * @return The name of this node.
@@ -258,12 +269,19 @@ public abstract class NodeBase implements EventListener, Serializable {
         Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
 
         // Selection logic
-        if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            this.isSelected = !isSelected() && intersectsWithScreenCoordinates(mouseScreenPosition);
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            if (!isSelected() && intersectsWithScreenCoordinates(mouseScreenPosition)) {
+                this.isSelected = true;
+
+                //Invoke NodeSelectEvent
+                ViewportPanel nodeViewport = ViewportUtil.getEditingViewport();
+                NodeSelectEvent eventInstance = new NodeSelectEvent(this, nodeViewport);
+
+            } else isSelected = false;
         }
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
             if (isSelected && intersectsWithScreenCoordinates(mouseScreenPosition)) {
-                setParentSpaceLocation(mouseScreenPosition);
+                //setParentSpaceLocation(mouseScreenPosition);
             }
         }
     }
