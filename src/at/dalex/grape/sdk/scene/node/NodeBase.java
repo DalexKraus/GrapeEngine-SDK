@@ -42,7 +42,7 @@ public abstract class NodeBase implements EventListener, Serializable {
      * Create a new {@link NodeBase} using a given title.
      * This title will be shown in the scene's node list.
      *
-     * The title vibible in the editor's node-creation window
+     * The title visible in the editor's node-creation window
      * is parsed from the corresponding json-file!
      *
      * @param title The title of this node
@@ -259,7 +259,12 @@ public abstract class NodeBase implements EventListener, Serializable {
 
         // Selection logic
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            this.isSelected = intersectsWithScreenCoordinates(mouseScreenPosition) && !isSelected();
+            this.isSelected = !isSelected() && intersectsWithScreenCoordinates(mouseScreenPosition);
+        }
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+            if (isSelected && intersectsWithScreenCoordinates(mouseScreenPosition)) {
+                setParentSpaceLocation(mouseScreenPosition);
+            }
         }
     }
 }

@@ -43,7 +43,9 @@ public class Window extends Application {
         ThemeUtil.applyThemeToParent(root);
 
         mainScene = new Scene(root, 1280, 720);
+
         primaryStage.getIcons().add(ResourceLoader.get("image.app-icon", Image.class));
+
         stage = primaryStage;
 
         mainSplitPane = (SplitPane) root.lookup("#centerSplitPane");

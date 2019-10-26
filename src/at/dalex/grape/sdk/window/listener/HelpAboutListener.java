@@ -11,11 +11,7 @@ public class HelpAboutListener implements EventHandler<ActionEvent> {
     public void handle(ActionEvent event) {
         DialogHelper.showInformationDialog("About", "GrapeEngine Software Development Kit (Version " + Main.VERSION + ")",
                                                     "Main developer: David Kraus\n\n" +
-                                                    "Additional developers:\n" +
-                                                    "Samuel Kowatschek\n" +
-                                                    "Patrick Huemer\n" +
-                                                    "Jan Fischlmayr\n" +
                                                     "\n" +
-                                                    "© 2019 David Kraus. All rights reserved.");
+                                                    "© 2019 TheGrapeUniverse. All rights reserved.");
     }
 }

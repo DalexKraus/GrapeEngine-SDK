@@ -2,10 +2,7 @@ package at.dalex.grape.sdk.window.viewport;
 
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.window.Window;
-import at.dalex.grape.sdk.window.event.EventBase;
-import at.dalex.grape.sdk.window.event.EventListener;
-import at.dalex.grape.sdk.window.event.EventManager;
-import at.dalex.grape.sdk.window.event.InteractionEvent;
+import at.dalex.grape.sdk.window.event.*;
 import at.dalex.util.math.Vector2f;
 import javafx.event.Event;
 import javafx.event.EventType;
@@ -31,7 +28,7 @@ public class ViewportPanel extends Tab {
     /* The instance of the viewport canvas */
     private ViewportCanvas viewportCanvas;
 
-    /* The 'vector' from the component's origin to the mouse*/
+    /* The 'vector' from the component's origin to the mouse */
     private Vector2f gridDragOffset = new Vector2f();
     private Vector2f pivotPoint = new Vector2f();
 
@@ -110,6 +107,12 @@ public class ViewportPanel extends Tab {
         }
     }
 
+    //TODO: Unused
+    private void invokeViewportRefreshEvent() {
+        ViewportRefreshEvent eventInstance = new ViewportRefreshEvent(this);
+        //EventManager.
+    }
+
     /**
      * Callback for mouse clicks.
      * This is used to set the initial drag position to calculate
@@ -134,11 +137,14 @@ public class ViewportPanel extends Tab {
      * @param e The MouseEvent
      */
     private void mouseDragEvent(MouseEvent e) {
+        //Skip canvas movement if some nodes are selected
+        if (selectedNodes.size() > 0)
+            return;
+
         float scale = viewportCanvas.getViewportScale();
         float newGridOriginX = (float) (e.getX() / scale + gridDragOffset.x);
         float newGridOriginY = (float) (e.getY() / scale + gridDragOffset.y);
         viewportCanvas.setViewportOrigin(newGridOriginX, newGridOriginY);
-
     }
 
     /**

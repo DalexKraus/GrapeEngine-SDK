@@ -2,6 +2,7 @@ package at.dalex.grape.sdk.window.event;
 
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 
+//TODO: Unused
 public class ViewportRefreshEvent extends EventBase {
 
     private ViewportPanel viewportInstance;

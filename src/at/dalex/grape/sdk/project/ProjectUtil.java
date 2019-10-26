@@ -67,7 +67,7 @@ public class ProjectUtil {
         //Update fileBrowser getFilterStatus rule for sdk folder
         FileBrowserFilter.setFileRule(projectFile.getParentFile(), new FilterRule(FilterRule.Visibility.HIDDEN));
 
-        //Create filebrowser
+        //Create file browser
         Window.getMainSplitPane().getItems().clear(); //Clear before adding
         Window.createFileBrowser();
         Window.prepareViewport();
