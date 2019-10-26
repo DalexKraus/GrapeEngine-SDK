@@ -2,8 +2,6 @@ package at.dalex.grape.sdk.window.event;
 
 import javafx.scene.input.MouseEvent;
 
-import java.awt.*;
-
 public class InteractionEvent extends EventBase {
 
     private MouseEvent mouseEventInstance;
