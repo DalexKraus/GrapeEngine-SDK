@@ -212,6 +212,9 @@ public class ViewportPanel extends Tab {
      * @param event The corresponding event
      */
     public void onTabClose(Event event) {
+        //Deselect any previously selected nodes
+        ViewportUtil.getEditingScene().deselectAllNodes();
+
         Window.removePropertyPanel();
         //Clean-Up
         viewportCanvas.dispose();

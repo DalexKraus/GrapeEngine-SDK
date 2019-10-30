@@ -236,6 +236,21 @@ public abstract class NodeBase implements EventListener, Serializable {
     }
 
     /**
+     * Change the selection state of this node. (Used in the viewport)
+     * @param selected Whether or not the node should be selected.
+     */
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+
+        //Reset fields used for node movement on the editor grid
+        if (!selected) {
+            this.wasDragged = false;
+            this.leftButtonHeld = false;
+            this.draggingOffset = null;
+        }
+    }
+
+    /**
      * @return Whether or not any children are currently selected in the scene.
      */
     public boolean isAnyChildrenSelected() {
@@ -264,7 +279,7 @@ public abstract class NodeBase implements EventListener, Serializable {
      */
     private boolean wasDragged;     //To avoid selection when cursor was dragged in node's boundaries if not sel.
     private boolean leftButtonHeld; //To avoid node teleportation to cursor when clicked somewhere else
-    private Vector2f draggingOffset = new Vector2f();
+    private Vector2f draggingOffset;
 
     //TODO: Refactor to another file
     @EventHandler
@@ -279,6 +294,24 @@ public abstract class NodeBase implements EventListener, Serializable {
         // Selection logic
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
             // use wasDragged to prevent selection when node was dragged but not selected previously
+
+
+
+
+
+
+
+            //TODO:
+            //Scene#deselectAllNodes() --> reset booleans and vector for NodeBase#NodeInteractionHandler()!
+            //Node in Node --> Moving the second node results in draggingOffset jumps?
+
+
+
+
+
+
+
+
 
             //SINGLE SELECTIONS ONLY!
             boolean anyNodeSelected = ViewportUtil.getEditingScene().isAnyNodeSelected();
