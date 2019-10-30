@@ -1,0 +1,116 @@
+.root {
+    /***************************************************************************
+     *                                                                         *
+     * The main color palette from which the rest of the colors are derived.   *
+     *                                                                         *
+     **************************************************************************/
+
+    /* A light grey that is the base color for objects.  Instead of using
+     * -fx-base directly, the sections in this file will typically use -fx-color.
+     */
+
+    /* Godot-Blue */
+    /* -fx-base: #323b4f;
+     * -fx-dark: #333d55;
+     */
+
+    /* Godot-Gray */
+    /* -fx-base: #413c45; */
+
+    -fx-base: #343746;
+    -fx-dark: #282a36;
+
+    /* A very light grey used for the background of windows.  See also
+     * -fx-text-background-color, which should be used as the -fx-text-fill
+     * value for text painted on top of backgrounds colored with -fx-background.
+     */
+    -fx-background: derive(-fx-base,26.4%);
+
+    /* Used for the inside of text boxes, password boxes, lists, trees, and
+     * tables.  See also -fx-text-inner-color, which should be used as the
+     * -fx-text-fill value for text painted on top of backgrounds colored
+     * with -fx-control-inner-background.
+     */
+    -fx-control-inner-background: derive(-fx-base, 80%);
+    /* Version of -fx-control-inner-background for alternative rows */
+    -fx-control-inner-background-alt: derive(-fx-control-inner-background,-2%);
+}
+
+
+/* Menu Bar and Menu Bar Items */
+.tab-pane {
+    -fx-background-color: -fx-base;
+}
+
+.tab-header-background {
+    -fx-background-color:  -fx-base;
+}
+
+.menu-bar {
+    -fx-background-color: -fx-base;
+}
+
+.context-menu {
+    -fx-background-color: -fx-base;
+}
+
+
+
+/* Tree-View and Tree-View-Cell */
+.tree-view {
+    -fx-background-color: -fx-base;
+}
+
+.tree-cell {
+    -fx-background-color: -fx-dark;
+    -fx-text-fill: lightgray;
+}
+
+.tree-cell:hover {
+    -fx-background-color: derive(-fx-dark, 10%);
+}
+
+.tree-cell:selected {
+    -fx-background-color: derive(-fx-dark, 30%);
+}
+
+/* Cell-Arrow on the left */
+.tree-cell > .tree-disclosure-node > .arrow {
+    -fx-background-color: gray;
+}
+
+.tree-cell:expanded > .tree-disclosure-node > .arrow {
+    -fx-background-color: lightgray;
+}
+
+
+
+/* SplitPane */
+.split-pane-divider {
+    -fx-padding: 0px;
+    -fx-border-width: 1px;
+    -fx-border-color: -fx-base;
+    -fx-background-color: -fx-base;
+}
+
+
+
+/* TitledPane */
+.titled-pane > .title{
+    -fx-background-color: -fx-base;
+    -fx-border-color: -fx-dark;
+    -fx-border-width: 1px;
+}
+
+
+
+/* Checkboxes */
+.check-box:selected .mark {
+    -fx-background-color: lightgray;
+}
+
+
+/* Properties Panel - NodeTreeBar */
+.nodeTreeBar {
+    -fx-background-color: -fx-dark;
+}
