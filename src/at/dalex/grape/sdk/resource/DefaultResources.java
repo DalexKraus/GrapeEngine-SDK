@@ -27,6 +27,7 @@ public class DefaultResources {
 
         /* Files */
         ResourceLoader.store(loadImage("resources/images/map_icon.png"), "image.file.scene");
+        ResourceLoader.store(loadImage("resources/images/file_scene40x40.png"), "image.file.scene2");
         ResourceLoader.store(loadImage("resources/images/lua_icon.png"), "image.file.lua");
 
         /* Icons */

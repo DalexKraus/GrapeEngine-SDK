@@ -31,7 +31,11 @@ public class RectangleNode extends NodeBase {
         Vector2f viewportOrigin = canvas.getViewportOrigin();
         float viewportScale = canvas.getViewportScale();
 
+        Vector2f worldPosition = getWorldPosition();
+        double x = viewportOrigin.x + worldPosition.x;
+        double y = viewportOrigin.y + worldPosition.y;
+
         g.setStroke(Color.RED);
-        g.strokeRect(viewportOrigin.x * viewportScale, viewportOrigin.y * viewportScale, getWidth() * viewportScale, getHeight() * viewportScale);
+        g.strokeRect(x * viewportScale, y * viewportScale, getWidth() * viewportScale, getHeight() * viewportScale);
     }
 }

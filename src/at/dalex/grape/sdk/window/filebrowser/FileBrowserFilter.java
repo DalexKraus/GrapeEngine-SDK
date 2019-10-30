@@ -21,10 +21,15 @@ public class FileBrowserFilter {
         //Scene files
         FilterRule sceneFileRule = new FilterRule(FilterRule.Visibility.VISIBLE);
         sceneFileRule.setCustomIcon(ResourceLoader.get("image.file.scene", Image.class));
+        setExtensionRule(".scene", sceneFileRule);
         //Lua files
         FilterRule luaFileRule = new FilterRule(FilterRule.Visibility.VISIBLE);
         luaFileRule.setCustomIcon(ResourceLoader.get("image.file.lua", Image.class));
         setExtensionRule(".lua", luaFileRule);
+
+        //Hide macOS .DS_Store files
+        FilterRule dsStoreRule = new FilterRule(FilterRule.Visibility.HIDDEN);
+        setExtensionRule(".DS_Store", dsStoreRule);
     }
 
     /**

@@ -52,8 +52,8 @@ public class Window extends Application {
 
         /* *** MenuBar *** */
         MenuBar menuBar = (MenuBar) mainScene.lookup("#menu_bar");
-        menuBar.setUseSystemMenuBar(true);
         MenuBarHelper.inflateMenuBar(menuBar);
+        menuBar.setUseSystemMenuBar(true);
 
         /* *** Information Text *** */
         ProjectUtil.closeProject();

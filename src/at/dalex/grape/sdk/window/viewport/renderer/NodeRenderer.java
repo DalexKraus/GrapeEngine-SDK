@@ -7,7 +7,10 @@ import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.viewport.ITickCallback;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
+import at.dalex.util.ViewportUtil;
+import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * This class is used to draw all nodes present in the current scene onto the viewport.
@@ -56,6 +59,11 @@ public class NodeRenderer implements ITickCallback {
     private void drawNode(NodeBase nodeInstance, GraphicsContext g) {
         //Draw the given node
         nodeInstance.drawNode(canvasInstance, g);
+
+        Vector2f worldPos = nodeInstance.getWorldPosition();
+        Vector2f origin = ViewportUtil.getEditingViewport().getViewportCanvas().getViewportOrigin();
+        g.setStroke(Color.MAGENTA);
+        g.strokeRect(origin.x + worldPos.x, origin.y + worldPos.y, 2, 2);
 
         //Draw children
         for (NodeBase child : nodeInstance.getChildren()) {
