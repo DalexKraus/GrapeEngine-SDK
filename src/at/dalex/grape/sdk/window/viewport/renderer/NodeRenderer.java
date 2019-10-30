@@ -60,11 +60,6 @@ public class NodeRenderer implements ITickCallback {
         //Draw the given node
         nodeInstance.drawNode(canvasInstance, g);
 
-        Vector2f worldPos = nodeInstance.getWorldPosition();
-        Vector2f origin = ViewportUtil.getEditingViewport().getViewportCanvas().getViewportOrigin();
-        g.setStroke(Color.MAGENTA);
-        g.strokeRect(origin.x + worldPos.x, origin.y + worldPos.y, 2, 2);
-
         //Draw children
         for (NodeBase child : nodeInstance.getChildren()) {
             drawNode(child, g);

@@ -270,13 +270,19 @@ public abstract class NodeBase implements EventListener, Serializable {
     @EventHandler
     public void NodeInteractionHandler(ViewportInteractionEvent event) {
         MouseEvent mouseEvent = event.getMouseEventInstance();
-        ViewportCanvas viewportCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
         Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
+        //Viewport variables
+        ViewportCanvas viewportCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
+        Vector2f viewportOrigin = viewportCanvas.getViewportOrigin();
+        float viewportScale = viewportCanvas.getViewportScale();
 
         // Selection logic
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
             // use wasDragged to prevent selection when node was dragged but not selected previously
-            this.isSelected = !wasDragged && intersectsWithScreenCoordinates(mouseScreenPosition);
+
+            //SINGLE SELECTIONS ONLY!
+            boolean anyNodeSelected = ViewportUtil.getEditingScene().isAnyNodeSelected();
+            this.isSelected = !wasDragged && !anyNodeSelected && intersectsWithScreenCoordinates(mouseScreenPosition);
             wasDragged = false;
         }
 
@@ -284,10 +290,10 @@ public abstract class NodeBase implements EventListener, Serializable {
             leftButtonHeld = intersectsWithScreenCoordinates(mouseScreenPosition);
 
             //Calculate dragging offset
-            Vector2f nodeWorldPos = getWorldPosition().add(viewportCanvas.getViewportOrigin());
+            Vector2f nodeWorldPos = getWorldPosition();
             draggingOffset = new Vector2f(
-                    mouseEvent.getX() - nodeWorldPos.getX(),
-                    mouseEvent.getY() - nodeWorldPos.getY()
+                    (mouseEvent.getX() / viewportScale) - nodeWorldPos.getX() - viewportOrigin.x,
+                    (mouseEvent.getY() / viewportScale) - nodeWorldPos.getY() - viewportOrigin.y
             );
         }
 
@@ -298,10 +304,6 @@ public abstract class NodeBase implements EventListener, Serializable {
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
             //Drag node
             if (isSelected && leftButtonHeld) {
-
-                Vector2f viewportOrigin = viewportCanvas.getViewportOrigin();
-                float viewportScale = viewportCanvas.getViewportScale();
-
                 Vector2f newPosition = new Vector2f(
                         (mouseScreenPosition.x / viewportScale) - viewportOrigin.x - draggingOffset.x,
                         (mouseScreenPosition.y / viewportScale) - viewportOrigin.y - draggingOffset.y
