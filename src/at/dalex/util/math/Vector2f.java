@@ -1,6 +1,8 @@
 package at.dalex.util.math;
 
-public class Vector2f implements Cloneable {
+import java.io.Serializable;
+
+public class Vector2f implements Cloneable, Serializable {
 
     public float x, y;
 

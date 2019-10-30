@@ -2,11 +2,11 @@ package at.dalex.grape.sdk.window.event;
 
 import javafx.scene.input.MouseEvent;
 
-public class InteractionEvent extends EventBase {
+public class ViewportInteractionEvent extends EventBase {
 
     private MouseEvent mouseEventInstance;
 
-    public InteractionEvent(MouseEvent mouseEventInstance) {
+    public ViewportInteractionEvent(MouseEvent mouseEventInstance) {
         this.mouseEventInstance = mouseEventInstance;
     }
 

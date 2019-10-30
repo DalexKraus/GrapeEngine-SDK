@@ -4,7 +4,6 @@ import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.event.*;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
-import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
@@ -259,30 +258,57 @@ public abstract class NodeBase implements EventListener, Serializable {
     }
 
     /**
-     * Handle selection using interaction events
+     * Handles selection using interaction events
      * from the {@link ViewportCanvas} currently visible.
      * @param event
      */
+    private boolean wasDragged;     //To avoid selection when cursor was dragged in node's boundaries if not sel.
+    private boolean leftButtonHeld; //To avoid node teleportation to cursor when clicked somewhere else
+    private Vector2f draggingOffset = new Vector2f();
+
+    //TODO: Refactor to another file
     @EventHandler
-    public void NodeInteractionHandler(InteractionEvent event) {
+    public void NodeInteractionHandler(ViewportInteractionEvent event) {
         MouseEvent mouseEvent = event.getMouseEventInstance();
+        ViewportCanvas viewportCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
         Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
 
         // Selection logic
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
-            if (!isSelected() && intersectsWithScreenCoordinates(mouseScreenPosition)) {
-                this.isSelected = true;
-
-                //Invoke NodeSelectEvent
-                ViewportPanel nodeViewport = ViewportUtil.getEditingViewport();
-                NodeSelectEvent eventInstance = new NodeSelectEvent(this, nodeViewport);
-
-            } else isSelected = false;
+            // use wasDragged to prevent selection when node was dragged but not selected previously
+            this.isSelected = !wasDragged && intersectsWithScreenCoordinates(mouseScreenPosition);
+            wasDragged = false;
         }
+
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            leftButtonHeld = intersectsWithScreenCoordinates(mouseScreenPosition);
+
+            //Calculate dragging offset
+            Vector2f nodeWorldPos = getWorldPosition().add(viewportCanvas.getViewportOrigin());
+            draggingOffset = new Vector2f(
+                    mouseEvent.getX() - nodeWorldPos.getX(),
+                    mouseEvent.getY() - nodeWorldPos.getY()
+            );
+        }
+
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED) {
+            leftButtonHeld = false;
+        }
+
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-            if (isSelected && intersectsWithScreenCoordinates(mouseScreenPosition)) {
-                //setParentSpaceLocation(mouseScreenPosition);
+            //Drag node
+            if (isSelected && leftButtonHeld) {
+
+                Vector2f viewportOrigin = viewportCanvas.getViewportOrigin();
+                float viewportScale = viewportCanvas.getViewportScale();
+
+                Vector2f newPosition = new Vector2f(
+                        (mouseScreenPosition.x / viewportScale) - viewportOrigin.x - draggingOffset.x,
+                        (mouseScreenPosition.y / viewportScale) - viewportOrigin.y - draggingOffset.y
+                );
+                setParentSpaceLocation(newPosition);
             }
+            else wasDragged = true;
         }
     }
 }

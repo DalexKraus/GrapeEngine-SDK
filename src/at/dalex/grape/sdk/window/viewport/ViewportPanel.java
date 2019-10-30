@@ -55,6 +55,7 @@ public class ViewportPanel extends Tab {
         Node content = getContent();
         content.setOnMouseClicked(this::onMouseEvent);
         content.setOnMousePressed(this::onMouseEvent);
+        content.setOnMouseReleased(this::onMouseEvent);
         content.setOnMouseDragged(this::onMouseEvent);
         content.setOnMouseMoved(this::onMouseEvent);
 
@@ -91,7 +92,7 @@ public class ViewportPanel extends Tab {
      */
     private void onMouseEvent(MouseEvent event) {
         //Invoke new InteractionEvent
-        EventBase eventInstance = new InteractionEvent(event);
+        EventBase eventInstance = new ViewportInteractionEvent(event);
         for (EventListener listenerInstance : interactionListeners) {
             ArrayList<Method> handlerMethods = EventManager.getEventHandlerMethods(listenerInstance);
             EventManager.callHandlerMethods(listenerInstance, handlerMethods, eventInstance);

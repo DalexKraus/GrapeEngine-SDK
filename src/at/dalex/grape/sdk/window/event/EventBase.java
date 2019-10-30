@@ -8,7 +8,7 @@ public abstract class EventBase {
      * for this event not being called.
      *
      * The event can be cancelled using the
-     * {@link InteractionEvent#setCancelled(boolean)} ()} function.
+     * {@link ViewportInteractionEvent#setCancelled(boolean)} ()} function.
      */
     private boolean isCancelled;
 
