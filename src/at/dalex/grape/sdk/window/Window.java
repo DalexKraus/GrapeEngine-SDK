@@ -11,6 +11,7 @@ import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.FXMLUtil;
 import at.dalex.util.ThemeUtil;
+import at.dalex.util.ViewportUtil;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -137,12 +138,16 @@ public class Window extends Application {
         ViewportPanel viewportPanel = new ViewportPanel(viewportTitle);
         viewportPanel.getViewportCanvas().setViewportOrigin(480, 480);
         viewportPanel.getViewportCanvas().setViewportScale(1.0f);
+
+        ViewportUtil.getEditingScene().registerListenersToViewport(viewportPanel);
+        //NodeBase -- register same line in constructor
+
         viewportTabPane.getTabs().add(viewportPanel);
         preparePropertyPanel();
     }
 
     /**
-     * Refreshes the file browser to show created or delted files.
+     * Refreshes the file browser to show created or deleted files.
      */
     public static void refreshFileBrowser() {
         fileBrowserRoot.refreshChildren();

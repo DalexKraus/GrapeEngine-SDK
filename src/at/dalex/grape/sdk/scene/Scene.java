@@ -30,11 +30,15 @@ public class Scene implements Serializable {
      * @param viewportInstance The viewport to register the nodes in.
      */
     public void registerListenersToViewport(ViewportPanel viewportInstance) {
-
+        registerNodeToViewport(rootNode, viewportInstance);
     }
 
+    //TODO: Invoke somewhere
     public void registerNodeToViewport(NodeBase node, ViewportPanel viewportPanel) {
-        node.getChildren().forEach(child -> viewportPanel.register);
+        for (NodeBase child : node.getChildren()) {
+            viewportPanel.addInteractionListener(child);
+            registerNodeToViewport(child, viewportPanel);
+        }
     }
 
     public boolean isAnyNodeSelected() {

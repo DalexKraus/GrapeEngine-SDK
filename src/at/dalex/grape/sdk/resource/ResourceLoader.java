@@ -21,6 +21,9 @@ public class ResourceLoader {
             String editorPath = new File(ResourceLoader.class.getProtectionDomain()
                     .getCodeSource().getLocation().toURI()).toString();
 
+            if (System.getProperty("os.name").toLowerCase().contains("windows"))
+                editorPath = editorPath.replaceAll("\\\\", "/");
+
             int lastSeparatorIndex = editorPath.lastIndexOf('/');
             editor_executable_directory = new File(editorPath.substring(0, lastSeparatorIndex));
 

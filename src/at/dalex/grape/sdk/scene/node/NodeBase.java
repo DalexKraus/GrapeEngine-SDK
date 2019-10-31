@@ -4,6 +4,7 @@ import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.event.*;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
+import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
@@ -51,8 +52,9 @@ public abstract class NodeBase implements EventListener, Serializable {
         this.title = title;
         this.treeIconStorageKey = treeIconStorageKey;
 
-        if (!(this instanceof RootNode))
-            ViewportUtil.getEditingViewport().addInteractionListener(this);
+        //When a new node is created, add it to the viewport
+        ViewportPanel currentViewport = ViewportUtil.getEditingViewport();
+        currentViewport.addInteractionListener(this);
     }
 
     /**
@@ -296,21 +298,13 @@ public abstract class NodeBase implements EventListener, Serializable {
             // use wasDragged to prevent selection when node was dragged but not selected previously
 
 
-
-
-
-
+            //TODO:
+            //      Scene#deselectAllNodes() --> reset booleans and vector for NodeBase#NodeInteractionHandler()!
+            //      Node in Node --> Moving the second node results in draggingOffset jumps?
 
             //TODO:
-            //Scene#deselectAllNodes() --> reset booleans and vector for NodeBase#NodeInteractionHandler()!
-            //Node in Node --> Moving the second node results in draggingOffset jumps?
-
-
-
-
-
-
-
+            //      When selected the node inside a node (double click when intersecting)
+            //      calculate the draggingOffset vector using the selected node's parentSpaceLocation.
 
 
             //SINGLE SELECTIONS ONLY!

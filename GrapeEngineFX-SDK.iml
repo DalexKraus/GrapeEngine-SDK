@@ -13,15 +13,15 @@
     <orderEntry type="library" name="json-simple-1.1" level="project" />
     <orderEntry type="library" name="richtextfx-fat-0.10.1" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:13" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:mac:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:13" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:mac:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:13" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:mac:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:11.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:mac:11.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:11.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:11-ea+24" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:mac:11-ea+24" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:win:11-ea+24" level="project" />
     <orderEntry type="library" name="Maven: org.fxmisc.richtext:richtextfx:0.10.2" level="project" />
     <orderEntry type="library" name="Maven: org.reactfx:reactfx:2.0-M5" level="project" />
     <orderEntry type="library" name="Maven: org.fxmisc.undo:undofx:2.1.0" level="project" />
