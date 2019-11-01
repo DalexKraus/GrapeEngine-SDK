@@ -36,7 +36,7 @@ public class Window extends Application {
     private static ScenePropertyPanel scenePropertyPanel;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Parent root = FXMLUtil.loadRelativeFXML("/resources/javafx/mainwindow.fxml", null);
         FXMLUtil.addStyleSheet(root, "/resources/javafx/theme_dark/theme.css");
 
@@ -114,6 +114,7 @@ public class Window extends Application {
      * Prepares the property panel by adding it to the center-split-pane.
      */
     public static void preparePropertyPanel() {
+        //Don't create another panel if there already is one
         if (mainSplitPane.getItems().size() == 3)
             return;
 
@@ -135,14 +136,18 @@ public class Window extends Application {
      * which is contained by the center-split-pane.
      */
     public static void createViewport(String viewportTitle) {
+        //Don't create another viewport if the scene is already opened
+        for (Tab tab : viewportTabPane.getTabs()) {
+            if (tab.getText().equals(viewportTitle)) return;
+        }
+
         ViewportPanel viewportPanel = new ViewportPanel(viewportTitle);
         viewportPanel.getViewportCanvas().setViewportOrigin(480, 480);
         viewportPanel.getViewportCanvas().setViewportScale(1.0f);
+        viewportTabPane.getTabs().add(viewportPanel);
 
         ViewportUtil.getEditingScene().registerListenersToViewport(viewportPanel);
-        //NodeBase -- register same line in constructor
 
-        viewportTabPane.getTabs().add(viewportPanel);
         preparePropertyPanel();
     }
 

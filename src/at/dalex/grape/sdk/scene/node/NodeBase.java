@@ -52,9 +52,11 @@ public abstract class NodeBase implements EventListener, Serializable {
         this.title = title;
         this.treeIconStorageKey = treeIconStorageKey;
 
-        //When a new node is created, add it to the viewport
-        ViewportPanel currentViewport = ViewportUtil.getEditingViewport();
-        currentViewport.addInteractionListener(this);
+        //Register the newly created node as listener to the viewport currently opened
+        if (!(this instanceof RootNode)) { //RootNode is created when scene is created, therefore no viewport is open.
+            ViewportPanel currentViewport = ViewportUtil.getEditingViewport();
+            currentViewport.addInteractionListener(this);
+        }
     }
 
     /**
