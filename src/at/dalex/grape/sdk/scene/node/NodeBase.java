@@ -38,6 +38,13 @@ public abstract class NodeBase implements EventListener, Serializable {
     private Rectangle[] resizeKnobHitboxes;
 
     /**
+     * Every node must be able to draw itself (onto the viewport).
+     * @param g The {@link GraphicsContext} from the {@link at.dalex.grape.sdk.window.viewport.ViewportCanvas}
+     */
+    protected abstract void draw(ViewportCanvas canvas, GraphicsContext g);
+
+
+    /**
      * Create a new {@link NodeBase} using a given title.
      * This title will be shown in the scene's node list.
      *
@@ -101,11 +108,6 @@ public abstract class NodeBase implements EventListener, Serializable {
         draw(canvas, g);
     }
 
-    /**
-     * Every node must be able to draw itself (onto the viewport).
-     * @param g The {@link GraphicsContext} from the {@link at.dalex.grape.sdk.window.viewport.ViewportCanvas}
-     */
-    protected abstract void draw(ViewportCanvas canvas, GraphicsContext g);
 
     /**
      * Checks if the given coordinates intersect
@@ -126,6 +128,64 @@ public abstract class NodeBase implements EventListener, Serializable {
         return (screenCoordinates.x >= worldPos.x && screenCoordinates.y >= worldPos.y
                 && screenCoordinates.x <= (worldPos.x + width)
                 && screenCoordinates.y <= (worldPos.y + height));
+    }
+
+    /**
+     * Handles selection using interaction events
+     * from the {@link ViewportCanvas} currently visible.
+     * @param event
+     */
+    private boolean wasDragged;     //To avoid selection when cursor was dragged in node's boundaries if not sel.
+    private boolean leftButtonHeld; //To avoid node teleportation to cursor when clicked somewhere else
+    private Vector2f draggingOffset;
+
+    //TODO: Refactor to another file
+    @EventHandler
+    public void NodeInteractionHandler(ViewportInteractionEvent event) {
+        //RootNodes cannot be selected anyway
+        if (this instanceof RootNode)
+            return;
+
+        MouseEvent mouseEvent = event.getMouseEventInstance();
+        Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
+        //Viewport variables
+        ViewportCanvas viewportCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
+        Vector2f viewportOrigin = viewportCanvas.getViewportOrigin();
+        float viewportScale = viewportCanvas.getViewportScale();
+
+        // Selection logic
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            // use wasDragged to prevent selection when node was dragged but not selected previously
+            this.isSelected = !wasDragged && intersectsWithScreenCoordinates(mouseScreenPosition);
+            wasDragged = false;
+        }
+
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            leftButtonHeld = intersectsWithScreenCoordinates(mouseScreenPosition);
+
+            //Calculate dragging offset
+            Vector2f nodeWorldPos = getWorldPosition();
+            draggingOffset = new Vector2f(
+                    (mouseEvent.getX() / viewportScale) - nodeWorldPos.getX() - viewportOrigin.x,
+                    (mouseEvent.getY() / viewportScale) - nodeWorldPos.getY() - viewportOrigin.y
+            );
+        }
+
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED) {
+            leftButtonHeld = false;
+        }
+
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+            //Drag node
+            if (isSelected && leftButtonHeld) {
+                Vector2f newPosition = new Vector2f(
+                        (mouseScreenPosition.x / viewportScale) - viewportOrigin.x - draggingOffset.x,
+                        (mouseScreenPosition.y / viewportScale) - viewportOrigin.y - draggingOffset.y
+                );
+                setParentSpaceLocation(newPosition);
+            }
+            else wasDragged = true;
+        }
     }
 
     /**
@@ -276,70 +336,4 @@ public abstract class NodeBase implements EventListener, Serializable {
         return this.title;
     }
 
-    /**
-     * Handles selection using interaction events
-     * from the {@link ViewportCanvas} currently visible.
-     * @param event
-     */
-    private boolean wasDragged;     //To avoid selection when cursor was dragged in node's boundaries if not sel.
-    private boolean leftButtonHeld; //To avoid node teleportation to cursor when clicked somewhere else
-    private Vector2f draggingOffset;
-
-    //TODO: Refactor to another file
-    @EventHandler
-    public void NodeInteractionHandler(ViewportInteractionEvent event) {
-        MouseEvent mouseEvent = event.getMouseEventInstance();
-        Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
-        //Viewport variables
-        ViewportCanvas viewportCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
-        Vector2f viewportOrigin = viewportCanvas.getViewportOrigin();
-        float viewportScale = viewportCanvas.getViewportScale();
-
-        // Selection logic
-        if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
-            // use wasDragged to prevent selection when node was dragged but not selected previously
-
-
-            //TODO:
-            //      Scene#deselectAllNodes() --> reset booleans and vector for NodeBase#NodeInteractionHandler()!
-            //      Node in Node --> Moving the second node results in draggingOffset jumps?
-
-            //TODO:
-            //      When selected the node inside a node (double click when intersecting)
-            //      calculate the draggingOffset vector using the selected node's parentSpaceLocation.
-
-
-            //SINGLE SELECTIONS ONLY!
-            boolean anyNodeSelected = ViewportUtil.getEditingScene().isAnyNodeSelected();
-            this.isSelected = !wasDragged && !anyNodeSelected && intersectsWithScreenCoordinates(mouseScreenPosition);
-            wasDragged = false;
-        }
-
-        if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            leftButtonHeld = intersectsWithScreenCoordinates(mouseScreenPosition);
-
-            //Calculate dragging offset
-            Vector2f nodeWorldPos = getWorldPosition();
-            draggingOffset = new Vector2f(
-                    (mouseEvent.getX() / viewportScale) - nodeWorldPos.getX() - viewportOrigin.x,
-                    (mouseEvent.getY() / viewportScale) - nodeWorldPos.getY() - viewportOrigin.y
-            );
-        }
-
-        if (mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED) {
-            leftButtonHeld = false;
-        }
-
-        if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-            //Drag node
-            if (isSelected && leftButtonHeld) {
-                Vector2f newPosition = new Vector2f(
-                        (mouseScreenPosition.x / viewportScale) - viewportOrigin.x - draggingOffset.x,
-                        (mouseScreenPosition.y / viewportScale) - viewportOrigin.y - draggingOffset.y
-                );
-                setParentSpaceLocation(newPosition);
-            }
-            else wasDragged = true;
-        }
-    }
 }
