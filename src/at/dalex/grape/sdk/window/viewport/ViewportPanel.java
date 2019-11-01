@@ -40,9 +40,6 @@ public class ViewportPanel extends Tab {
     /* List of keys currently held */
     private static ArrayList<KeyCode> pressedKeys = new ArrayList<>();
 
-    /* List containing all currently selected nodes */
-    private static ArrayList<NodeBase> selectedNodes = new ArrayList<>();
-
     /**
      * Creates a new {@link ViewportPanel}.
      */
