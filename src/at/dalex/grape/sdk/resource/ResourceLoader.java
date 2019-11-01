@@ -1,8 +1,9 @@
 package at.dalex.grape.sdk.resource;
 
+import at.dalex.util.OSUtil;
+
 import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -21,8 +22,7 @@ public class ResourceLoader {
             String editorPath = new File(ResourceLoader.class.getProtectionDomain()
                     .getCodeSource().getLocation().toURI()).toString();
 
-            if (System.getProperty("os.name").toLowerCase().contains("windows"))
-                editorPath = editorPath.replaceAll("\\\\", "/");
+            editorPath = OSUtil.replaceSeparators(editorPath);
 
             int lastSeparatorIndex = editorPath.lastIndexOf('/');
             editor_executable_directory = new File(editorPath.substring(0, lastSeparatorIndex));
@@ -88,7 +88,9 @@ public class ResourceLoader {
      * @param relativePath A file relative to the editor's directory
      * @return The absolute file on disk.
      */
-    public static File getAbsoluteFilePath(String relativePath) {
-        return new File(editor_executable_directory.getAbsolutePath() + relativePath);
+    public static String getAbsoluteFilePath(String relativePath) {
+        //Replace all backslashes with forward ones when the editor is running on windows.
+        String translatedRelativePath = OSUtil.replaceSeparators(relativePath);
+        return editor_executable_directory.getAbsolutePath() + translatedRelativePath;
     }
 }

@@ -18,7 +18,7 @@ public class FXMLUtil {
      * @return The loaded FXML file as {@link Parent}.
      */
     public static Parent loadRelativeFXML(String relativeFilePath, Initializable controllerInstance) {
-        File fxmlFile = ResourceLoader.getAbsoluteFilePath(relativeFilePath);
+        String absoluteFxmlFile = ResourceLoader.getAbsoluteFilePath(relativeFilePath);
         Parent fxmlParent = null;
 
         /* Try to read fxml file */
@@ -28,9 +28,9 @@ public class FXMLUtil {
             if (controllerInstance != null)
                 fxmlLoader.setController(controllerInstance);
 
-            fxmlParent = fxmlLoader.load(new FileInputStream(ResourceLoader.getAbsoluteFilePath(relativeFilePath)));
+            fxmlParent = fxmlLoader.load(new FileInputStream(absoluteFxmlFile));
         } catch (IOException e) {
-            System.out.println("Unable to load FXML file '" + fxmlFile.getAbsolutePath() + "'!");
+            System.out.println("Unable to load FXML file '" + absoluteFxmlFile + "'!");
             e.printStackTrace();
         }
 
@@ -43,10 +43,11 @@ public class FXMLUtil {
      * @param relativeFilePath The relative path of the css file.
      */
     public static void addStyleSheet(Parent parent, String relativeFilePath) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("file:");
-        builder.append(ResourceLoader.getAbsoluteFilePath(relativeFilePath));
+        String absoluteFilePath = OSUtil.replaceSeparators(ResourceLoader.getAbsoluteFilePath(relativeFilePath));
 
+        StringBuilder builder = new StringBuilder();
+        builder.append("file:///");
+        builder.append(absoluteFilePath);
         parent.getStylesheets().add(builder.toString());
     }
 }
