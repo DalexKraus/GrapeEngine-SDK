@@ -36,6 +36,7 @@ public class Vector2f implements Cloneable, Serializable {
      * @return the length squared of the vector
      */
     public float lengthSquared() {
+        //Not using math.pow here as this method is faster
         return x * x + y * y;
     }
 
