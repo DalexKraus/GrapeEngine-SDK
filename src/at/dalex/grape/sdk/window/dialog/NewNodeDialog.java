@@ -110,6 +110,9 @@ public class NewNodeDialog extends Stage {
 
             //Add new instance to the children of the selected node in the tree
             //and then refresh the children of the selected tree node in the editor
+            HashMap<NodeBase, NodeTreeItem>
+
+
             selectedNodeTreeItem.getValue().addChild(newInstance);
             selectedNodeTreeItem.setExpanded(true);
             selectedNodeTreeItem.refreshChildren();

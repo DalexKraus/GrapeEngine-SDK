@@ -58,6 +58,4 @@ public class NodeTreeItem extends TreeItem<NodeBase> {
         }
         return statuses;
     }
-
-
 }
