@@ -108,7 +108,6 @@ public abstract class NodeBase implements EventListener, Serializable {
         draw(canvas, g);
     }
 
-
     /**
      * Checks if the given coordinates intersect
      * with the boundaries of this node.
@@ -119,44 +118,57 @@ public abstract class NodeBase implements EventListener, Serializable {
     public boolean intersectsWithScreenCoordinates(Vector2f screenCoordinates) {
         //Transform the screen-coordinates into world-coordinates
         ViewportCanvas currentCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
-        screenCoordinates.scale(1.0f / currentCanvas.getViewportScale());
-        screenCoordinates.add(currentCanvas.getViewportOrigin().clone().negate());
+        Vector2f transformedCoordinates = screenCoordinates.clone();
+        transformedCoordinates.scale(1.0f / currentCanvas.getViewportScale());
+        transformedCoordinates.add(currentCanvas.getViewportOrigin().clone().negate());
 
-        //Check if coordinate is inside the boundaries of this node.
-        //(Basic AABB collision check)
-        Vector2f worldPos = getWorldPosition();
-        return (screenCoordinates.x >= worldPos.x && screenCoordinates.y >= worldPos.y
-                && screenCoordinates.x <= (worldPos.x + width)
-                && screenCoordinates.y <= (worldPos.y + height));
+        return intersectsWithWorldCoordinates(transformedCoordinates);
     }
 
     /**
-     * Handles selection using interaction events
-     * from the {@link ViewportCanvas} currently visible.
-     * @param event
+     * Checks if the given coordinates intersect
+     * with the boundaries of this node.
+     * The passed coordinates must be in world-space.
+     *
+     * @return Intersects with the boundaries
      */
+    public boolean intersectsWithWorldCoordinates(Vector2f worldCoordinates) {
+        //Check if coordinate is inside the boundaries of this node.
+        //(Basic AABB collision check)
+        Vector2f worldPos = getWorldPosition();
+        return (worldCoordinates.x >= worldPos.x && worldCoordinates.y >= worldPos.y
+                && worldCoordinates.x <= (worldPos.x + width)
+                && worldCoordinates.y <= (worldPos.y + height));
+    }
+
+    /* Fields used for selection determination */
     private boolean wasDragged;     //To avoid selection when cursor was dragged in node's boundaries if not sel.
     private boolean leftButtonHeld; //To avoid node teleportation to cursor when clicked somewhere else
     private Vector2f draggingOffset;
-
-    //TODO: Refactor to another file
-    @EventHandler
-    public void NodeInteractionHandler(ViewportInteractionEvent event) {
+    /**
+     * Handles the interaction event and decides whether or not
+     * the node should be selected.
+     *
+     * @param mouseEvent The mouse event responsible for the invocation
+     * @param canvas The canvas the interaction occurred on
+     */
+    public boolean handleInteractionEvent(MouseEvent mouseEvent, ViewportCanvas canvas) {
         //RootNodes cannot be selected anyway
         if (this instanceof RootNode)
-            return;
+            return false;
 
-        MouseEvent mouseEvent = event.getMouseEventInstance();
-        Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
         //Viewport variables
-        ViewportCanvas viewportCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
-        Vector2f viewportOrigin = viewportCanvas.getViewportOrigin();
-        float viewportScale = viewportCanvas.getViewportScale();
+        Vector2f viewportOrigin = canvas.getViewportOrigin();
+        float viewportScale = canvas.getViewportScale();
+
+        Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
 
         // Selection logic
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED) {
             // use wasDragged to prevent selection when node was dragged but not selected previously
-            this.isSelected = !wasDragged && intersectsWithScreenCoordinates(mouseScreenPosition);
+            if (!isSelected) {
+                this.isSelected = !wasDragged && !ViewportUtil.getEditingScene().isAnyNodeSelected();
+            }
             wasDragged = false;
         }
 
@@ -186,6 +198,22 @@ public abstract class NodeBase implements EventListener, Serializable {
             }
             else wasDragged = true;
         }
+
+        return isSelected;
+    }
+
+    /**
+     * Used for deselecting using a click outside of the node's boundaries
+     */
+    @EventHandler
+    public void onViewportInteraction(ViewportInteractionEvent e) {
+        MouseEvent mouseEvent = e.getMouseEventInstance();
+        Vector2f cursorScreenCoordinates = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
+
+        boolean intersecting = intersectsWithScreenCoordinates(cursorScreenCoordinates);
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED && !intersecting)
+            this.isSelected = false;
+
     }
 
     /**

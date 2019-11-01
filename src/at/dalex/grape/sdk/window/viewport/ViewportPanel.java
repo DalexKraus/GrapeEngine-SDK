@@ -88,11 +88,24 @@ public class ViewportPanel extends Tab {
      * @param event The mouse event that was made by the user
      */
     private void onMouseEvent(MouseEvent event) {
-        //Invoke new InteractionEvent
+        //Invoke new InteractionEvent first
         EventBase eventInstance = new ViewportInteractionEvent(event);
         for (EventListener listenerInstance : interactionListeners) {
             ArrayList<Method> handlerMethods = EventManager.getEventHandlerMethods(listenerInstance);
             EventManager.callHandlerMethods(listenerInstance, handlerMethods, eventInstance);
+        }
+
+        //Handle node selections
+        Vector2f mouseScreenPosition = new Vector2f(event.getX(), event.getY());
+        ViewportCanvas currentCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
+        //Transform screen coordinates to world coordinates
+        mouseScreenPosition.scale(1.0f / currentCanvas.getViewportScale());
+        mouseScreenPosition.add(currentCanvas.getViewportOrigin().clone().negate());
+
+        ArrayList<NodeBase> intersectingNodes = ViewportUtil.getEditingScene().getNodesAtLocation(mouseScreenPosition);
+        for (NodeBase node : intersectingNodes) {
+            boolean eventHandled = node.handleInteractionEvent(event, currentCanvas);
+            if (eventHandled) break;
         }
 
         //Pass event to responsible sub components
