@@ -1,7 +1,9 @@
 package at.dalex.grape.sdk.window.listener;
 
 import at.dalex.grape.sdk.scene.node.NodeBase;
+import at.dalex.grape.sdk.scene.node.RootNode;
 import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
+import at.dalex.util.ViewportUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
@@ -29,8 +31,17 @@ public class NodeTreeListener implements EventHandler<MouseEvent> {
      */
     private void handleSingleClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
+            //Retrieve clicked node instance
+            NodeBase node = getClickedNode();
+
             //Enable 'add node' button
-            propertyPanel.getNodeTreeBar().getAddNodeButton().setDisable(getClickedNode() == null);
+            propertyPanel.getNodeTreeBar().getAddNodeButton().setDisable(node == null);
+
+            //Select node in viewport
+            if (node != null && !(node instanceof RootNode)) {
+                ViewportUtil.getEditingScene().deselectAllNodes();
+                node.setSelected(true);
+            }
         }
     }
 

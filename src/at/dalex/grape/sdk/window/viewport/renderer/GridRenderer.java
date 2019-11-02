@@ -79,4 +79,22 @@ public class GridRenderer implements ITickCallback {
         double normalizedTilePosition = Math.abs(originCoordinate) - (tileCountToOrigin * this.tileSize);
         return originCoordinate < 0 ? Math.abs(this.tileSize - normalizedTilePosition) : normalizedTilePosition;
     }
+
+    /**
+     * @return The current tile-size in pixels.
+     */
+    public int getTileSize() {
+        return this.tileSize;
+    }
+
+    /**
+     * Sets the tile-size.
+     *
+     * @param tileSize The desired tile-size in pixels
+     */
+    public void setTileSize(int tileSize) {
+        if (tileSize > 0) {
+            this.tileSize = tileSize;
+        }
+    }
 }

@@ -110,9 +110,6 @@ public class NewNodeDialog extends Stage {
 
             //Add new instance to the children of the selected node in the tree
             //and then refresh the children of the selected tree node in the editor
-            HashMap<NodeBase, NodeTreeItem>
-
-
             selectedNodeTreeItem.getValue().addChild(newInstance);
             selectedNodeTreeItem.setExpanded(true);
             selectedNodeTreeItem.refreshChildren();
@@ -130,7 +127,7 @@ public class NewNodeDialog extends Stage {
         nodeListView.getItems().clear();
 
         /* Custom cell factory for displaying the node's icon */
-        nodeListView.setCellFactory(param -> new ListCell<String>() {
+        nodeListView.setCellFactory(param -> new ListCell<>() {
             @Override
             public void updateItem(String name, boolean isEmpty) {
                 super.updateItem(name, isEmpty);

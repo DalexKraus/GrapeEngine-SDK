@@ -3,11 +3,13 @@ package at.dalex.grape.sdk.scene.node;
 import at.dalex.grape.sdk.resource.ResourceLoader;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.event.*;
+import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -42,7 +44,6 @@ public abstract class NodeBase implements EventListener, Serializable {
      * @param g The {@link GraphicsContext} from the {@link at.dalex.grape.sdk.window.viewport.ViewportCanvas}
      */
     protected abstract void draw(ViewportCanvas canvas, GraphicsContext g);
-
 
     /**
      * Create a new {@link NodeBase} using a given title.
@@ -197,6 +198,16 @@ public abstract class NodeBase implements EventListener, Serializable {
                 setParentSpaceLocation(newPosition);
             }
             else wasDragged = true;
+        }
+
+        //if the node is now selected, select the node in the node tree as well
+        if (isSelected && mouseEvent.getEventType() != MouseEvent.MOUSE_MOVED) {
+            ScenePropertyPanel propertyPanel = Window.getScenePropertyPanel();
+            NodeTreeItem correspondingItem = propertyPanel.getNodeTreeReferences().get(this);
+            TreeView nodeTree = propertyPanel.getNodeTree();
+
+            int rowIndex = nodeTree.getRow(correspondingItem);
+            nodeTree.getSelectionModel().select(rowIndex);
         }
 
         return isSelected;
@@ -363,5 +374,4 @@ public abstract class NodeBase implements EventListener, Serializable {
     public String toString() {
         return this.title;
     }
-
 }

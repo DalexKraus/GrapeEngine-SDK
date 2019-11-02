@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.window.propertypanel;
 
 import at.dalex.grape.sdk.scene.Scene;
+import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.scene.node.RootNode;
 import at.dalex.grape.sdk.window.listener.NodeTreeListener;
@@ -16,11 +17,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import java.util.HashMap;
+
 public class ScenePropertyPanel extends SplitPane {
 
     private static final String TAB_TITLE = "Properties";
     private TreeView nodeTree;
     private NodeTreeBar nodeTreeBar;
+
+    /* Map containing references to the node tree items */
+    HashMap<NodeBase, NodeTreeItem> nodeTreeReferences = new HashMap<>();
 
     public ScenePropertyPanel() {
         /* Set the title and add a split-pane for content (vertical orientation) */
@@ -71,5 +77,9 @@ public class ScenePropertyPanel extends SplitPane {
 
     public NodeTreeBar getNodeTreeBar() {
         return this.nodeTreeBar;
+    }
+
+    public HashMap<NodeBase, NodeTreeItem> getNodeTreeReferences() {
+        return nodeTreeReferences;
     }
 }

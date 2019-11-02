@@ -4,6 +4,7 @@ import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.event.*;
+import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
 import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.event.Event;
@@ -201,6 +202,14 @@ public class ViewportPanel extends Tab {
      * @param e Mouse scroll-event
      */
     private void gridScaleEvent(ScrollEvent e) {
+        //Scale grid if control is held
+        if (isKeyPressed(KeyCode.CONTROL)) {
+            GridRenderer gridRenderer = (GridRenderer) viewportCanvas.getTickCallback("GridRenderer");
+            int previousTileSize = gridRenderer.getTileSize();
+            System.out.println(e.getDeltaY());
+//            gridRenderer.setTileSize(newTileSize);
+        }
+
         float previousScale = viewportCanvas.getViewportScale();
         double scale = previousScale * Math.pow(1.00525, e.getDeltaY());
 

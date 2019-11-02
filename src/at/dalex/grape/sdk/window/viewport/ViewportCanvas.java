@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class represents the actual canvas where stuff gets drawn.
@@ -28,14 +29,14 @@ public class ViewportCanvas extends Canvas implements Disposable {
     private static boolean showTileGrid = true;
 
     private GraphicsContext graphicsContext;
-    private ArrayList<ITickCallback> tickCallbacks = new ArrayList<>();
+    private HashMap<String, ITickCallback> tickCallbacks = new HashMap<>();
 
     private AnimationTimer animationTimer;
 
     public ViewportCanvas() {
         this.graphicsContext = getGraphicsContext2D();
-        registerTickCallback(new GridRenderer(this));
-        registerTickCallback(new NodeRenderer(this));
+        registerTickCallback("GridRenderer", new GridRenderer(this));
+        registerTickCallback("NodeRenderer", new NodeRenderer(this));
 
         /**
          * Animation Loop
@@ -73,7 +74,8 @@ public class ViewportCanvas extends Canvas implements Disposable {
     private void draw(double deltaTime) {
         //Clear canvas
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
-        for (ITickCallback callback : this.tickCallbacks) {
+        for (String callbackKey : this.tickCallbacks.keySet()) {
+            ITickCallback callback = tickCallbacks.get(callbackKey);
             callback.update(deltaTime);
             callback.draw(getGraphicsContext());
         }
@@ -83,20 +85,31 @@ public class ViewportCanvas extends Canvas implements Disposable {
      * Register a new {@link ITickCallback} which
      * gets invoked when a new frame gets to be drawn.
      *
+     * @param callbackKey The key to store the object with.
      * @param callback The renderer which implements the {@link ITickCallback} interface.
      */
-    public void registerTickCallback(ITickCallback callback) {
-        if (!tickCallbacks.contains(callback))
-            tickCallbacks.add(callback);
+    public void registerTickCallback(String callbackKey, ITickCallback callback) {
+        tickCallbacks.put(callbackKey, callback);
     }
 
     /**
      * Unregisters a previously registered {@link ITickCallback}.
      *
-     * @param callback The {@link ITickCallback} to unregister
+     * @param callbackKey The key of the {@link ITickCallback} to unregister
      */
-    public void unregisterTickCallback(ITickCallback callback) {
-        tickCallbacks.remove(callback);
+    public void unregisterTickCallback(String callbackKey) {
+        tickCallbacks.remove(callbackKey);
+    }
+
+    /**
+     * Retrieves a previously registered {@link ITickCallback} using the key
+     * with which the callback was previously stored.
+     *
+     * @param callbackKey The key of the callback
+     * @return The callback or null if none found using the given key.
+     */
+    public ITickCallback getTickCallback(String callbackKey) {
+        return tickCallbacks.get(callbackKey);
     }
 
     @Override
