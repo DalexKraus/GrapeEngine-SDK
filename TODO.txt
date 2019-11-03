@@ -1,9 +1,7 @@
 
 *** Last Task (if unfinished)
 
-- Single node selection
-
-
+- Grid size changes only in the newest viewport
 
 *** High Priority
 

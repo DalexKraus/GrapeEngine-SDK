@@ -4,6 +4,7 @@ import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.dialog.NewSceneDialog;
 import at.dalex.grape.sdk.window.listener.*;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
+import at.dalex.util.ViewportUtil;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -50,15 +51,26 @@ public class MenuBarHelper {
         fileMenu.getItems().add(file_close);
 
         /* View */
-        //view:togglegrid
+        //view:toggleGrid
         MenuItem view_toggle_grid = new MenuItem("ToggleTile Grid");
         view_toggle_grid.setOnAction(handler -> ViewportCanvas.toggleTileGrid());
         view_toggle_grid.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.SHIFT_DOWN, KeyCombination.ALT_DOWN));
         viewMenu.getItems().add(view_toggle_grid);
-        //view:refreshfilebrowser
+        //view:refreshFileBrowser
         MenuItem view_refresh_file_browser = new MenuItem("Refresh File Browser");
         view_refresh_file_browser.setOnAction(handler -> Window.refreshFileBrowser());
         viewMenu.getItems().add(view_refresh_file_browser);
+        //view:increaseTileSize
+        MenuItem view_increase_tile_size = new MenuItem("Increase Viewport Tile Size");
+        view_increase_tile_size.setOnAction(handler -> ViewportUtil.increaseTileSize());
+        view_increase_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.PLUS, KeyCombination.CONTROL_DOWN));
+        viewMenu.getItems().add(view_increase_tile_size);
+        //View:decreaseTileSize
+        MenuItem view_decrease_tile_size = new MenuItem("Decrease Viewport Tile Size");
+        view_decrease_tile_size.setOnAction(handler -> ViewportUtil.decreaseTileSize());
+        view_decrease_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN));
+        viewMenu.getItems().add(view_decrease_tile_size);
+
 
         /* About */
         MenuItem help_about = new MenuItem("About");
