@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;
@@ -83,14 +84,25 @@ public abstract class NodeBase implements EventListener, Serializable {
         if (isSelected) {
             Image knob = ResourceLoader.get("image.icon.node.resizeknob", Image.class);
 
+            Vector2f[] cornerPositions = getBoundaryCorners();
             ViewportCanvas currentCanvas = Window.getSelectedViewport().getViewportCanvas();
             //The origin needs to be cloned in order to prevent modifications to the reference object
             Vector2f viewportOrigin = currentCanvas.getViewportOrigin().clone();
             Vector2f worldPosition = viewportOrigin.add(this.getWorldPosition());
             float viewportScale = currentCanvas.getViewportScale();
 
+            //Draw selection boundary box
+            g.setStroke(Color.INDIANRED);
+            g.setLineDashes(8);
+            g.strokeRoundRect(
+                    worldPosition.x * viewportScale - 2,
+                    worldPosition.y * viewportScale - 2,
+                    width * viewportScale + 4,
+                    height * viewportScale + 4,
+                    8, 8);
+            g.setLineDashes(0);
+
             int knobSize = 8;
-            Vector2f[] cornerPositions = getBoundaryCorners();
             float[] knobOffsets = {-2, -2, 2, -2, -2, 2, 2, 2};
             for (int i = 0; i < knobOffsets.length; i++)
                 if (knobOffsets[i] < 0) knobOffsets[i] -= knobSize;

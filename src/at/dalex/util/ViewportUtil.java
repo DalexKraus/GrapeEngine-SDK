@@ -50,7 +50,7 @@ public class ViewportUtil {
 
     /**
      * Changes the tile size.
-     * @param deltaSize The tilesize to add to the current one.
+     * @param deltaSize The tile size to add to the current one.
      */
     private static void changeTileSize(int deltaSize) {
         ViewportPanel currentViewport = getEditingViewport();
