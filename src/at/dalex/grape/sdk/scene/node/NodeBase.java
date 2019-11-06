@@ -209,9 +209,8 @@ public abstract class NodeBase implements EventListener, Serializable {
         MouseEvent mouseEvent = e.getMouseEventInstance();
         Vector2f cursorScreenCoordinates = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
 
-        ViewportPanel currentViewport = ViewportUtil.getEditingViewport();
-        ViewportCanvas currentCanvas = currentViewport.getViewportCanvas();
-        float viewportScale = currentCanvas.getViewportScale();
+        ViewportCanvas currentCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
+        float viewportScale     = currentCanvas.getViewportScale();
         Vector2f viewportOrigin = currentCanvas.getViewportOrigin();
 
         boolean intersecting = intersectsWithScreenCoordinates(cursorScreenCoordinates);
@@ -225,7 +224,7 @@ public abstract class NodeBase implements EventListener, Serializable {
                 double cursorWorldY = (cursorScreenCoordinates.y / viewportScale) - viewportOrigin.y;
                 Vector2f newPosition = new Vector2f(cursorWorldX, cursorWorldY);
 
-                if (currentViewport.shouldSnapToGrid()) {
+                if (ViewportUtil.shouldSnapToGrid()) {
                     //Calculate cell coordinates in which the cursor is currently in
                     float tempX = ((int) (cursorWorldX / 16)) * 16;
                     float tempY = ((int) (cursorWorldY / 16)) * 16;

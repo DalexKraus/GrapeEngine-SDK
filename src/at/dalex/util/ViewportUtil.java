@@ -9,6 +9,9 @@ import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
 
 public class ViewportUtil {
 
+    /* Should nodes snap to grid edges when moved? */
+    private static boolean snapToGrid = true;
+
     /**
      * Retrieves the Scene object which is currently being edited in the viewport.
      * For this function to successfully return the scene object, a project
@@ -70,5 +73,13 @@ public class ViewportUtil {
      */
     public static void decreaseTileSize() {
         changeTileSize(-16);
+    }
+
+    public static boolean shouldSnapToGrid() {
+        return snapToGrid;
+    }
+
+    public static void setSnapToGrid(boolean enable) {
+        snapToGrid = enable;
     }
 }

@@ -5,9 +5,7 @@ import at.dalex.grape.sdk.window.dialog.NewSceneDialog;
 import at.dalex.grape.sdk.window.listener.*;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.util.ViewportUtil;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -23,10 +21,11 @@ public class MenuBarHelper {
      */
     public static void inflateMenuBar(MenuBar menuBar) {
         menuBar.getMenus().clear();
-        Menu fileMenu = new Menu("File");
-        Menu editMenu = new Menu("Edit");
-        Menu viewMenu = new Menu("View");
-        Menu helpMenu = new Menu("Help");
+        Menu fileMenu       = new Menu("File");
+        Menu editMenu       = new Menu("Edit");
+        Menu viewMenu       = new Menu("View");
+        Menu viewportMenu   = new Menu("Viewport");
+        Menu helpMenu       = new Menu("Help");
 
         /* File */
         Menu file_new = new Menu("New");
@@ -60,17 +59,24 @@ public class MenuBarHelper {
         MenuItem view_refresh_file_browser = new MenuItem("Refresh File Browser");
         view_refresh_file_browser.setOnAction(handler -> Window.refreshFileBrowser());
         viewMenu.getItems().add(view_refresh_file_browser);
-        //view:increaseTileSize
-        MenuItem view_increase_tile_size = new MenuItem("Increase Viewport Tile Size");
-        view_increase_tile_size.setOnAction(handler -> ViewportUtil.increaseTileSize());
-        view_increase_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.PLUS, KeyCombination.CONTROL_DOWN));
-        viewMenu.getItems().add(view_increase_tile_size);
-        //View:decreaseTileSize
-        MenuItem view_decrease_tile_size = new MenuItem("Decrease Viewport Tile Size");
-        view_decrease_tile_size.setOnAction(handler -> ViewportUtil.decreaseTileSize());
-        view_decrease_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN));
-        viewMenu.getItems().add(view_decrease_tile_size);
 
+        /* Viewport */
+        //Viewport:increaseTileSize
+        MenuItem viewport_increase_tile_size = new MenuItem("Increase Tile Size");
+        viewport_increase_tile_size.setOnAction(handler -> ViewportUtil.increaseTileSize());
+        viewport_increase_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.PLUS, KeyCombination.CONTROL_DOWN));
+        viewportMenu.getItems().add(viewport_increase_tile_size);
+        //Viewport:decreaseTileSize
+        MenuItem viewport_decrease_tile_size = new MenuItem("Decrease Tile Size");
+        viewport_decrease_tile_size.setOnAction(handler -> ViewportUtil.decreaseTileSize());
+        viewport_decrease_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN));
+        viewportMenu.getItems().add(viewport_decrease_tile_size);
+        //Viewport:snapToGrid
+        CheckMenuItem viewport_snap_to_grid = new CheckMenuItem("Snap to Grid");
+        viewport_snap_to_grid.setSelected(ViewportUtil.shouldSnapToGrid());
+        viewport_snap_to_grid.setOnAction(handler -> ViewportUtil.setSnapToGrid(viewport_snap_to_grid.isSelected()));
+        viewport_snap_to_grid.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.ALT_DOWN));
+        viewportMenu.getItems().add(viewport_snap_to_grid);
 
         /* About */
         MenuItem help_about = new MenuItem("About");
@@ -78,7 +84,7 @@ public class MenuBarHelper {
         helpMenu.getItems().add(help_about);
 
         //Add menus
-        menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, viewportMenu, helpMenu);
 
         //Apply application name (for macOS devices)
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "GrapeEngine SDK");
