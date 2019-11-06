@@ -41,6 +41,9 @@ public class ViewportPanel extends Tab {
     /* List of keys currently held */
     private static ArrayList<KeyCode> pressedKeys = new ArrayList<>();
 
+    /* Should nodes snap to grid edges when moved? */
+    private boolean snapToGrid = true;
+
     /**
      * Creates a new {@link ViewportPanel}.
      */
@@ -256,5 +259,12 @@ public class ViewportPanel extends Tab {
      */
     public boolean isKeyPressed(KeyCode keyCode) {
         return pressedKeys.contains(keyCode);
+    }
+
+    /**
+     * @return Whether or not any moved nodes should snap to the grid when moved in the viewport.
+     */
+    public boolean shouldSnapToGrid() {
+        return this.snapToGrid;
     }
 }

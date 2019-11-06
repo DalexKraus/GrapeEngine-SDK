@@ -18,11 +18,9 @@ public class RectangleNode extends NodeBase {
      */
     public RectangleNode() {
         super("Rectangle", "image.icon.node.rectangle");
-
         //Apply some default values
-//        this.width = this.height = 64;
-        setWidth(48);
-        setHeight(48);
+        setWidth(16);
+        setHeight(16);
     }
 
     @Override

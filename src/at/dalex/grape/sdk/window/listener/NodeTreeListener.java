@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.window.listener;
 
 import at.dalex.grape.sdk.scene.node.NodeBase;
+import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.scene.node.RootNode;
 import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
 import at.dalex.util.ViewportUtil;
@@ -55,7 +56,7 @@ public class NodeTreeListener implements EventHandler<MouseEvent> {
 
     private NodeBase getClickedNode() {
         ObservableList selectedItems = propertyPanel.getNodeTree().getSelectionModel().getSelectedItems();
-        TreeItem<NodeBase> nodeTreeItem = selectedItems.size() > 0 ? (TreeItem<NodeBase>) selectedItems.get(0) : null;
+        TreeItem<NodeBase> nodeTreeItem = selectedItems.size() > 0 ? (NodeTreeItem) selectedItems.get(0) : null;
         return nodeTreeItem != null ? nodeTreeItem.getValue() : null;
     }
 }

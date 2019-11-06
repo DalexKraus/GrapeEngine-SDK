@@ -188,18 +188,6 @@ public abstract class NodeBase implements EventListener, Serializable {
             leftButtonHeld = false;
         }
 
-        if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-            //Drag node
-            if (isSelected && leftButtonHeld) {
-                Vector2f newPosition = new Vector2f(
-                        (mouseScreenPosition.x / viewportScale) - viewportOrigin.x - draggingOffset.x,
-                        (mouseScreenPosition.y / viewportScale) - viewportOrigin.y - draggingOffset.y
-                );
-                setParentSpaceLocation(newPosition);
-            }
-            else wasDragged = true;
-        }
-
         //if the node is now selected, select the node in the node tree as well
         if (isSelected && mouseEvent.getEventType() != MouseEvent.MOUSE_MOVED) {
             ScenePropertyPanel propertyPanel = Window.getScenePropertyPanel();
@@ -221,10 +209,37 @@ public abstract class NodeBase implements EventListener, Serializable {
         MouseEvent mouseEvent = e.getMouseEventInstance();
         Vector2f cursorScreenCoordinates = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
 
+        ViewportPanel currentViewport = ViewportUtil.getEditingViewport();
+        ViewportCanvas currentCanvas = currentViewport.getViewportCanvas();
+        float viewportScale = currentCanvas.getViewportScale();
+        Vector2f viewportOrigin = currentCanvas.getViewportOrigin();
+
         boolean intersecting = intersectsWithScreenCoordinates(cursorScreenCoordinates);
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_CLICKED && !intersecting)
             this.isSelected = false;
 
+        //Drag node
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+            if (isSelected && leftButtonHeld) {
+                double cursorWorldX = (cursorScreenCoordinates.x / viewportScale) - viewportOrigin.x;
+                double cursorWorldY = (cursorScreenCoordinates.y / viewportScale) - viewportOrigin.y;
+                Vector2f newPosition = new Vector2f(cursorWorldX, cursorWorldY);
+
+                if (currentViewport.shouldSnapToGrid()) {
+                    //Calculate cell coordinates in which the cursor is currently in
+                    float tempX = ((int) (cursorWorldX / 16)) * 16;
+                    float tempY = ((int) (cursorWorldY / 16)) * 16;
+
+                    //When the cursor is inside negative bounds, subtract one cell more
+                    newPosition.x = cursorWorldX < 0 ? -(16 + Math.abs(tempX)) : tempX;
+                    newPosition.y = cursorWorldY < 0 ? -(16 + Math.abs(tempY)) : tempY;
+                }
+                else newPosition.sub(draggingOffset);
+
+                setParentSpaceLocation(newPosition);
+            }
+            else wasDragged = true;
+        }
     }
 
     /**

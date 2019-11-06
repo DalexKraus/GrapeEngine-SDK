@@ -56,7 +56,6 @@ public class DefaultResources {
         try {
             File executableDir = ResourceLoader.getEditorExecutableDirectory();
             File resourceFile = new File(executableDir.getAbsolutePath() + "/" + resourcePath);
-            System.out.println("FILE: " +  resourceFile.getAbsolutePath());
             BufferedImage bufferedImage = ImageIO.read(resourceFile);
             return SwingFXUtils.toFXImage(bufferedImage, null);
         }

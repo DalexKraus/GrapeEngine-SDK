@@ -137,6 +137,14 @@ public class Vector2f implements Cloneable, Serializable {
         return this;
     }
 
+    public Vector2f sub(float x, float y) {
+        return add(-x, -y);
+    }
+
+    public Vector2f sub(Vector2f offset) {
+        return sub(offset.x, offset.y);
+    }
+
     /**
      * Add a vector to another vector and place the result in a destination
      * vector.
