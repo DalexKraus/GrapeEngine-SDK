@@ -64,12 +64,12 @@ public class MenuBarHelper {
         //Viewport:increaseTileSize
         MenuItem viewport_increase_tile_size = new MenuItem("Increase Tile Size");
         viewport_increase_tile_size.setOnAction(handler -> ViewportUtil.increaseTileSize());
-        viewport_increase_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.PLUS, KeyCombination.CONTROL_DOWN));
+        viewport_increase_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.PLUS, KeyCombination.SHORTCUT_DOWN));
         viewportMenu.getItems().add(viewport_increase_tile_size);
         //Viewport:decreaseTileSize
         MenuItem viewport_decrease_tile_size = new MenuItem("Decrease Tile Size");
         viewport_decrease_tile_size.setOnAction(handler -> ViewportUtil.decreaseTileSize());
-        viewport_decrease_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN));
+        viewport_decrease_tile_size.setAccelerator(new KeyCodeCombination(KeyCode.MINUS, KeyCombination.SHORTCUT_DOWN));
         viewportMenu.getItems().add(viewport_decrease_tile_size);
         //Viewport:snapToGrid
         CheckMenuItem viewport_snap_to_grid = new CheckMenuItem("Snap to Grid");
@@ -87,6 +87,6 @@ public class MenuBarHelper {
         menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, viewportMenu, helpMenu);
 
         //Apply application name (for macOS devices)
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "GrapeEngine SDK");
+        //System.setProperty("com.apple.mrj.application.apple.menu.about.name", "GrapeEngine SDK");
     }
 }
