@@ -2,6 +2,7 @@ package at.dalex.grape.sdk.scene;
 
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.scene.node.RootNode;
+import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.math.Vector2f;
 
@@ -54,6 +55,16 @@ public class Scene implements Serializable {
         return intersectingNodes;
     }
 
+    /**
+     * Removes the given node instance from the scene,
+     * updating the children as needed.
+     *
+     * @param toRemove The instance of the {@link NodeBase} to remove.
+     */
+    public void removeNode(NodeBase toRemove) {
+        removeNodeImpl(rootNode, toRemove);
+    }
+
     private void getNodesAtLocationImpl(NodeBase node, Vector2f worldLocation, ArrayList<NodeBase> nodes) {
         for (NodeBase childNode : node.getChildren()) {
             if (childNode.intersectsWithWorldCoordinates(worldLocation)) {
@@ -61,6 +72,15 @@ public class Scene implements Serializable {
             }
             getNodesAtLocationImpl(childNode, worldLocation, nodes);
         }
+    }
+
+    private void removeNodeImpl(NodeBase currentNode, NodeBase toRemove) {
+        ArrayList<NodeBase> removedNodes = new ArrayList<>();
+        for (NodeBase childNode : currentNode.getChildren()) {
+            if (childNode.equals(toRemove)) removedNodes.add(childNode);
+            removeNodeImpl(childNode, toRemove);
+        }
+        currentNode.getChildren().removeAll(removedNodes);
     }
 
     public boolean isAnyNodeSelected() {

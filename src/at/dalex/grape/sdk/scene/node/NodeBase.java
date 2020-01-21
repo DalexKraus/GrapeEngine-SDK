@@ -173,7 +173,6 @@ public abstract class NodeBase implements EventListener, Serializable {
         //Viewport variables
         Vector2f viewportOrigin = canvas.getViewportOrigin();
         float viewportScale = canvas.getViewportScale();
-
         Vector2f mouseScreenPosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
 
         // Selection logic
