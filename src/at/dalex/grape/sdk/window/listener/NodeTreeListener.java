@@ -1,12 +1,17 @@
 package at.dalex.grape.sdk.window.listener;
 
+import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.scene.node.RootNode;
+import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
 import at.dalex.util.ViewportUtil;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -14,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 public class NodeTreeListener implements EventHandler<MouseEvent> {
 
     private ScenePropertyPanel propertyPanel;
+    private static ContextMenu currentContextMenu;
 
     public NodeTreeListener(ScenePropertyPanel propertyPanel) {
         this.propertyPanel = propertyPanel;
@@ -31,7 +37,8 @@ public class NodeTreeListener implements EventHandler<MouseEvent> {
      * @param event The MouseEvent responsible for the event
      */
     private void handleSingleClick(MouseEvent event) {
-        if (event.getButton() == MouseButton.PRIMARY) {
+        MouseButton pressedButton = event.getButton();
+        if (pressedButton == MouseButton.PRIMARY) {
             //Retrieve clicked node instance
             NodeBase node = getClickedNode();
 
@@ -44,6 +51,15 @@ public class NodeTreeListener implements EventHandler<MouseEvent> {
                 node.setSelected(true);
             }
         }
+        else if (pressedButton == MouseButton.SECONDARY) {
+            //Retrieve clicked tree item
+            NodeBase clickedNodeInstance = getClickedNode();
+
+            //We don't need a context menu for Root Nodes
+            if (!(clickedNodeInstance instanceof RootNode)) {
+                createContextMenu(event.getScreenX(), event.getScreenY());
+            }
+        }
     }
 
     /**
@@ -54,9 +70,42 @@ public class NodeTreeListener implements EventHandler<MouseEvent> {
 
     }
 
-    private NodeBase getClickedNode() {
+    private void createContextMenu(double mouseX, double mouseY) {
+        ContextMenu menu = new ContextMenu();
+        MenuItem item_remove = new MenuItem("Remove");
+        item_remove.setOnAction(this::removeSelectedNode);
+        menu.getItems().add(item_remove);
+
+        //Close other context menu if open
+        if (currentContextMenu != null) {
+            currentContextMenu.hide();
+        }
+
+        currentContextMenu = menu;
+
+        //Show the new context menu
+        currentContextMenu.show(Window.getMainScene().getFocusOwner(), mouseX, mouseY);
+    }
+
+    private void removeSelectedNode(ActionEvent actionEvent) {
+        NodeBase selectedNode = getClickedNode();
+        Scene currentScene = ViewportUtil.getEditingScene();
+        currentScene.removeNode(selectedNode);
+
+        //Update node tree item
+        NodeTreeItem selectionRoot = (NodeTreeItem) getSelectedTreeNode();
+        if (selectionRoot != null) {
+            Window.getScenePropertyPanel().refreshNodeTree();
+        }
+    }
+
+    private TreeItem<NodeBase> getSelectedTreeNode() {
         ObservableList selectedItems = propertyPanel.getNodeTree().getSelectionModel().getSelectedItems();
-        TreeItem<NodeBase> nodeTreeItem = selectedItems.size() > 0 ? (NodeTreeItem) selectedItems.get(0) : null;
-        return nodeTreeItem != null ? nodeTreeItem.getValue() : null;
+        return selectedItems.size() > 0 ? (NodeTreeItem) selectedItems.get(0) : null;
+    }
+
+    private NodeBase getClickedNode() {
+        TreeItem<NodeBase> treeItem = getSelectedTreeNode();
+        return treeItem != null ? treeItem.getValue() : null;
     }
 }
