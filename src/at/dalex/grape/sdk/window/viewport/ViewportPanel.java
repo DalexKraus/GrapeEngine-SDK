@@ -23,7 +23,7 @@ import static at.dalex.grape.sdk.window.viewport.ViewportCanvas.MIN_SCALE;
 import static at.dalex.grape.sdk.window.viewport.ViewportCanvas.MAX_SCALE;
 
 /**
- * This class derives from {@link TitledPane}, containing all
+ * This class derives from {@link Tab}, containing all
  * viewport components, such as the {@link ViewportCanvas}.
  */
 public class ViewportPanel extends Tab {

@@ -55,6 +55,7 @@ public class ScenePropertyPanel extends SplitPane {
         if (currentScene != null) {
             RootNode sceneRootNode = currentScene.getRootNode();
             this.nodeTree = new TreeView<>(new NodeTreeItem(sceneRootNode, new ImageView(sceneRootNode.getTreeIcon())));
+            nodeTree.setPrefHeight(64);
             nodeTree.addEventHandler(MouseEvent.MOUSE_CLICKED, new NodeTreeListener(this));
         }
     }

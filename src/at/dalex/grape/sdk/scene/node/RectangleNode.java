@@ -35,6 +35,6 @@ public class RectangleNode extends NodeBase {
         //double y = viewportOrigin.y + worldPosition.y;
 
         g.setStroke(Color.RED);
-        g.strokeRect(worldPosition.x * viewportScale, worldPosition.y * viewportScale, getWidth() * viewportScale, getHeight() * viewportScale);
+        g.strokeRect(worldPosition.x * viewportScale + 0.5f, worldPosition.y * viewportScale + 0.5f, getWidth() * viewportScale + 0.5f, getHeight() * viewportScale + 0.5f);
     }
 }

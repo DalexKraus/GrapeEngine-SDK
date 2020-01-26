@@ -38,7 +38,7 @@ public class ViewportCanvas extends Canvas implements Disposable {
         registerTickCallback("GridRenderer", new GridRenderer(this));
         registerTickCallback("NodeRenderer", new NodeRenderer(this));
 
-        /**
+        /*
          * Animation Loop
          */
         this.animationTimer = new AnimationTimer() {

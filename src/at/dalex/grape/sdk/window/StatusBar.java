@@ -18,7 +18,12 @@ public class StatusBar {
         this.updateThread   = new Thread(() -> {
             Runtime runtime = Runtime.getRuntime();
             while (true) {
-                Platform.runLater(() -> ram_usage.setText(runtime.totalMemory() + " / " + runtime.maxMemory()));
+                try {
+                    Platform.runLater(() -> ram_usage.setText(runtime.totalMemory() + " / " + runtime.maxMemory()));
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         updateThread.setDaemon(true);

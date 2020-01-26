@@ -6,6 +6,7 @@ import at.dalex.grape.sdk.window.event.*;
 import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
+import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
 import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
@@ -237,16 +238,27 @@ public abstract class NodeBase implements EventListener, Serializable {
 
                 if (ViewportUtil.shouldSnapToGrid()) {
                     //Calculate cell coordinates in which the cursor is currently in
-                    float tempX = ((int) (cursorWorldX / 16)) * 16;
-                    float tempY = ((int) (cursorWorldY / 16)) * 16;
+                    GridRenderer gridRenderer = (GridRenderer) currentCanvas.getTickCallback("GridRenderer");
+                    int tileSize = gridRenderer.getTileSize();
+                    float tempX = ((int) (cursorWorldX / tileSize)) * tileSize;
+                    float tempY = ((int) (cursorWorldY / tileSize)) * tileSize;
 
                     //When the cursor is inside negative bounds, subtract one cell more
-                    newPosition.x = cursorWorldX < 0 ? -(16 + Math.abs(tempX)) : tempX;
-                    newPosition.y = cursorWorldY < 0 ? -(16 + Math.abs(tempY)) : tempY;
+                    newPosition.x = cursorWorldX < 0 ? -(tileSize + Math.abs(tempX)) : tempX;
+                    newPosition.y = cursorWorldY < 0 ? -(tileSize + Math.abs(tempY)) : tempY;
                 }
                 else newPosition.sub(draggingOffset);
 
-                setParentSpaceLocation(newPosition);
+                //We need to set a different parent space location if the node we drag
+                //is a child of some node, as the screen position isn't in parent space.
+                if (!(parent instanceof RootNode)) {
+                    Vector2f targetWorldSpace = newPosition;
+                    Vector2f nodeParentSpace = parent.getWorldPosition();
+
+                    Vector2f targetParentSpaceLocation = targetWorldSpace.sub(nodeParentSpace);
+                    setParentSpaceLocation(targetParentSpaceLocation);
+                }
+                else setParentSpaceLocation(newPosition);
             }
             else wasDragged = true;
         }
