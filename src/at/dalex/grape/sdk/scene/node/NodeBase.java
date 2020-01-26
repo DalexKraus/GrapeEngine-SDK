@@ -18,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * This class represents the foundation for every node usable in the editor.
@@ -254,7 +255,6 @@ public abstract class NodeBase implements EventListener, Serializable {
                 if (!(parent instanceof RootNode)) {
                     Vector2f targetWorldSpace = newPosition;
                     Vector2f nodeParentSpace = parent.getWorldPosition();
-
                     Vector2f targetParentSpaceLocation = targetWorldSpace.sub(nodeParentSpace);
                     setParentSpaceLocation(targetParentSpaceLocation);
                 }
@@ -364,8 +364,8 @@ public abstract class NodeBase implements EventListener, Serializable {
     /**
      * @return The child {@link NodeBase}(s) that this node contains
      */
-    public ArrayList<NodeBase> getChildren() {
-        return this.children;
+    public Iterator<NodeBase> getChildren() {
+        return this.children.iterator();
     }
 
     /**
