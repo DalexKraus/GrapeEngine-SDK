@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
+<?import javafx.scene.layout.VBox?>
 <BorderPane fx:id="window" prefHeight="480" prefWidth="720" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.dalex.grape.sdk.window.Controller">
    <top>
       <HBox fx:id="window_header" BorderPane.alignment="CENTER">
@@ -36,4 +37,8 @@
       <SplitPane fx:id="centerSplitPane" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
       </SplitPane>
    </center>
+    <bottom>
+        <HBox fx:id="statusBar" prefHeight="24.0" prefWidth="200" BorderPane.alignment="BOTTOM_CENTER">
+        </HBox>
+    </bottom>
 </BorderPane>

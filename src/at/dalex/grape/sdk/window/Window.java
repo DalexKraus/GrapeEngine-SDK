@@ -19,7 +19,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.File;
@@ -36,6 +38,7 @@ public class Window extends Application {
     private static TreeView fileBrowser;
     private static FileBrowserItem fileBrowserRoot;
     private static ScenePropertyPanel scenePropertyPanel;
+    private static StatusBar statusBar;
 
     @Override
     public void start(Stage primaryStage) {
@@ -58,6 +61,10 @@ public class Window extends Application {
         MenuBarHelper.inflateMenuBar(menuBar);
         menuBar.setUseSystemMenuBar(true);
 
+        /* *** Status Bar *** */
+        HBox statusBarParent = (HBox) mainScene.lookup("#statusBar");
+        statusBar = new StatusBar(statusBarParent);
+
         /* *** Information Text *** */
         ProjectUtil.closeProject();
 
@@ -66,7 +73,6 @@ public class Window extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.setResizable(true);
         primaryStage.show();
-
         primaryStage.setOnCloseRequest(handler -> {
             System.out.println("Exiting ...");
             System.exit(0);
