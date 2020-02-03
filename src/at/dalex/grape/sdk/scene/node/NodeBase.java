@@ -1,6 +1,7 @@
 package at.dalex.grape.sdk.scene.node;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
+import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.event.*;
 import at.dalex.grape.sdk.window.propertypanel.ScenePropertyPanel;
@@ -56,13 +57,13 @@ public abstract class NodeBase implements EventListener, Serializable {
      * The title visible in the editor's node-creation window
      * is parsed from the corresponding json-file!
      *
-     * @param uniqueNodeId An unique id which identifies this node instance
+     * @param parentScene The scene in which this node will be located in
      * @param title The title of this node
      * @param treeIconStorageKey The icon of the node in the tree,
      *                           in form of a storage key.
      */
-    public NodeBase(UUID uniqueNodeId, String title, String treeIconStorageKey) {
-        this.id = uniqueNodeId;
+    public NodeBase(Scene parentScene, String title, String treeIconStorageKey) {
+        this.id = parentScene.generateNodeId();
         this.title = title;
         this.treeIconStorageKey = treeIconStorageKey;
 
@@ -102,7 +103,7 @@ public abstract class NodeBase implements EventListener, Serializable {
             g.strokeRoundRect(
                     worldPosition.x * viewportScale - 2,
                     worldPosition.y * viewportScale - 2,
-                    width * viewportScale + 4,
+                    width  * viewportScale + 4,
                     height * viewportScale + 4,
                     8, 8);
             g.setLineDashes(0);

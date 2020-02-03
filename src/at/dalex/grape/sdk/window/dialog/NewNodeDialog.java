@@ -1,16 +1,17 @@
 package at.dalex.grape.sdk.window.dialog;
 
 import at.dalex.grape.sdk.resource.ResourceLoader;
+import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.scene.node.NodeReader;
 import at.dalex.grape.sdk.scene.node.NodeTreeItem;
 import at.dalex.grape.sdk.window.Window;
 import at.dalex.util.FXMLUtil;
 import at.dalex.util.ThemeUtil;
+import at.dalex.util.ViewportUtil;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,7 +20,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -29,7 +29,10 @@ public class NewNodeDialog extends Stage {
 
     /* The classes of all registered nodes  */
     private static ArrayList<Class>     nodeClasses;
-    private static ArrayList<NodeBase>  nodeInstances = new ArrayList<>();
+    private static ArrayList<NodeBase>  nodeInstances   = new ArrayList<>();
+    //Dummy scene is needed to instantiate nodes
+    private static Scene                dummyScene      = new Scene("Dummy-Scene");
+
     /* HashMap containing every node's icon */
     private HashMap<String, Image> nodeIcons = new HashMap<>();
 
@@ -88,7 +91,7 @@ public class NewNodeDialog extends Stage {
         searchField.textProperty().addListener(changeListener -> populateListView());
 
         /* Create and set dialog scene */
-        Scene dialogScene = new Scene(root, 600, 390);
+        javafx.scene.Scene dialogScene = new javafx.scene.Scene(root, 600, 390);
         setScene(dialogScene);
 
         //Make dialog stay in foreground
@@ -105,17 +108,19 @@ public class NewNodeDialog extends Stage {
     private void handleNodeSelection(NodeBase selectedNodeInstance) {
         //Get the selected node in the node tree
         NodeTreeItem selectedNodeTreeItem = Window.getScenePropertyPanel().getSelectedNode();
+        Scene currentlyOpenScene = ViewportUtil.getEditingScene();
 
         //Create a new instance of the node, so the stored instance stays unaffected.
         try {
-            NodeBase newInstance = selectedNodeInstance.getClass().newInstance();
+            Constructor<?> constructor = selectedNodeInstance.getClass().getConstructor(Scene.class);
+            NodeBase newInstance = (NodeBase) constructor.newInstance(currentlyOpenScene);
 
             //Add new instance to the children of the selected node in the tree
             //and then refresh the children of the selected tree node in the editor
             selectedNodeTreeItem.getValue().addChild(newInstance);
             selectedNodeTreeItem.setExpanded(true);
             selectedNodeTreeItem.refreshChildren();
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             System.err.println("[Error] Unable to create duplicate of node instance.");
             e.printStackTrace();
         }
@@ -178,11 +183,13 @@ public class NewNodeDialog extends Stage {
 
         for (Class<?> nodeClass : nodeClasses) {
             try {
-                NodeBase nodeInstance = (NodeBase) nodeClass.newInstance();
+                //Get default node constructor
+                Constructor<?> constructor = nodeClass.getConstructor(Scene.class);
+                NodeBase nodeInstance = (NodeBase) constructor.newInstance(dummyScene);
                 nodeIcons.put(nodeInstance.getTitle(), nodeInstance.getTreeIcon());
                 nodeInstances.add(nodeInstance);
 
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 System.err.println("[Error] Unable to create instance of node class.");
                 e.printStackTrace();
             }

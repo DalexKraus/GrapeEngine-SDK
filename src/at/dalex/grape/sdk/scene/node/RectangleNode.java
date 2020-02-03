@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.scene.node;
 
+import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,8 +17,8 @@ public class RectangleNode extends NodeBase {
     /**
      * Create a new {@link RectangleNode}.
      */
-    public RectangleNode() {
-        super("Rectangle", "image.icon.node.rectangle");
+    public RectangleNode(Scene parentScene) {
+        super(parentScene, "Rectangle", "image.icon.node.rectangle");
         //Apply some default values
         setWidth(16);
         setHeight(16);

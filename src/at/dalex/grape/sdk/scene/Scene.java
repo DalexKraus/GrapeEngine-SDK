@@ -2,7 +2,6 @@ package at.dalex.grape.sdk.scene;
 
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.scene.node.RootNode;
-import at.dalex.grape.sdk.window.Window;
 import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.math.Vector2f;
 
@@ -19,7 +18,28 @@ public class Scene implements Serializable {
 
     public Scene(String name) {
         this.name = name;
-        this.rootNode = new RootNode();
+        this.rootNode = new RootNode(this);
+    }
+
+    public UUID generateNodeId() {
+        UUID generatedId = UUID.randomUUID();
+        return generatedId;
+    }
+
+    public boolean registerNodeId(UUID toRegister) {
+        //Check if uuid is not present
+        boolean isPresent = false;
+        for (UUID registeredId : registeredNodeIDs) {
+            if (registeredId.equals(toRegister)) {
+                isPresent = true;
+                break;
+            }
+        }
+
+        if (!isPresent)
+            registeredNodeIDs.add(toRegister);
+
+        return isPresent;
     }
 
     public void deselectAllNodes() {

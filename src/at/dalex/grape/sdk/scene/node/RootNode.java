@@ -1,5 +1,6 @@
 package at.dalex.grape.sdk.scene.node;
 
+import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.window.viewport.ViewportCanvas;
 import at.dalex.util.math.Vector2f;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,8 +12,8 @@ import java.io.Serializable;
  */
 public class RootNode extends NodeBase implements Serializable {
 
-    public RootNode() {
-        super("Scene Root", "image.icon.node.root");
+    public RootNode(Scene parentScene) {
+        super(parentScene, "Scene Root", "image.icon.node.root");
     }
 
     @Override
