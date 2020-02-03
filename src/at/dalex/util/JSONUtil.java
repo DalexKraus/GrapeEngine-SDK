@@ -23,7 +23,7 @@ public class JSONUtil {
                     break;
                 case ' ':
                     // For space: ignore the space if it is not being quoted.
-                    if(inQuote) {
+                    if (inQuote) {
                         prettyJSONBuilder.append(charFromUnformattedJson);
                     }
                     break;
@@ -44,8 +44,13 @@ public class JSONUtil {
                 case ',':
                     // Ending a json item; create a new line after
                     prettyJSONBuilder.append(charFromUnformattedJson);
-                    if(!inQuote) {
+                    if (!inQuote) {
                         appendIndentedNewLine(indentLevel, prettyJSONBuilder);
+                    }
+                    break;
+                case ':':
+                    if (!inQuote) {
+                        prettyJSONBuilder.append(": ");
                     }
                     break;
                 default:
@@ -65,8 +70,8 @@ public class JSONUtil {
     private static void appendIndentedNewLine(int indentLevel, StringBuilder stringBuilder) {
         stringBuilder.append("\n");
         for (int i = 0; i < indentLevel; i++) {
-            // Assuming indention using 2 spaces
-            stringBuilder.append("  ");
+            // Assuming indention using 4 spaces
+            stringBuilder.append("    ");
         }
     }
 }
