@@ -17,6 +17,7 @@ public class SceneUtil {
     public static void createNewScene(String sceneName) {
         Scene scene = new Scene(sceneName);
         writeSceneFile(scene);
+        //Update file browser, so that the created scene file is visible
         Window.refreshFileBrowser();
     }
 
@@ -30,16 +31,7 @@ public class SceneUtil {
             throw new IllegalStateException("A map must be open to write a scene to disk!");
 
         String sceneFilePath = getSceneFolder().getAbsolutePath() + "/" + scene.getName() + SCENEFILE_EXT;
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(sceneFilePath));
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(scene);
-            objectOutputStream.close();
-            fileOutputStream.close();
-        } catch (IOException e) {
-            System.err.println("Unable to write scene file.");
-            e.printStackTrace();
-        }
+        SceneSerializer.writeScene(scene, new File(sceneFilePath));
     }
 
     /**
