@@ -18,7 +18,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.UUID;
 
 /**
  * This class represents the foundation for every node usable in the editor.
@@ -26,6 +26,7 @@ import java.util.Iterator;
 public abstract class NodeBase implements EventListener, Serializable {
 
     /* Generic */
+    private UUID id;
     private String title;
     private String treeIconStorageKey;
 
@@ -55,11 +56,13 @@ public abstract class NodeBase implements EventListener, Serializable {
      * The title visible in the editor's node-creation window
      * is parsed from the corresponding json-file!
      *
+     * @param uniqueNodeId An unique id which identifies this node instance
      * @param title The title of this node
      * @param treeIconStorageKey The icon of the node in the tree,
      *                           in form of a storage key.
      */
-    public NodeBase(String title, String treeIconStorageKey) {
+    public NodeBase(UUID uniqueNodeId, String title, String treeIconStorageKey) {
+        this.id = uniqueNodeId;
         this.title = title;
         this.treeIconStorageKey = treeIconStorageKey;
 
@@ -303,6 +306,13 @@ public abstract class NodeBase implements EventListener, Serializable {
     }
 
     /**
+     * @return The position of the node relative to it's parent.
+     */
+    public Vector2f getParentSpaceLocation() {
+        return parentSpaceLocation;
+    }
+
+    /**
      * Sets the position of the node relative to it's parent.
      * @param parentSpaceLocation The position vector
      */
@@ -364,8 +374,8 @@ public abstract class NodeBase implements EventListener, Serializable {
     /**
      * @return The child {@link NodeBase}(s) that this node contains
      */
-    public Iterator<NodeBase> getChildren() {
-        return this.children.iterator();
+    public ArrayList<NodeBase> getChildren() {
+        return this.children;
     }
 
     /**
@@ -400,6 +410,13 @@ public abstract class NodeBase implements EventListener, Serializable {
             }
         }
         return false;
+    }
+
+    /**
+     * @return The unique id, which identifies this node instance.
+     */
+    public UUID getId() {
+        return id;
     }
 
     /**

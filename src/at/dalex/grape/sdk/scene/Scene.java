@@ -8,11 +8,14 @@ import at.dalex.util.math.Vector2f;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Scene implements Serializable {
 
     private String name;
     private RootNode rootNode;
+
+    private ArrayList<UUID> registeredNodeIDs = new ArrayList<>();
 
     public Scene(String name) {
         this.name = name;
