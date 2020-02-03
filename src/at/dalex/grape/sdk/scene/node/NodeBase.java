@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * This class represents the foundation for every node usable in the editor.
  */
-public abstract class NodeBase implements EventListener, Serializable {
+public abstract class NodeBase implements EventListener {
 
     /* Generic */
     private UUID id;
@@ -303,14 +303,14 @@ public abstract class NodeBase implements EventListener, Serializable {
         if (parentSpaceLocation == null) {
             this.parentSpaceLocation = new Vector2f();
         }
-        return parent != null ? parent.getWorldPosition().clone().add(parentSpaceLocation) : parentSpaceLocation;
+        return (parent != null) ? parent.getWorldPosition().clone().add(parentSpaceLocation) : parentSpaceLocation;
     }
 
     /**
      * @return The position of the node relative to it's parent.
      */
     public Vector2f getParentSpaceLocation() {
-        return parentSpaceLocation;
+        return (parentSpaceLocation == null) ? new Vector2f() : parentSpaceLocation;
     }
 
     /**
