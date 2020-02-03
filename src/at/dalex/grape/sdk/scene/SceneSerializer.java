@@ -34,7 +34,8 @@ public class SceneSerializer {
         /* Store nodes */
         JSONObject nodes = new JSONObject();
         HashMap<UUID, JSONObject> nodeObjects = new HashMap<>();
-        collectNodeObjects(nodeObjects, scene.getRootNode());
+        nodeObjects.put(scene.getRootNode().getId(), createNodeObject(scene.getRootNode()));    //Collect root node
+        collectNodeObjects(nodeObjects, scene.getRootNode());                                   //Collect other nodes
         for (UUID nodeId : nodeObjects.keySet()) {
             nodes.put(nodeId, nodeObjects.get(nodeId));
         }
