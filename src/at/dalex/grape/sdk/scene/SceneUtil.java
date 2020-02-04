@@ -43,19 +43,7 @@ public class SceneUtil {
         if (!sceneFile.exists() || sceneFile.isDirectory())
             throw new IllegalStateException("Scene file must exist and cannot be a directory!");
 
-        Scene loadedScene = null;
-        try {
-            FileInputStream fileInputStream = new FileInputStream(sceneFile);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            loadedScene = (Scene) objectInputStream.readObject();
-            objectInputStream.close();
-            fileInputStream.close();
-            return loadedScene;
-        } catch (ClassNotFoundException | IOException e) {
-            System.err.println("Unable to load scene from file '" + sceneFile.getAbsolutePath() + "'-");
-            e.printStackTrace();
-        }
-        return loadedScene;
+        return SceneSerializer.loadScene(sceneFile);
     }
 
     /**

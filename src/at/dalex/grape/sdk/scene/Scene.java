@@ -117,4 +117,16 @@ public class Scene implements Serializable {
     public RootNode getRootNode() {
         return this.rootNode;
     }
+
+    /**
+     * Replaces the root node.
+     * NOTE: The node tree needs to be refreshed after replacing the root node!
+     *
+     * @param rootNode The new root node of the scene.
+     */
+    public void setRootNode(RootNode rootNode) {
+        System.err.println("[WARN] Scene root node has been replaced!");
+        System.err.println("The Node tree needs to be rebuilt!");
+        this.rootNode = rootNode;
+    }
 }

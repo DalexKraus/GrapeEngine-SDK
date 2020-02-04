@@ -1,15 +1,18 @@
 package at.dalex.grape.sdk.scene;
 
 import at.dalex.grape.sdk.scene.node.NodeBase;
+import at.dalex.grape.sdk.scene.node.RootNode;
 import at.dalex.grape.sdk.window.helper.DialogHelper;
 import at.dalex.util.JSONUtil;
 import at.dalex.util.math.Vector2f;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -80,5 +83,91 @@ public class SceneSerializer {
         node.put("Children", childrenIds);
 
         return node;
+    }
+
+    public static Scene loadScene(File fqSceneFile) {
+        Scene scene = null;
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root  = (JSONObject) parser.parse(new FileReader(fqSceneFile));
+            //Parse generic scene information
+            String sceneName = (String) root.get("SceneName");
+            UUID rootNodeId  = UUID.fromString((String) root.get("RootNodeId"));
+            //Create scene instance
+            scene = new Scene(sceneName);
+
+            //Parse scene nodes
+            JSONObject nodes = (JSONObject) root.get("Nodes");
+            HashMap<UUID, NodeBase> nodeInstances = new HashMap<>();
+            HashMap<UUID, UUID[]> nodeChildren = new HashMap<>();
+            for (Object nodeKey : nodes.keySet()) {
+                UUID nodeId = UUID.fromString((String) nodeKey);
+                JSONObject node = (JSONObject) nodes.get(nodeKey);
+                String nodeClass = (String) node.get("NodeClass");
+
+                //Parse Location
+                double xPos, yPos;
+                JSONObject parentSpaceNode = (JSONObject) node.get("ParentSpaceLocation");
+                {
+                    xPos = (double) parentSpaceNode.get("x");
+                    yPos = (double) parentSpaceNode.get("y");
+                }
+
+                //Parse children ids
+                JSONArray childNodes = (JSONArray) node.get("Children");
+                UUID[] childrenIds = new UUID[childNodes.size()];
+                for (int i = 0; i < childNodes.size(); i++) {
+                    childrenIds[i] = (UUID) childNodes.get(i);
+                }
+                nodeChildren.put(nodeId, childrenIds);
+
+                //Create node instance
+                NodeBase nodeInstance = instantiateNode(scene, nodeClass);
+                if (nodeInstance == null)
+                    continue;
+
+                nodeInstance.setParentSpaceLocation(new Vector2f(xPos, yPos));
+                nodeInstances.put(nodeId, nodeInstance);
+            }
+
+            for (UUID nodeId : nodeChildren.keySet()) {
+                NodeBase nodeInstance = nodeInstances.get(nodeId);
+                if (nodeInstance == null)
+                    continue;
+
+                //Collect children instances
+                UUID[] childrenIds = nodeChildren.get(nodeId);
+                for (UUID childId : childrenIds) {
+                    NodeBase childInstance = nodeInstances.get(childId);
+                    if (childInstance == null)
+                        continue;
+                    nodeInstance.addChild(childInstance);
+                }
+            }
+
+            NodeBase rootNode = nodeInstances.get(rootNodeId);
+            scene.setRootNode((RootNode) rootNode);
+        } catch (ParseException | IOException e) {
+            DialogHelper.showErrorDialog("Error", "Read Error", "The scene file could not be read.\n" +
+                    "Target destination: " + fqSceneFile.getAbsolutePath() + "\n\n" +
+                    "Please check read permissions.");
+            e.printStackTrace();
+        }
+
+        return scene;
+    }
+
+    private static NodeBase instantiateNode(Scene sceneInstance, String nodeClass) {
+        try {
+            Class<?> instanceClass = Class.forName(nodeClass);
+            Constructor<?> constructor = instanceClass.getConstructor(Scene.class);
+            return (NodeBase) constructor.newInstance(sceneInstance);
+        } catch (ClassNotFoundException     | NoSuchMethodException
+                | InstantiationException    | IllegalAccessException
+                | InvocationTargetException e) {
+            System.err.println("Unable to instantiate node class!");
+            e.printStackTrace();
+        }
+        return null;
     }
 }
