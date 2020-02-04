@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class SceneSerializer {
+class SceneSerializer {
 
     /**
      * Serializes the scene object.
@@ -108,10 +108,8 @@ public class SceneSerializer {
                 //Parse Location
                 double xPos, yPos;
                 JSONObject parentSpaceNode = (JSONObject) node.get("ParentSpaceLocation");
-                {
-                    xPos = (double) parentSpaceNode.get("x");
-                    yPos = (double) parentSpaceNode.get("y");
-                }
+                xPos = (double) parentSpaceNode.get("x");
+                yPos = (double) parentSpaceNode.get("y");
 
                 //Parse children ids
                 JSONArray childNodes = (JSONArray) node.get("Children");
