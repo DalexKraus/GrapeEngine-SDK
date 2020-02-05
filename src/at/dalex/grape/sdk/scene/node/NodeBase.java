@@ -71,6 +71,8 @@ public abstract class NodeBase implements EventListener {
         if (!(this instanceof RootNode)) { //RootNode is created when scene is created, therefore no viewport is open.
             ViewportPanel currentViewport = ViewportUtil.getEditingViewport();
             currentViewport.addInteractionListener(this);
+
+            //TODO: 
         }
     }
 

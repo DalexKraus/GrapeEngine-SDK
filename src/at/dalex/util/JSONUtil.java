@@ -30,7 +30,8 @@ public class JSONUtil {
                 case '{':
                 case '[':
                     // Starting a new block: increase the indent level
-                    prettyJSONBuilder.append(charFromUnformattedJson);
+                    appendIndentedNewLine(indentLevel, prettyJSONBuilder);
+                    prettyJSONBuilder.append(charFromUnformattedJson + "\n");
                     indentLevel++;
                     appendIndentedNewLine(indentLevel, prettyJSONBuilder);
                     break;
@@ -50,7 +51,7 @@ public class JSONUtil {
                     break;
                 case ':':
                     if (!inQuote) {
-                        prettyJSONBuilder.append(": ");
+                        prettyJSONBuilder.append(charFromUnformattedJson);
                     }
                     break;
                 default:

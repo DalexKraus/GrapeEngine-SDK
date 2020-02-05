@@ -78,7 +78,7 @@ class SceneSerializer {
         ArrayList<NodeBase> nodeChildren = nodeInstance.getChildren();
         JSONArray childrenIds = new JSONArray();
         for (NodeBase nodeChild : nodeChildren) {
-            childrenIds.add(nodeChild.getId());
+            childrenIds.add(nodeChild.getId().toString());
         }
         node.put("Children", childrenIds);
 
@@ -115,7 +115,7 @@ class SceneSerializer {
                 JSONArray childNodes = (JSONArray) node.get("Children");
                 UUID[] childrenIds = new UUID[childNodes.size()];
                 for (int i = 0; i < childNodes.size(); i++) {
-                    childrenIds[i] = (UUID) childNodes.get(i);
+                    childrenIds[i] = UUID.fromString((String) childNodes.get(i));
                 }
                 nodeChildren.put(nodeId, childrenIds);
 

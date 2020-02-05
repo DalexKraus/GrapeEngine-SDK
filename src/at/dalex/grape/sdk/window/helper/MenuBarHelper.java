@@ -29,12 +29,12 @@ public class MenuBarHelper {
 
         /* File */
         Menu file_new = new Menu("New");
-        //new:project
+        //file:new:project
         MenuItem file_new_project = new MenuItem("Project...");
         file_new_project.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN));
         file_new_project.setOnAction(new NewProjectListener());
         file_new.getItems().add(file_new_project);
-        //new:scene
+        //file:new:scene
         MenuItem file_new_scene = new MenuItem("Scene...");
         file_new_scene.setOnAction(listener -> NewSceneDialog.showDialog());
         file_new.getItems().add(file_new_scene);
@@ -45,9 +45,16 @@ public class MenuBarHelper {
         MenuItem file_close = new MenuItem("Close Project");
         file_close.setOnAction(new CloseProjectListener());
 
+        //file:save
+        MenuItem file_save = new MenuItem("Save Current");
+        file_save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
+        file_save.setOnAction(new SaveListener());
+
         fileMenu.getItems().add(file_new);
         fileMenu.getItems().add(file_openProject);
         fileMenu.getItems().add(file_close);
+        fileMenu.getItems().add(new SeparatorMenuItem());
+        fileMenu.getItems().add(file_save);
 
         /* View */
         //view:toggleGrid
