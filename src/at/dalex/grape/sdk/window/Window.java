@@ -127,6 +127,7 @@ public class Window extends Application {
             return;
 
         scenePropertyPanel = new ScenePropertyPanel();
+        scenePropertyPanel.createLayout();
         mainSplitPane.getItems().add(scenePropertyPanel);
         mainSplitPane.setDividerPosition(1, 0.75f);
     }
@@ -154,8 +155,10 @@ public class Window extends Application {
         viewportPanel.getViewportCanvas().setViewportScale(1.0f);
         viewportTabPane.getTabs().add(viewportPanel);
 
-        ViewportUtil.getEditingScene().registerListenersToViewport(viewportPanel);
 
+        //Register all nodes from the currently opened scene
+        viewportPanel.removeAllInteractionListeners();
+        ViewportUtil.getEditingScene().registerListenersToViewport(viewportPanel);
         preparePropertyPanel();
     }
 

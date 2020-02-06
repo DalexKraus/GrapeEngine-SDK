@@ -11,7 +11,6 @@ import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -76,6 +75,10 @@ public class ViewportPanel extends Tab {
 
     public void removeInteractionListener(EventListener listenerInstance) {
         interactionListeners.remove(listenerInstance);
+    }
+
+    public void removeAllInteractionListeners() {
+        interactionListeners.clear();
     }
 
     /**
