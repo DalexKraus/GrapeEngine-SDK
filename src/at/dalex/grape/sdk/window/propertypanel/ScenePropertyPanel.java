@@ -28,7 +28,7 @@ public class ScenePropertyPanel extends SplitPane {
     /* Map containing references to the node tree items */
     HashMap<NodeBase, NodeTreeItem> nodeTreeReferences = new HashMap<>();
 
-    public ScenePropertyPanel() {
+    public void createLayout() {
         /* Set the title and add a split-pane for content (vertical orientation) */
         setOrientation(Orientation.VERTICAL);
 
@@ -47,7 +47,7 @@ public class ScenePropertyPanel extends SplitPane {
         getItems().add(new TitledPane("Scene Nodes", sceneNodesBox));
         getItems().add(new TitledPane(TAB_TITLE, new Pane()));
 
-        setDividerPosition(0, 0.5f);
+        setDividerPosition(0, 0.75f);
     }
 
     private void createTreeView() {
@@ -55,6 +55,9 @@ public class ScenePropertyPanel extends SplitPane {
         if (currentScene != null) {
             RootNode sceneRootNode = currentScene.getRootNode();
             this.nodeTree = new TreeView<>(new NodeTreeItem(sceneRootNode, new ImageView(sceneRootNode.getTreeIcon())));
+            nodeTree.getRoot().setExpanded(true);
+            refreshNodeTree();
+
             nodeTree.setPrefHeight(64);
             nodeTree.addEventHandler(MouseEvent.MOUSE_CLICKED, new NodeTreeListener(this));
         }
