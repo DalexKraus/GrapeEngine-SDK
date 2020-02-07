@@ -108,6 +108,12 @@ public class ViewportPanel extends Tab {
 
         ArrayList<NodeBase> intersectingNodes = ViewportUtil.getEditingScene().getNodesAtLocation(mouseScreenPosition);
         for (NodeBase node : intersectingNodes) {
+            //Catch node editing (Double click)
+            if (event.getClickCount() == 2 && node.isSelected()) {
+                //TODO: Create edit window
+                break;
+            }
+
             boolean eventHandled = node.handleInteractionEvent(event, currentCanvas);
             if (eventHandled) break;
         }

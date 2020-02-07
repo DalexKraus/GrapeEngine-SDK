@@ -4,13 +4,10 @@ import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
 import at.dalex.grape.sdk.window.viewport.renderer.NodeRenderer;
 import at.dalex.util.Disposable;
 import at.dalex.util.math.Vector2f;
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * This class represents the actual canvas where stuff gets drawn.
@@ -29,7 +26,7 @@ public class ViewportCanvas extends Canvas implements Disposable {
     private static boolean showTileGrid = true;
 
     private GraphicsContext graphicsContext;
-    private HashMap<String, ITickCallback> tickCallbacks = new HashMap<>();
+    private LinkedHashMap<String, ITickCallback> tickCallbacks = new LinkedHashMap<>();
 
     private AnimationTimer animationTimer;
 
@@ -74,10 +71,12 @@ public class ViewportCanvas extends Canvas implements Disposable {
     private void draw(double deltaTime) {
         //Clear canvas
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
+        GraphicsContext g = getGraphicsContext();
+
         for (String callbackKey : this.tickCallbacks.keySet()) {
             ITickCallback callback = tickCallbacks.get(callbackKey);
             callback.update(deltaTime);
-            callback.draw(getGraphicsContext());
+            callback.draw(g);
         }
     }
 
