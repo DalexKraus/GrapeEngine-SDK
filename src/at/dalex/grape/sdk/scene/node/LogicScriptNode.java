@@ -8,6 +8,8 @@ public class LogicScriptNode extends NodeBase {
 
     public LogicScriptNode(Scene parentScene) {
         super(parentScene, "LogicScript", "image.icon.node.logicscript");
+        setWidth(16);
+        setHeight(16);
     }
 
     @Override

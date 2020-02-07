@@ -8,6 +8,8 @@ public class LogicAutosaveNode extends NodeBase {
 
     public LogicAutosaveNode(Scene parentScene) {
         super(parentScene, "LogicAutosave", "image.icon.node.logicautosave");
+        setWidth(16);
+        setHeight(16);
     }
 
     @Override

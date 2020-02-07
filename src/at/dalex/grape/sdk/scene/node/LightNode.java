@@ -10,7 +10,6 @@ public class LightNode extends NodeBase {
 
     public LightNode(Scene parentScene) {
         super(parentScene, "Light", "image.icon.node.light");
-        setParentSpaceLocation(new Vector2f(8, 8));
         setWidth(16);
         setHeight(16);
     }
