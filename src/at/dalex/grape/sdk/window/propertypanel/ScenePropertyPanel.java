@@ -14,14 +14,12 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.util.HashMap;
 
 public class ScenePropertyPanel extends SplitPane {
 
-    private static final String TAB_TITLE = "Properties";
     private TreeView nodeTree;
     private NodeTreeBar nodeTreeBar;
 
@@ -33,7 +31,7 @@ public class ScenePropertyPanel extends SplitPane {
         setOrientation(Orientation.VERTICAL);
 
         /* Set preferred dimensions */
-        setPrefHeight(Double.MAX_VALUE);
+        setMaxHeight(Double.MAX_VALUE);
 
         /* Create Scene-Nodes-Box */
         VBox sceneNodesBox = new VBox();
@@ -45,9 +43,6 @@ public class ScenePropertyPanel extends SplitPane {
         sceneNodesBox.getChildren().add(nodeTreeBar);
 
         getItems().add(new TitledPane("Scene Nodes", sceneNodesBox));
-        getItems().add(new TitledPane(TAB_TITLE, new Pane()));
-
-        setDividerPosition(0, 0.75f);
     }
 
     private void createTreeView() {
@@ -56,9 +51,9 @@ public class ScenePropertyPanel extends SplitPane {
             RootNode sceneRootNode = currentScene.getRootNode();
             this.nodeTree = new TreeView<>(new NodeTreeItem(sceneRootNode, new ImageView(sceneRootNode.getTreeIcon())));
             nodeTree.getRoot().setExpanded(true);
+            nodeTree.setPrefHeight(1024);
             refreshNodeTree();
 
-            nodeTree.setPrefHeight(64);
             nodeTree.addEventHandler(MouseEvent.MOUSE_CLICKED, new NodeTreeListener(this));
         }
     }

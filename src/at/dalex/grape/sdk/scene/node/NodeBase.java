@@ -17,7 +17,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -42,7 +41,6 @@ public abstract class NodeBase implements EventListener {
 
     /* Editing */
     private boolean isSelected;
-    private Rectangle[] resizeKnobHitboxes;
 
     /**
      * Every node must be able to draw itself (onto the viewport).
