@@ -3,6 +3,7 @@ package at.dalex.grape.sdk.window.viewport;
 import at.dalex.grape.sdk.scene.Scene;
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.window.Window;
+import at.dalex.grape.sdk.window.dialog.EditNodeDialog;
 import at.dalex.grape.sdk.window.event.*;
 import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
 import at.dalex.util.ViewportUtil;
@@ -111,6 +112,7 @@ public class ViewportPanel extends Tab {
             //Catch node editing (Double click)
             if (event.getClickCount() == 2 && node.isSelected()) {
                 //TODO: Create edit window
+                new EditNodeDialog();
                 break;
             }
 
