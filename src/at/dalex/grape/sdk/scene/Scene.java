@@ -2,7 +2,6 @@ package at.dalex.grape.sdk.scene;
 
 import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.scene.node.RootNode;
-import at.dalex.grape.sdk.window.viewport.ViewportPanel;
 import at.dalex.util.math.Vector2f;
 
 import java.io.Serializable;
@@ -49,21 +48,6 @@ public class Scene implements Serializable {
     public void deselectChildren(NodeBase node) {
         node.setSelected(false);
         node.getChildren().forEach(this::deselectChildren);
-    }
-
-    /**
-     * Registers all nodes in this scene as listener in the viewport instance.
-     * @param viewportInstance The viewport to register the nodes in.
-     */
-    public void registerListenersToViewport(ViewportPanel viewportInstance) {
-        registerListenersToViewportImpl(rootNode, viewportInstance);
-    }
-
-    private void registerListenersToViewportImpl(NodeBase node, ViewportPanel viewportPanel) {
-        for (NodeBase child : node.getChildren()) {
-            viewportPanel.addInteractionListener(child);
-            registerListenersToViewportImpl(child, viewportPanel);
-        }
     }
 
     /**

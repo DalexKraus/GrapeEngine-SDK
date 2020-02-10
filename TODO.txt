@@ -1,10 +1,28 @@
 
+Node Selection:
+ViewportPanel -> getNodesAtLocation(Vector2f worldLoc);
+
+
+
+
+
+
 *** Last Task (if unfinished)
 
-- Grid size changes only in the newest viewport
+/* Node Selection     */
+/* Pre-Rewrite backup */
+NodeBase:       https://hastebin.com/ruxukakema.java
+ViewportPanel:  https://hastebin.com/zaqujuxeba.java
+
 
 *** High Priority
+Scene#registerNodeId needs to be called from the SceneSerializer to avoid ID duplicates!
+Refactor packages to make more sense
+Make NewNodeDialog singleton
 
 *** Medium Priority
+- Update node tree according to which scene is opened
 
 *** Low Priority
+- Ctrl + mouse wheel scales grid size
+- Grid size changes only in the newest viewport (Is this really a bug?)

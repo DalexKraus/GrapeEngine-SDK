@@ -15,7 +15,6 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -23,7 +22,7 @@ import java.util.UUID;
 /**
  * This class represents the foundation for every node usable in the editor.
  */
-public abstract class NodeBase implements EventListener {
+public abstract class NodeBase {
 
     /* Generic */
     private UUID id;
@@ -64,16 +63,6 @@ public abstract class NodeBase implements EventListener {
         this.id = parentScene.generateNodeId();
         this.title = title;
         this.treeIconStorageKey = treeIconStorageKey;
-
-        //Register the newly created node as listener to the viewport currently opened
-        if (!(this instanceof RootNode)) { //RootNode is created when scene is created, therefore no viewport is open.
-            try {
-                ViewportPanel currentViewport = ViewportUtil.getEditingViewport();
-                currentViewport.addInteractionListener(this);
-            } catch (IllegalStateException e) {
-                System.err.println("[WARN] Node instance created without viewport.");
-            }
-        }
     }
 
     /**
@@ -243,28 +232,6 @@ public abstract class NodeBase implements EventListener {
                 double cursorWorldY = (cursorScreenCoordinates.y / viewportScale) - viewportOrigin.y;
                 Vector2f newPosition = new Vector2f(cursorWorldX, cursorWorldY);
 
-                if (ViewportUtil.shouldSnapToGrid()) {
-                    //Calculate cell coordinates in which the cursor is currently in
-                    GridRenderer gridRenderer = (GridRenderer) currentCanvas.getTickCallback("GridRenderer");
-                    int tileSize = gridRenderer.getTileSize();
-                    float tempX = ((int) (cursorWorldX / tileSize)) * tileSize;
-                    float tempY = ((int) (cursorWorldY / tileSize)) * tileSize;
-
-                    //When the cursor is inside negative bounds, subtract one cell more
-                    newPosition.x = cursorWorldX < 0 ? -(tileSize + Math.abs(tempX)) : tempX;
-                    newPosition.y = cursorWorldY < 0 ? -(tileSize + Math.abs(tempY)) : tempY;
-                }
-                else newPosition.sub(draggingOffset);
-
-                //We need to set a different parent space location if the node we drag
-                //is a child of some node, as the screen position isn't in parent space.
-                if (!(parent instanceof RootNode)) {
-                    Vector2f targetWorldSpace = newPosition;
-                    Vector2f nodeParentSpace = parent.getWorldPosition();
-                    Vector2f targetParentSpaceLocation = targetWorldSpace.sub(nodeParentSpace);
-                    setParentSpaceLocation(targetParentSpaceLocation);
-                }
-                else setParentSpaceLocation(newPosition);
             }
             else wasDragged = true;
         }
@@ -420,6 +387,13 @@ public abstract class NodeBase implements EventListener {
      */
     public UUID getId() {
         return id;
+    }
+
+    /**
+     * @return The parent of this {@link NodeBase}.
+     */
+    public NodeBase getParent() {
+        return parent;
     }
 
     /**

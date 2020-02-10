@@ -155,10 +155,6 @@ public class Window extends Application {
         viewportPanel.getViewportCanvas().setViewportScale(1.0f);
         viewportTabPane.getTabs().add(viewportPanel);
 
-
-        //Register all nodes from the currently opened scene
-        viewportPanel.removeAllInteractionListeners();
-        ViewportUtil.getEditingScene().registerListenersToViewport(viewportPanel);
         preparePropertyPanel();
     }
 

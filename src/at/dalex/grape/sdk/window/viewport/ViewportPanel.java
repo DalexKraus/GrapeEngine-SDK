@@ -1,11 +1,8 @@
 package at.dalex.grape.sdk.window.viewport;
 
 import at.dalex.grape.sdk.scene.Scene;
-import at.dalex.grape.sdk.scene.node.NodeBase;
 import at.dalex.grape.sdk.window.Window;
-import at.dalex.grape.sdk.window.dialog.EditNodeDialog;
 import at.dalex.grape.sdk.window.event.*;
-import at.dalex.grape.sdk.window.viewport.renderer.GridRenderer;
 import at.dalex.util.ViewportUtil;
 import at.dalex.util.math.Vector2f;
 import javafx.event.Event;
@@ -37,6 +34,7 @@ public class ViewportPanel extends Tab {
 
     /* List of listeners responsible for interactions */
     private ArrayList<EventListener> interactionListeners = new ArrayList<>();
+    private NodeSelectionHandler selectionHandler;
 
     /* List of keys currently held */
     private static ArrayList<KeyCode> pressedKeys = new ArrayList<>();
@@ -61,13 +59,17 @@ public class ViewportPanel extends Tab {
         content.setOnScroll(this::gridScaleEvent);
 
         //Key listener
-        content.setOnKeyPressed(handler -> pressedKeys.add(handler.getCode()));
+        content.setOnKeyPressed(handler  -> pressedKeys.add(handler.getCode()));
         content.setOnKeyReleased(handler -> pressedKeys.remove(handler.getCode()));
 
         //Tab close listener
         setOnCloseRequest(this::onTabClose);
+
+        //Create Selection Handler
+        this.selectionHandler = new NodeSelectionHandler(this);
     }
 
+    /* Interaction Listener management */
     public void addInteractionListener(EventListener listenerInstance) {
         if (!interactionListeners.contains(listenerInstance)) {
             interactionListeners.add(listenerInstance);
@@ -100,26 +102,6 @@ public class ViewportPanel extends Tab {
             EventManager.callHandlerMethods(listenerInstance, handlerMethods, eventInstance);
         }
 
-        //Handle node selections
-        Vector2f mouseScreenPosition = new Vector2f(event.getX(), event.getY());
-        ViewportCanvas currentCanvas = ViewportUtil.getEditingViewport().getViewportCanvas();
-        //Transform screen coordinates to world coordinates
-        mouseScreenPosition.scale(1.0f / currentCanvas.getViewportScale());
-        mouseScreenPosition.add(currentCanvas.getViewportOrigin().clone().negate());
-
-        ArrayList<NodeBase> intersectingNodes = ViewportUtil.getEditingScene().getNodesAtLocation(mouseScreenPosition);
-        for (NodeBase node : intersectingNodes) {
-            //Catch node editing (Double click)
-            if (event.getClickCount() == 2 && node.isSelected()) {
-                //TODO: Create edit window
-                new EditNodeDialog();
-                break;
-            }
-
-            boolean eventHandled = node.handleInteractionEvent(event, currentCanvas);
-            if (eventHandled) break;
-        }
-
         //Pass event to responsible sub components
         //if the event hasn't been cancelled by a handler
         if (!eventInstance.isCancelled()) {
@@ -135,12 +117,6 @@ public class ViewportPanel extends Tab {
         }
     }
 
-    //TODO: Unused
-    private void invokeViewportRefreshEvent() {
-        ViewportRefreshEvent eventInstance = new ViewportRefreshEvent(this);
-        //EventManager.
-    }
-
     /**
      * Callback for mouse mouse-presses.
      * This is used to set the initial drag position to calculate
@@ -148,7 +124,7 @@ public class ViewportPanel extends Tab {
      * @param e The MouseEvent
      */
     private void mousePressEvent(MouseEvent e) {
-        gridDragOffset = translateMouseToWorldSpace(e);
+        gridDragOffset = translateMouseToWorldSpace(e.getX(), e.getY());
     }
 
     /**
@@ -161,10 +137,10 @@ public class ViewportPanel extends Tab {
 
     /**
      * Callback for mouse movement.
-     * @param e
+     * @param e The MouseEvent
      */
     private void mouseMoveEvent(MouseEvent e) {
-        pivotPoint = translateMouseToWorldSpace(e);
+        pivotPoint = translateMouseToWorldSpace(e.getX(), e.getY());
     }
 
     /**
@@ -200,27 +176,10 @@ public class ViewportPanel extends Tab {
     }
 
     /**
-     * Translates the screen coordinates of the mouse to world coordinates.
-     * @param e The mouse event
-     * @return The vector representing the position of the mouse in the world.
-     */
-    public Vector2f translateMouseToWorldSpace(MouseEvent e) {
-        return translateMouseToWorldSpace(e.getX(), e.getY());
-    }
-
-    /**
      * Handles mouse scroll event and scales the view canvas accordingly
      * @param e Mouse scroll-event
      */
     private void gridScaleEvent(ScrollEvent e) {
-        //Scale grid if control is held
-        if (isKeyPressed(KeyCode.CONTROL)) {
-            GridRenderer gridRenderer = (GridRenderer) viewportCanvas.getTickCallback("GridRenderer");
-            int previousTileSize = gridRenderer.getTileSize();
-            System.out.println(e.getDeltaY());
-//            gridRenderer.setTileSize(newTileSize);
-        }
-
         float previousScale = viewportCanvas.getViewportScale();
         double scale = previousScale * Math.pow(1.00525, e.getDeltaY());
 
